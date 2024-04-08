@@ -1,0 +1,93 @@
+#appBg {
+    height: 510px;
+    /*width: 400px;*/
+    width: 330px;
+    border: 4px solid rgb(0, 0, 0);
+    border-radius: 35px;
+}
+
+#appBg form {
+    height: 100%;
+    width: 100%;
+    background-color: #68acfa;
+    border-radius: 30px
+}
+
+
+#appBg input[type=textfield] {
+    height: 15%;
+    width: 70%;
+    cursor: default;
+    font-family: 'Roboto', sans-serif;
+    background-color: #0a0a23;
+    color: rgb(255, 249, 249);
+    padding: 15px;
+    text-align: right;
+    font-size: 50px;
+    border-radius: 50px;
+    outline: none;
+    margin: 30px;
+    border: 4px solid rgb(5, 5, 5);
+}
+
+#fila1 {
+    margin: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   
+}
+
+#fila2 {
+    margin: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   
+}
+
+#fila3 {
+    margin: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+#appBg input[id=button] {
+    width: 10%;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 26px;
+    /*color: rgb(3, 3, 3);*/
+    background-color: #0a0a23;
+    color: white;
+    padding: 20px;
+    margin: 7px;
+    border: 1;
+    border: 4px solid rgb(5, 5, 5);
+    border-radius: 100%;
+    text-align: center;
+}
+
+#appBg .input[type=button]:hover {
+    background-color: #5a01a7;
+}
+
+#appBg .boton {
+    height: 83px;
+    display: flex;
+    flex: 1 1;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 38px;
+    background-color: #1b1b32;
+    color: white;
+    border: 2px solid white;
+    border-radius: 25px;
+    margin: 4px;
+    cursor: pointer;
+    user-select: none;
+}

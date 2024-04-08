@@ -1,0 +1,56 @@
+[
+    {
+        "id": "5921",
+        "question": "PREGUNTA Nº 1", 
+        "respuestas": [
+            {
+              "id": "1",
+              "value": "A"
+            },
+            {
+              "id": "2",
+              "value": "B"
+            },
+            {
+              "id": "3",
+              "value": "C"
+            }
+          ]
+    },
+    {
+        "id": "5922",
+        "question": "PREGUNTA Nº 2", 
+        "respuestas": [
+            {
+                "id": "1",
+                "value": "A"
+              },
+              {
+                "id": "2",
+                "value": "B"
+              },
+              {
+                "id": "3",
+                "value": "C"
+              }
+          ]
+    },
+    {
+        "id": "5923",
+        "question": "PREGUNTA Nº 3", 
+        "respuestas": [
+            {
+                "id": "1",
+                "value": "A"
+              },
+              {
+                "id": "2",
+                "value": "B"
+              },
+              {
+                "id": "3",
+                "value": "C"
+              }
+          ]
+    } 
+]
