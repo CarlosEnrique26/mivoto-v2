@@ -8,19 +8,18 @@ import Question from './Preguntas/Question';
 import Graficos from './Graficos/Graficos';
 import Votantes from './Votantes/Votantes';
 import Personalizacion from './Personalizacion/Personalizacion';
-import { blue, red } from '@material-ui/core/colors';
+import { blue, orange, red } from '@material-ui/core/colors';
 
 const NavButtons = () => {
     const [activeButton, setActiveButton] = useState(null);
 
-const handleButtonClick = (buttonId) => {
-    if (activeButton === buttonId) {
-        setActiveButton(null); // Deselect the button if already active
-    } 
-
-else {
-    setActiveButton(buttonId);// Set the clicked button as active
-}};
+    const handleButtonClick = (buttonId) => {
+        if (activeButton === buttonId) {
+            setActiveButton(null); // Deselect the button if already active
+        } else {
+            setActiveButton(buttonId);// Set the clicked button as active
+        }
+    };
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -52,10 +51,8 @@ else {
             }
         },
         buttonClicked: {
-            /* Estilos cuando el botón está marcado */
-            backgroundColor: red, /* Por ejemplo, cambia el color de fondo */
-            color: blue, /* Cambia el color del texto cuando está marcado */
-            /* Otros estilos deseados */
+            backgroundColor: orange[500], // Change background color to red when button is clicked
+            color: '#ffffff', // Change text color to blue when button is clicked
         },
         horizontal: {
             flexDirection: 'row',
@@ -84,11 +81,11 @@ else {
                             <Grid item xs={12} md={12}>
                                 <div className={`${classes.buttonContainer} ${isDesktop ? classes.horizontal : ''}`}>
                                     
-                                    <Button 
-                                    variant="contained" 
-                                    color="primary" 
-                                    className={classes.button} 
-                                        onClick={() => handleButtonClick('votacion')} // Pass the button ID to the click handler
+                                <Button
+                                        variant="contained"
+                                        color="primary"
+                                        className={`${classes.button} ${activeButton === 'votacion' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('votacion')}
                                     >
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>star</i>
                                         Votacion
@@ -98,8 +95,8 @@ else {
                                     <Button 
                                     variant="contained" 
                                     color="primary" 
-                                    className={classes.button} 
-                                        onClick={() => handleButtonClick('question')} // Pass the button ID to the click handler
+                                    className={`${classes.button} ${activeButton === 'question' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('question')}
                                     >
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>help</i>
                                         Preguntas
@@ -109,8 +106,8 @@ else {
                                     <Button 
                                     variant="contained" 
                                     color="primary" 
-                                    className={classes.button} 
-                                    onClick={() => handleButtonClick('graficos')} // Pass the button ID to the click handler
+                                    className={`${classes.button} ${activeButton === 'graficos' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('graficos')}
                                 >
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>leaderboard</i>
                                         Graficos
@@ -120,8 +117,8 @@ else {
                                     <Button 
                                     variant="contained" 
                                     color="primary" 
-                                    className={classes.button} 
-                                        onClick={() => handleButtonClick('votantes')} // Pass the button ID to the click handler
+                                    className={`${classes.button} ${activeButton === 'votantes' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('votantes')}
                                     >
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>groups</i>
                                         Votantes
@@ -131,8 +128,8 @@ else {
                                     <Button 
                                     variant="contained" 
                                     color="primary" 
-                                    className={classes.button} 
-                                        onClick={() => handleButtonClick('personalizacion')} // Pass the button ID to the click handler
+                                    className={`${classes.button} ${activeButton === 'personalizacion' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('personalizacion')}
                                     >
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>edit</i>
                                         Personalizacion

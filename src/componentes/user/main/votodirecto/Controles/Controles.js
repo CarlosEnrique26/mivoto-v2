@@ -135,6 +135,37 @@ const Controles = () => {
                 //textAlign: 'center',
                 //color: theme.palette.text.secondary,
                 },
+                IconsControl: {
+                    margin: theme.spacing(1), // Add some margin between the buttons
+                    width: '100%',
+                    //transition: 'transform 0.3s ease',
+                    //opacity: 10, // Initial opacity
+                    //backgroundColor: activeButton === 'votacion'  ? '#ff0000' : null,
+                    transition: 'transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease', // Agrega una transición suave a los cambios
+                    opacity: 0.7, // Establece una opacidad inicial (semi transparente)
+                    '&:hover': {
+                        //transform: 'scale(1.1)', // Scale the image slightly on hover
+                        //filter: 'contrast (220%)', 
+                        //opacity: 1,
+                        //zIndex: 9,
+                        transform: 'scale(1.1)', // Escala el ícono ligeramente al hacer hover
+                        filter: 'contrast(220%)', // Aumenta el contraste al hacer hover
+                        opacity: 1, // Establece la opacidad a 1 al hacer hover (totalmente opaco)
+                        color: 'black', // Cambia el color del ícono a negro al hacer hover 
+                    }
+                },  
+                IconsControl1: {
+                    
+                    width: '50%',
+                    transition: 'transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease', // Agrega una transición suave a los cambios
+                    opacity: 0.7, // Establece una opacidad inicial (semi transparente)
+                    '&:hover': {
+                        transform: 'scale(1.1)', // Escala el ícono ligeramente al hacer hover
+                        filter: 'contrast(220%)', // Aumenta el contraste al hacer hover
+                        opacity: 1, // Establece la opacidad a 1 al hacer hover (totalmente opaco)
+                        color: 'black', // Cambia el color del ícono a negro al hacer hover 
+                    }
+                },            
             }));
                 const classes = useStyles();
 
@@ -155,56 +186,56 @@ const Controles = () => {
                     <Container style={{marginTop:20}} maxWidth>
                             <Grid container spacing={2}  style={{textAlign :"center"}}>
                                 <Grid item xs={12} md={2}>
-                                    <LaunchIcon className="IconsControl" onClick={GraphicsPie} style={{ fontSize: 100 }}/>
+                                    <LaunchIcon className={classes.IconsControl} onClick={GraphicsPie} style={{ fontSize: 100 }}/>
                                     <Typography> Enlace Gráfico</Typography>
                                 </Grid>
 
                                 <Grid item xs={12} md={2}>
-                                    <LaunchIcon  className="IconsControl" onClick={LoginVote} style={{ fontSize: 100 }} />
+                                    <LaunchIcon  className={classes.IconsControl} onClick={LoginVote} style={{ fontSize: 100 }} />
                                     <Typography> Enlace Votación</Typography>
                                 </Grid>
 
                                 <Grid item xs={12} md={2}>
-                                    <FileCopyOutlinedIcon className="IconsControl" onClick={copiarAlPortapapeles} style={{ fontSize: 100 }} />
+                                    <FileCopyOutlinedIcon className={classes.IconsControl} onClick={copiarAlPortapapeles} style={{ fontSize: 100 }} />
                                     <Typography> Copiar enlace Gráfica</Typography>
                                 </Grid>
 
                                 <Grid item xs={12} md={2}>
-                                    <FileCopyOutlinedIcon className="IconsControl" onClick={copiarAlPortapapeles} style={{ fontSize: 100 }} />
+                                    <FileCopyOutlinedIcon className={classes.IconsControl} onClick={copiarAlPortapapeles} style={{ fontSize: 100 }} />
                                     <Typography> Copiar enlace Votación</Typography>
                                 </Grid>
                                  
                                 <Grid item xs={12} md={2}>
-                                <CropFreeIcon className="IconsControl" onClick={Qr} style={{ fontSize: 100 }}/>
+                                <CropFreeIcon className={classes.IconsControl} onClick={Qr} style={{ fontSize: 100 }}/>
                                     <Typography> Código QR</Typography>
                                 </Grid>
                                 <Grid item xs={12} md={2}>
-                                    <SystemUpdateAltIcon className="IconsControl" style={{ fontSize: 100 }} />
+                                    <SystemUpdateAltIcon className={classes.IconsControl} style={{ fontSize: 100 }} />
                                     <Typography> Consolidado de la Votación</Typography>
                                 </Grid>
  
                                 <Grid item xs={12} md={2}>
-                                    <SyncAltIcon className="IconsControl" onClick={GraphicsFusion} style={{ fontSize: 100 }}/>
+                                    <SyncAltIcon className={classes.IconsControl} onClick={GraphicsFusion} style={{ fontSize: 100 }}/>
                                     <Typography> Gráfico Fusión</Typography>
                                 </Grid>
                                 <Grid item xs={12} md={2}>
-                                    <QuestionAnswerOutlinedIcon className="IconsControl" onClick={Questions} style={{ fontSize: 100 }} />
+                                    <QuestionAnswerOutlinedIcon className={classes.IconsControl} onClick={Questions} style={{ fontSize: 100 }} />
                                     <Typography>Preguntas</Typography>
                                 </Grid>
                                 <Grid item xs={12} md={2}>
-                                    <GroupIcon className="IconsControl" style={{ fontSize: 100 }} />
+                                    <GroupIcon className={classes.IconsControl} style={{ fontSize: 100 }} />
                                     <Typography>Censo Votantes</Typography>
                                 </Grid>
                                 <Grid item xs={12} md={2}>
-                                    <AssessmentOutlinedIcon className="IconsControl" onClick={Ranking} style={{ fontSize: 100 }} />
+                                    <AssessmentOutlinedIcon className={classes.IconsControl} onClick={Ranking} style={{ fontSize: 100 }} />
                                     <Typography>Ranking</Typography>
                                 </Grid>
                                 <Grid item xs={12} md={2}>
-                                    <GavelIcon className="IconsControl" style={{ fontSize: 100 }} />
+                                    <GavelIcon className={classes.IconsControl} style={{ fontSize: 100 }} />
                                     <Typography>Resultados</Typography>
                                 </Grid>
                                 <Grid item xs={12} md={2}>
-                                <VisibilityOutlinedIcon className="IconsControl" onClick={Observaciones} style={{ fontSize: 100 }} />
+                                <VisibilityOutlinedIcon className={classes.IconsControl} onClick={Observaciones} style={{ fontSize: 100 }} />
                                     <Typography>Observaciones</Typography>
                                 </Grid>
                             </Grid>
@@ -224,88 +255,88 @@ const Controles = () => {
                     <Container style={{marginTop:20}} maxWidth>
                             <Grid container spacing={2}  style={{textAlign :"center"}}>
                                 <Grid item xs={12} md={2}>
-                                    <PlayCircleFilledWhiteOutlinedIcon className="IconsControl" style={{ fontSize: 100 }} />
+                                    <PlayCircleFilledWhiteOutlinedIcon className={classes.IconsControl} style={{ fontSize: 100 }} />
                                     <Typography> Inicio</Typography>
                                 </Grid>
 
                                 <Grid item xs={12} md={2}>
-                                    <ArrowBackIosIcon className="IconsControl" style={{ fontSize: 100 }} />
-                                    <ArrowForwardIosIcon className="IconsControl" style={{ fontSize: 100 }} />
+                                    <ArrowBackIosIcon className={classes.IconsControl1} style={{ fontSize: 100 }} />
+                                    <ArrowForwardIosIcon className={classes.IconsControl1} style={{ fontSize: 100 }} />
                                     <Typography> Anterior / Siguiente</Typography>
                                 </Grid>
 
                                 <Grid item xs={12} md={2}> 
-                                    <LockOpenIcon className="IconsControl" style={{ fontSize: 100 }} />
+                                    <LockOpenIcon className={classes.IconsControl} style={{ fontSize: 100 }} />
                                     <Typography> Abrir</Typography>
                                 </Grid>
 
                                 <Grid item xs={12} md={2}>
-                                    <LockOutlinedIcon className="IconsControl" style={{ fontSize: 100 }} />
+                                    <LockOutlinedIcon className={classes.IconsControl} style={{ fontSize: 100 }} />
                                     <Typography> Cerrar</Typography>
                                 </Grid>
                                 
                                 <Grid item xs={12} md={2}>
-                                    <ExitToAppIcon className="IconsControl" style={{ fontSize: 100 }} />
+                                    <ExitToAppIcon className={classes.IconsControl} style={{ fontSize: 100 }} />
                                     <Typography> Quitar Usuario</Typography>
                                 </Grid>
 
                                 <Grid item xs={12} md={2}>
-                                    <PowerSettingsNewIcon className="IconsControl" style={{ fontSize: 100 }} />
+                                    <PowerSettingsNewIcon className={classes.IconsControl} style={{ fontSize: 100 }} />
                                     <Typography> Finalizar</Typography>
                                 </Grid>
                                 <Grid item xs={12} md={2}>
-                                    <ReplayIcon className="IconsControl" style={{ fontSize: 100 }} />
+                                    <ReplayIcon className={classes.IconsControl} style={{ fontSize: 100 }} />
                                     <Typography> Reiniciar Pregunta</Typography>
                                 </Grid>
  
                                 <Grid item xs={12} md={2}>
-                                    <CachedIcon className="IconsControl" style={{ fontSize: 100 }} />
+                                    <CachedIcon className={classes.IconsControl} style={{ fontSize: 100 }} />
                                     <Typography> Reiniciar Todo</Typography>
                                 </Grid>
                                 <Grid item xs={12} md={2}>
-                                    <BarChartIcon className="IconsControl" style={{ fontSize: 100 }} />
+                                    <BarChartIcon className={classes.IconsControl} style={{ fontSize: 100 }} />
                                     <Typography>Mostrar Gráfico</Typography>
                                 </Grid>
                                 <Grid item xs={12} md={2}>
-                                    <AssessmentIcon className="IconsControl" style={{ fontSize: 100 }} />
+                                    <AssessmentIcon className={classes.IconsControl} style={{ fontSize: 100 }} />
                                     <Typography>Ocultar Gráfico</Typography>
                                 </Grid>
 
                                 <Grid item xs={12} md={2}>
-                                    <FormatListBulletedIcon className="IconsControl" style={{ fontSize: 100 }} />
+                                    <FormatListBulletedIcon className={classes.IconsControl} style={{ fontSize: 100 }} />
                                     <Typography>Mostrar Leyenda</Typography>
                                 </Grid>
 
                                 <Grid item xs={12} md={2}>
-                                    <MailOutlineOutlinedIcon className="IconsControl" style={{ fontSize: 100 }} />
+                                    <MailOutlineOutlinedIcon className={classes.IconsControl} style={{ fontSize: 100 }} />
                                     <Typography>Solicitar Resultados</Typography>
                                 </Grid>
                                 <Grid item xs={12} md={2}>
-                                    <ViewListIcon className="IconsControl" style={{ fontSize: 100 }} />
+                                    <ViewListIcon className={classes.IconsControl} style={{ fontSize: 100 }} />
                                     <Typography>Votos Recibidos : </Typography>
                                 </Grid>
                                 <Grid item xs={12} md={2}>
-                                    <GroupIcon className="IconsControl" style={{ fontSize: 100 }} />
+                                    <GroupIcon className={classes.IconsControl} style={{ fontSize: 100 }} />
                                     <Typography>Votantes en linea : </Typography>
                                 </Grid>
                                 <Grid item xs={12} md={2}>
-                                    <SendOutlinedIcon className="IconsControl" style={{ fontSize: 100 }} />
+                                    <SendOutlinedIcon className={classes.IconsControl} style={{ fontSize: 100 }} />
                                     <Typography>Confirmación de Votos </Typography>
                                 </Grid>
                                 <Grid item xs={12} md={2}>
-                                    <ReplayIcon className="IconsControl" style={{ fontSize: 100, marginRight: 10 }} />
+                                    <ReplayIcon className={classes.IconsControl} style={{ fontSize: 100, marginRight: 10 }} />
                                     <Typography> Reiniciar Prengunta  </Typography>
                                 </Grid>
                                 <Grid item xs={12} md={1}>
-                                <CachedIcon className="IconsControl" style={{ fontSize: 100, marginRight: 10 }} />
+                                <CachedIcon className={classes.IconsControl} style={{ fontSize: 100, marginRight: 10 }} />
                                     <Typography>R. Todo </Typography>
                                 </Grid>
                                 <Grid item xs={12} md={1}>
-                                <SendOutlinedIcon className="IconsControl" style={{ fontSize: 100, marginRight: 10 }} />
+                                <SendOutlinedIcon className={classes.IconsControl} style={{ fontSize: 100, marginRight: 10 }} />
                                     <Typography>Enviar Control </Typography>
                                 </Grid>
                                 <Grid item xs={12} md={1}>
-                                <LaunchIcon className="IconsControl" style={{ fontSize: 100 }}/>
+                                <LaunchIcon className={classes.IconsControl} style={{ fontSize: 100 }}/>
                                     <Typography>Ver Presencia </Typography>
                                 </Grid>
                             </Grid>
@@ -343,7 +374,7 @@ const Controles = () => {
                                     </Select>
                                 </Grid>
                                 <Grid item xs={12} md={2}>
-                                    <PlayCircleFilledWhiteIcon className="IconsControl" style={{ fontSize: 100 }} />
+                                    <PlayCircleFilledWhiteIcon className={classes.IconsControl} style={{ fontSize: 100 }} />
                                 </Grid>
                                 <Grid item xs={12} md={5} borderRadius>
                                     <ListItemText>

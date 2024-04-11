@@ -8,6 +8,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import style from "../Tool/Style";
 import imagenes from '../../assets/imagenes';
 import { Link } from "react-router-dom";
+import { blue } from "@material-ui/core/colors";
 
 
 const PagPrincipal = (props) => {
@@ -39,7 +40,7 @@ const PagPrincipal = (props) => {
                 filter: 'contrast (220%)', 
                 opacity: 1
             }
-        }
+        },
         
     }));
 
@@ -63,7 +64,7 @@ return (
                                     className={classes.imgHover} // Apply hover effect here
                                     />
                                     <CardContent>
-                                    <Typography gutterBottom variant="h5" component="h2">
+                                    <Typography gutterBottom variant="h4" component="h2" >
                                         Directo
                                     </Typography>
                                     
@@ -85,7 +86,7 @@ return (
                                     className={classes.imgHover} // Apply hover effect here
                                     />
                                     <CardContent>
-                                    <Typography gutterBottom variant="h5" component="h2">
+                                    <Typography gutterBottom variant="h4" component="h2">
                                         Diferido
                                     </Typography>
                                     
@@ -107,7 +108,7 @@ return (
                                     className={classes.imgHover} // Apply hover effect here
                                     />
                                     <CardContent>
-                                    <Typography gutterBottom variant="h5" component="h2">
+                                    <Typography gutterBottom variant="h4" component="h2">
                                         Juegos
                                     </Typography>
                                     
@@ -129,7 +130,7 @@ return (
                                         className={classes.imgHover} // Apply hover effect here
                                         />
                                         <CardContent>
-                                        <Typography gutterBottom variant="h5" component="h2">
+                                        <Typography gutterBottom variant="h4" component="h2">
                                             Soporte
                                         </Typography>
                                         

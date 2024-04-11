@@ -15,34 +15,15 @@ import Chat from './elementos/Chat';
 //import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const Votacion = () => {
-    const [componenteAMostrar, setComponenteAMostrar] = useState(null);
 
-// Función para mostrar el componente Principal    
-const mostrarPrincipal = () => {
-    setComponenteAMostrar(<Principal />);
-    };
+    const [activeButton, setActiveButton] = useState(null);
 
-// Función para mostrar el componente Seguridad
-const mostrarSeguridad = () => {
-    setComponenteAMostrar(<Seguridad />);
-    };
-
-// Función para mostrar el componente Seguridad
-const mostrarTextos = () => {
-    setComponenteAMostrar(<Textos />);
-    };
-
-    // Función para mostrar el componente Seguridad
-const mostrarImagenes = () => {
-    setComponenteAMostrar(<Imagenes />);
-    };
-
-const mostrarRanking = () => {
-    setComponenteAMostrar(<Ranking/>);
-    };
-
-const mostrarChat = () => {
-    setComponenteAMostrar(<Chat/>);
+    const handleButtonClick = (buttonId) => {
+        if (activeButton === buttonId) {
+            setActiveButton(null); // Deselect the button if already active
+        } else {
+            setActiveButton(buttonId);// Set the clicked button as active
+        }
     };
 
     const useStyles = makeStyles((theme) => ({
@@ -112,6 +93,10 @@ const mostrarChat = () => {
         },
         input: {
             display: 'none',
+        },
+        buttonClicked: {
+            borderColor: '#f69100',
+            color: '#f69100', // Change text color to blue when button is clicked
         }
     }));
 
@@ -138,37 +123,43 @@ const mostrarChat = () => {
                             <Grid item xs={12} md={12}>
                                 <div className={`${classes.buttonContainer} ${isDesktop ? classes.horizontal : ''}`}>
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarPrincipal}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'principal' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('principal')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>star</i>
                                         Principal
                                     </Button>
                                     
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarSeguridad}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'seguridad' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('seguridad')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>lock</i>
                                         Seguridad
                                     </Button>
                                     
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarTextos}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'textos' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('textos')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>article</i>
                                         Textos
                                     </Button>
                                     
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarImagenes}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'imagenes' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('imagenes')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>image</i>
                                         Imagenes
                                     </Button>
                                 
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarRanking}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'ranking' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('ranking')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>show_chart</i>
                                         Ranking
                                     </Button>
                                 
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarChat}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'chat' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('chat')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>chat</i>
                                         Chat
                                     </Button>
@@ -177,7 +168,12 @@ const mostrarChat = () => {
                             </Grid>
 
                             <Grid item xs={12} md={12}>
-                                {componenteAMostrar}
+                                {activeButton === 'principal' && <Principal />}
+                                {activeButton === 'seguridad' && <Seguridad />}
+                                {activeButton === 'textos' && <Textos />}
+                                {activeButton === 'imagenes' && <Imagenes />}
+                                {activeButton === 'ranking' && <Ranking />}
+                                {activeButton === 'chat' && <Chat />}
                             </Grid>
                     
                         </Grid>
