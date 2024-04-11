@@ -15,32 +15,15 @@ import Plantilla from './elementos/Plantilla';
 //import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const Votantes = () => {
-    const [componenteAMostrar, setComponenteAMostrar] = useState(null);
+    const [activeButton, setActiveButton] = useState(null);
 
-// Función para mostrar el componente Principal    
-const mostrarImportarV = () => {
-    setComponenteAMostrar(<ImportarV />);
+    const handleButtonClick = (buttonId) => {
+        if (activeButton === buttonId) {
+            setActiveButton(null); // Deselect the button if already active
+        } else {
+            setActiveButton(buttonId);// Set the clicked button as active
+        }
     };
-
-// Función para mostrar el componente Seguridad
-const mostrarEquipos = () => {
-    setComponenteAMostrar(<Equipos />);
-    };
-
-// Función para mostrar el componente Seguridad
-const mostrarVotanteIndi = () => {
-    setComponenteAMostrar(<VotanteIndi />);
-    };
-
-    // Función para mostrar el componente Seguridad
-const mostrarGestion = () => {
-    setComponenteAMostrar(<Gestion />);
-    };
-
-const mostrarPlantilla = () => {
-    setComponenteAMostrar(<Plantilla/>);
-    };
-
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -66,7 +49,9 @@ const mostrarPlantilla = () => {
             '&:hover': {
                 transform: 'scale(1.1)', // Scale the image slightly on hover
                 filter: 'contrast (220%)', 
-                opacity: 1
+                opacity: 1,
+                borderColor: '#f69100',
+                color: '#f69100', // Change text color to blue when button is clicked
             }
         },
         horizontal: {
@@ -109,6 +94,10 @@ const mostrarPlantilla = () => {
         },
         input: {
             display: 'none',
+        },
+        buttonClicked: {
+            borderColor: '#f69100',
+            color: '#f69100', // Change text color to blue when button is clicked
         }
     }));
 
@@ -135,31 +124,36 @@ const mostrarPlantilla = () => {
                             <Grid item xs={12} md={12}>
                                 <div className={`${classes.buttonContainer} ${isDesktop ? classes.horizontal : ''}`}>
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarImportarV}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'importarv' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('importarv')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>star</i>
                                         Importar Votantes
                                     </Button>
                                     
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarEquipos}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'equipos' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('equipos')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>lock</i>
                                         Equipos
                                     </Button>
                                     
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarVotanteIndi}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'votanteindi' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('votanteindi')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>article</i>
                                         Votante Individual
                                     </Button>
                                     
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarGestion}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'gestion' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('gestion')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>image</i>
                                         Gestión
                                     </Button>
                                 
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarPlantilla}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'plantilla' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('plantilla')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>show_chart</i>
                                         Plantilla
                                     </Button>
@@ -168,7 +162,11 @@ const mostrarPlantilla = () => {
                             </Grid>
 
                             <Grid item xs={12} md={12}>
-                                {componenteAMostrar}
+                                {activeButton === 'importarv' && <ImportarV />}
+                                {activeButton === 'equipos' && <Equipos />}
+                                {activeButton === 'votanteindi' && <VotanteIndi />}
+                                {activeButton === 'gestion' && <Gestion />}
+                                {activeButton === 'plantilla' && <Plantilla />}
                             </Grid>
                     
                         </Grid>

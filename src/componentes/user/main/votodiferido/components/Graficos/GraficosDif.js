@@ -17,34 +17,14 @@ import LeyendasDif from './elementos/LeyendaDif';
 //import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const GraficosDif = () => {
-    const [componenteAMostrar, setComponenteAMostrar] = useState(null);
+    const [activeButton, setActiveButton] = useState(null);
 
-// Función para mostrar el componente Principal    
-const mostrarGeneral = () => {
-    setComponenteAMostrar(<GeneralDif />);
-    };
-
-// Función para mostrar el componente Seguridad
-const mostrarGrafica = () => {
-    setComponenteAMostrar(<GraficaDif />);
-    };
-
-// Función para mostrar el componente Seguridad
-const mostrarColoresChart = () => {
-    setComponenteAMostrar(<ColoresChartDif />);
-    };
-
-    // Función para mostrar el componente Seguridad
-const mostrarTextoPreguntas = () => {
-    setComponenteAMostrar(<TextoPreguntasDif />);
-    };
-
-const mostrarTextoRespuestas = () => {
-    setComponenteAMostrar(<TextoRespuestasDif/>);
-    };
-
-const mostrarLeyendas = () => {
-    setComponenteAMostrar(<LeyendasDif/>);
+    const handleButtonClick = (buttonId) => {
+        if (activeButton === buttonId) {
+            setActiveButton(null); // Deselect the button if already active
+        } else {
+            setActiveButton(buttonId);// Set the clicked button as active
+        }
     };
 
     const useStyles = makeStyles((theme) => ({
@@ -68,12 +48,12 @@ const mostrarLeyendas = () => {
             width: '100%',
             transition: 'transform 0.3s ease',
             opacity: 10, // Initial opacity
-            //backgroundColor: activeButton === 'votacion'  ? '#ff0000' : null,
             '&:hover': {
                 transform: 'scale(1.1)', // Scale the image slightly on hover
                 filter: 'contrast (220%)', 
                 opacity: 1,
-                //zIndex: 9 
+                borderColor: '#f69100',
+                color: '#f69100',
             }
         },
         horizontal: {
@@ -116,6 +96,10 @@ const mostrarLeyendas = () => {
         },
         input: {
             display: 'none',
+        },
+        buttonClicked: {
+            borderColor: '#f69100',
+            color: '#f69100', // Change text color to blue when button is clicked
         }
     }));
 
@@ -142,37 +126,43 @@ const mostrarLeyendas = () => {
                             <Grid item xs={12} md={12}>
                                 <div className={`${classes.buttonContainer} ${isDesktop ? classes.horizontal : ''}`}>
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarGeneral}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'general' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('general')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>star</i>
                                         General  
                                     </Button>
                                     
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarGrafica}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'grafica' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('grafica')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>graphic_eq</i>
                                         Grafica
                                     </Button>
                                     
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarColoresChart}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'coloreschart' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('coloreschart')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>palette</i>
                                         Colores Chart
                                     </Button>
                                     
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarTextoPreguntas}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'textopreguntas' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('textopreguntas')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>article</i>
                                         Texto Preguntas
                                     </Button>
                                 
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarTextoRespuestas}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'textorespuesta' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('textorespuesta')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>description</i>
                                         Texto Respuestas
                                     </Button>
                                 
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarLeyendas}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'leyendas' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('leyendas')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>chat</i>
                                         Leyendas
                                     </Button>
@@ -181,7 +171,12 @@ const mostrarLeyendas = () => {
                             </Grid>
 
                             <Grid item xs={12} md={12}>
-                                {componenteAMostrar}
+                                {activeButton === 'general' && <GeneralDif />}
+                                {activeButton === 'grafica' && <GraficaDif/>}
+                                {activeButton === 'coloreschart' && <ColoresChartDif />}
+                                {activeButton === 'textopreguntas' && <TextoPreguntasDif />}
+                                {activeButton === 'textorespuesta' && <TextoRespuestasDif />}
+                                {activeButton === 'leyendas' && <LeyendasDif />}
                             </Grid>
                     
                         </Grid>

@@ -13,18 +13,15 @@ import ControlP from './elementos/ControlP';
 //import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const Personalizacion = () => {
-    const [componenteAMostrar, setComponenteAMostrar] = useState(null);
+    const [activeButton, setActiveButton] = useState(null);
 
-// Función para mostrar el componente Principal    
-const mostrarPrincipal = () => {
-    setComponenteAMostrar(<PrincipalP />);
+    const handleButtonClick = (buttonId) => {
+        if (activeButton === buttonId) {
+            setActiveButton(null); // Deselect the button if already active
+        } else {
+            setActiveButton(buttonId);// Set the clicked button as active
+        }
     };
-
-// Función para mostrar el componente Seguridad
-const mostrarControl = () => {
-    setComponenteAMostrar(<ControlP />);
-    };
-
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -50,7 +47,9 @@ const mostrarControl = () => {
             '&:hover': {
                 transform: 'scale(1.1)', // Scale the image slightly on hover
                 filter: 'contrast (220%)', 
-                opacity: 1
+                opacity: 1,
+                borderColor: '#f69100',
+                color: '#f69100',
             }
         },
         horizontal: {
@@ -93,6 +92,10 @@ const mostrarControl = () => {
         },
         input: {
             display: 'none',
+        },
+        buttonClicked: {
+            borderColor: '#f69100',
+            color: '#f69100', // Change text color to blue when button is clicked
         }
     }));
 
@@ -119,13 +122,15 @@ const mostrarControl = () => {
                             <Grid item xs={12} md={12}>
                                 <div className={`${classes.buttonContainer} ${isDesktop ? classes.horizontal : ''}`}>
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarPrincipal}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'principal' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('principal')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>star</i>
                                         Principal
                                     </Button>
                                     
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarControl}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'control' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('control')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>lock</i>
                                         Control
                                     </Button>
@@ -135,7 +140,8 @@ const mostrarControl = () => {
                             </Grid>
 
                             <Grid item xs={12} md={12}>
-                                {componenteAMostrar}
+                                {activeButton === 'principal' && <PrincipalP />}
+                                {activeButton === 'control' && <ControlP />}
                             </Grid>
                     
                         </Grid>

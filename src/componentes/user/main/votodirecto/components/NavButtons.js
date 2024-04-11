@@ -47,12 +47,16 @@ const NavButtons = () => {
                 transform: 'scale(1.1)', // Scale the image slightly on hover
                 filter: 'contrast (220%)', 
                 opacity: 1,
+                backgroundColor: orange[500], // Change background color to red when button is clicked
+                color: '#ffffff',
+                borderColor: orange[500],
                 //zIndex: 9 
             }
         },
         buttonClicked: {
             backgroundColor: orange[500], // Change background color to red when button is clicked
             color: '#ffffff', // Change text color to blue when button is clicked
+            borderColor: '#f69100',
         },
         horizontal: {
             flexDirection: 'row',

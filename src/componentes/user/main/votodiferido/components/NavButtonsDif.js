@@ -4,30 +4,23 @@ import { makeStyles } from '@material-ui/core/styles';
 import style from "../../../../Tool/Style";
 import { Link } from 'react-router-dom';
 import VotacionDif from './Votacion/VotacionDif';
-import QuestionDif from './Preguntas/QuestionsDif';
 import GraficosDif from './Graficos/GraficosDif';
 import VotantesDif from './Votantes/votantesDif';
 import PersonalizacionDif from './Personalizacion/PersonalizacionDif';
+import { blue, orange, red } from '@material-ui/core/colors';
+import PreguntasDif from './Preguntas/elementos/PreguntasDif';
 
 
 
 const NavButtonsDif = () => {
-    const [componenteAMostrar, setComponenteAMostrar] = useState(null);
-    
-const mostrarVotacion = () => {
-    setComponenteAMostrar(<VotacionDif />);
-    };
-const mostrarQuestion = () => {
-    setComponenteAMostrar(<QuestionDif />);
-    };
-const mostrarGraficos = () => {
-    setComponenteAMostrar(<GraficosDif />);
-    };
-const mostrarVotantes = () => {
-    setComponenteAMostrar(<VotantesDif />);
-    };
-const mostrarPersonalizacion = () => {
-    setComponenteAMostrar(<PersonalizacionDif/>);
+    const [activeButton, setActiveButton] = useState(null);
+
+    const handleButtonClick = (buttonId) => {
+        if (activeButton === buttonId) {
+            setActiveButton(null); // Deselect the button if already active
+        } else {
+            setActiveButton(buttonId);// Set the clicked button as active
+        }
     };
 
     const useStyles = makeStyles((theme) => ({
@@ -56,8 +49,16 @@ const mostrarPersonalizacion = () => {
                 transform: 'scale(1.1)', // Scale the image slightly on hover
                 filter: 'contrast (220%)', 
                 opacity: 1,
+                backgroundColor: orange[500], // Change background color to red when button is clicked
+                color: '#ffffff',
+                borderColor: orange[500],
                 //zIndex: 9 
             }
+        },
+        buttonClicked: {
+            backgroundColor: orange[500], // Change background color to red when button is clicked
+            color: '#ffffff', // Change text color to blue when button is clicked
+            borderColor: '#f69100',
         },
         horizontal: {
             flexDirection: 'row',
@@ -77,31 +78,41 @@ const mostrarPersonalizacion = () => {
                             <Grid item xs={12} md={12}>
                                 <div className={`${classes.buttonContainer} ${isDesktop ? classes.horizontal : ''}`}>
                                     
-                                    <Button variant="contained" color="primary" className={classes.button} onClick={mostrarVotacion}>
+                                    <Button variant="contained" color="primary" className={`${classes.button} ${activeButton === 'votacion' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('votacion')}
+                                    >
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>star</i>
                                         Votacion
                                     </Button>
                                     
                                     
-                                    <Button variant="contained" color="primary" className={classes.button} onClick={mostrarQuestion}>
+                                    <Button variant="contained" color="primary" className={`${classes.button} ${activeButton === 'preguntas' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('preguntas')}
+                                    >
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>help</i>
                                         Preguntas
                                     </Button>
                                     
                                     
-                                    <Button variant="contained" color="primary" className={classes.button} onClick={mostrarGraficos}>
+                                    <Button variant="contained" color="primary" className={`${classes.button} ${activeButton === 'graficos' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('graficos')}
+                                    >
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>leaderboard</i>
                                         Graficos
                                     </Button>
                                     
                                     
-                                    <Button variant="contained" color="primary" className={classes.button} onClick={mostrarVotantes}>
+                                    <Button variant="contained" color="primary" className={`${classes.button} ${activeButton === 'votantes' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('votantes')}
+                                    >
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>groups</i>
                                         Votantes
                                     </Button>
                                     
                                     
-                                    <Button variant="contained" color="primary" className={classes.button} onClick={mostrarPersonalizacion}>
+                                    <Button variant="contained" color="primary" className={`${classes.button} ${activeButton === 'personalizacion' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('personalizacion')}
+                                    >
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>edit</i>
                                         Personalizacion
                                     </Button>
@@ -110,7 +121,11 @@ const mostrarPersonalizacion = () => {
                             </Grid>
 
                             <Grid item xs={12} md={12}>
-                                {componenteAMostrar}
+                                {activeButton === 'votacion' && <VotacionDif />}
+                                {activeButton === 'preguntas' && <PreguntasDif />}
+                                {activeButton === 'graficos' && <GraficosDif />}
+                                {activeButton === 'votantes' && <VotantesDif />}
+                                {activeButton === 'personalizacion' && <PersonalizacionDif />}
                             </Grid>
                         </Grid>
                     </Container>

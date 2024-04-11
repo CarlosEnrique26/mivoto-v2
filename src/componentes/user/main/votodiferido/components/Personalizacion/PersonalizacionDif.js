@@ -16,24 +16,14 @@ import RespuestaDif from './elementos/RespuestaDif';
 //import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const PersonalizacionDif = () => {
-    const [componenteAMostrar, setComponenteAMostrar] = useState(null);
+    const [activeButton, setActiveButton] = useState(null);
 
-// Función para mostrar el componente Principal    
-const mostrarCheckDiv = () => {
-    setComponenteAMostrar(<CheckDif />);
-    };
-
-// Función para mostrar el componente Seguridad
-const mostrarRadioDiv = () => {
-    setComponenteAMostrar(<RadioDif />);
-    };
-
-const mostrarPreguntaDiv = () => {
-    setComponenteAMostrar(<PreguntaDif />);
-    };
-
-const mostrarRespuestaDiv = () => {
-    setComponenteAMostrar(<RespuestaDif />);
+    const handleButtonClick = (buttonId) => {
+        if (activeButton === buttonId) {
+            setActiveButton(null); // Deselect the button if already active
+        } else {
+            setActiveButton(buttonId);// Set the clicked button as active
+        }
     };
 
 
@@ -58,12 +48,12 @@ const mostrarRespuestaDiv = () => {
             width: '100%',
             transition: 'transform 0.3s ease',
             opacity: 10, // Initial opacity
-            //backgroundColor: activeButton === 'votacion'  ? '#ff0000' : null,
             '&:hover': {
                 transform: 'scale(1.1)', // Scale the image slightly on hover
                 filter: 'contrast (220%)', 
                 opacity: 1,
-                //zIndex: 9 
+                borderColor: '#f69100',
+                color: '#f69100',
             }
         },
         horizontal: {
@@ -106,6 +96,10 @@ const mostrarRespuestaDiv = () => {
         },
         input: {
             display: 'none',
+        },
+        buttonClicked: {
+            borderColor: '#f69100',
+            color: '#f69100', // Change text color to blue when button is clicked
         }
     }));
 
@@ -132,24 +126,28 @@ const mostrarRespuestaDiv = () => {
                             <Grid item xs={12} md={12}>
                                 <div className={`${classes.buttonContainer} ${isDesktop ? classes.horizontal : ''}`}>
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarCheckDiv}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'checkdif' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('checkdif')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>star</i>
                                         Check
                                     </Button>
                                     
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarRadioDiv}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'radiodiv' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('radiodif')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>lock</i>
                                         Radio
                                     </Button>
 
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarPreguntaDiv}>    
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'preguntadif' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('preguntadif')}>    
                                     <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>star</i>
                                         Pregunta
                                     </Button>
                                     
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarRespuestaDiv}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'respuestadif' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('respuestadif')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>lock</i>
                                         Respuesta
                                     </Button>
@@ -159,7 +157,10 @@ const mostrarRespuestaDiv = () => {
                             </Grid>
 
                             <Grid item xs={12} md={12}>
-                                {componenteAMostrar}
+                                {activeButton === 'checkdif' && <CheckDif />}
+                                {activeButton === 'radiodif' && <RadioDif />}
+                                {activeButton === 'preguntadif' && <PreguntaDif />}
+                                {activeButton === 'respuestadif' && <RespuestaDif />}
                             </Grid>
                     
                         </Grid>

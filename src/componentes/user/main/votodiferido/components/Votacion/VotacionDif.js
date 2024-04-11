@@ -14,30 +14,14 @@ import ChatDif from './elementos/ChatDif';
 //import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const VotacionDif = () => {
-    const [componenteAMostrar, setComponenteAMostrar] = useState(null);
+    const [activeButton, setActiveButton] = useState(null);
 
-// Función para mostrar el componente Principal    
-const mostrarPrincipal = () => {
-    setComponenteAMostrar(<PrincipalDif />);
-    };
-
-// Función para mostrar el componente Seguridad
-const mostrarSeguridad = () => {
-    setComponenteAMostrar(<SeguridadDif />);
-    };
-
-// Función para mostrar el componente Seguridad
-const mostrarTextos = () => {
-    setComponenteAMostrar(<TextosDif />);
-    };
-
-    // Función para mostrar el componente Seguridad
-const mostrarImagenes = () => {
-    setComponenteAMostrar(<ImagenesDif />);
-    };
-
-const mostrarChat = () => {
-    setComponenteAMostrar(<ChatDif/>);
+    const handleButtonClick = (buttonId) => {
+        if (activeButton === buttonId) {
+            setActiveButton(null); // Deselect the button if already active
+        } else {
+            setActiveButton(buttonId);// Set the clicked button as active
+        }
     };
 
     const useStyles = makeStyles((theme) => ({
@@ -61,12 +45,12 @@ const mostrarChat = () => {
             width: '100%',
             transition: 'transform 0.3s ease',
             opacity: 10, // Initial opacity
-            //backgroundColor: activeButton === 'votacion'  ? '#ff0000' : null,
             '&:hover': {
                 transform: 'scale(1.1)', // Scale the image slightly on hover
                 filter: 'contrast (220%)', 
                 opacity: 1,
-                //zIndex: 9 
+                borderColor: '#f69100',
+                color: '#f69100',
             }
         },
         horizontal: {
@@ -109,6 +93,10 @@ const mostrarChat = () => {
         },
         input: {
             display: 'none',
+        },
+        buttonClicked: {
+            borderColor: '#f69100',
+            color: '#f69100', // Change text color to blue when button is clicked
         }
     }));
 
@@ -135,31 +123,36 @@ const mostrarChat = () => {
                             <Grid item xs={12} md={12}>
                                 <div className={`${classes.buttonContainer} ${isDesktop ? classes.horizontal : ''}`}>
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarPrincipal}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'principal' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('principal')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>star</i>
                                         Principal
                                     </Button>
                                     
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarSeguridad}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'seguridad' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('seguridad')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>lock</i>
                                         Seguridad
                                     </Button>
                                     
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarTextos}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'textos' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('textos')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>article</i>
                                         Textos
                                     </Button>
                                     
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarImagenes}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'imagenes' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('imagenes')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>image</i>
                                         Imagenes
                                     </Button>
                                 
                                     
-                                    <Button variant="outlined" color="primary" className={classes.button} onClick={mostrarChat}>
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'chat' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('chat')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>chat</i>
                                         Chat
                                     </Button>
@@ -168,7 +161,11 @@ const mostrarChat = () => {
                             </Grid>
 
                             <Grid item xs={12} md={12}>
-                                {componenteAMostrar}
+                                {activeButton === 'principal' && <PrincipalDif />}
+                                {activeButton === 'seguridad' && <SeguridadDif />}
+                                {activeButton === 'textos' && <TextosDif />}
+                                {activeButton === 'imagenes' && <ImagenesDif />}
+                                {activeButton === 'chat' && <ChatDif />}
                             </Grid>
                     
                         </Grid>

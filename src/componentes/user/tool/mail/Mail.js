@@ -2,59 +2,75 @@ import React from "react";
 import { Container, Grid, Button } from "@material-ui/core";
 import { DataGrid } from '@material-ui/data-grid';
 import style from "../../../Tool/Style";
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
 
-
-const Mail = (props) =>{
+const Mail = (props) => {
     const columns = [
-        { field: 'id', headerName: 'Nombre', width: 120 },
-        { field: 'firstName', headerName: 'URL', width: 400 },
-        { field: 'lastName', headerName: 'Estado', width: 130 }
-
+        { field: 'id', headerName: 'Nombre', width: 300 },
+        { field: 'firstName', headerName: 'Correo', width: 300 },
+        { field: 'lastName', headerName: 'Predeterminado', width: 300 },
+        {
+            field: 'option', headerName: '', width: 200, renderCell: (params) => (
+                <React.Fragment>
+                    <Button variant="contained" 
+                            color="secondary" 
+                            style={{ marginRight: '5px', 
+                                    color: '#fff'
+                                    }}
+                                    >
+                        <EditOutlinedIcon />
+                    </Button>
+                    <Button 
+                        variant="contained"
+                        color="error" 
+                        
+                        >
+                        <DeleteOutlineOutlinedIcon />
+                    </Button>
+                </React.Fragment>
+            )
+        }
     ];
 
     const rows = [
-        { id: 1, lastName: 'Snow', firstName: 'Jon'},
-        { id: 2, lastName: 'Lannister', firstName: 'Cersei' },
-        { id: 3, lastName: 'Lannister', firstName: 'Jaime'},
-        { id: 4, lastName: 'Stark', firstName: 'Arya' },
-        { id: 5, lastName: 'Targaryen', firstName: 'Daenerys'},
-        { id: 6, lastName: 'Melisandre', firstName: null },
-        { id: 7, lastName: 'Clifford', firstName: 'Ferrara'},
-        { id: 8, lastName: 'Frances', firstName: 'Rossini' },
-        { id: 9, lastName: 'Roxie', firstName: 'Harvey' },
+        { id: 'Prueba1', firstName: 'Snow@', lastName: 'Jon', option: '' },
+        { id: 'Prueba2', firstName: 'Lannister@', lastName: 'Cersei', option: '' },
+        { id: 'Prueba3', firstName: 'Lannister@', lastName: 'Jaime', option: '' },
+        { id: 'Prueba4', firstName: 'Stark@', lastName: 'Arya', option: '' },
+        { id: 'Prueba5', firstName: 'Targaryen@', lastName: 'Daenerys', option: '' },
+        { id: 'Prueba6', firstName: 'Melisandre@', lastName: null, option: '' },
+        { id: 'Prueba7', firstName: 'Clifford@', lastName: 'Ferrara', option: '' },
+        { id: 'Prueba8', firstName: 'Frances@', lastName: 'Rossini', option: '' },
+        { id: 'Prueba9', firstName: 'Roxie@', lastName: 'Harvey', option: '' },
     ];
 
-
-    const goCreate =() => {
+    const goCreate = () => {
         props.history.push('preregistro');
     }
 
     return (
-
         <Container maxWidth={false} style={style.barSup}>
             <Container maxWidth={false} style={style.barTitle}>
                 <h1 style={style.title}>Establecer email</h1>
                 <label style={style.titleinfo}>Listado de todos los email</label>
             </Container>
-                <Container maxWidth={false} style={style.barContain}>
-                    <Grid style={style.gridcontainer}>
-
-                                <Container maxWidth={false}>
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={12} md={12} >
-                                            <Grid item xs={12} md={6}>
-                                                <Button color="primary" onClick={goCreate} style={{marginTop:20}}  fullWidth variant="outlined" size="medium">Nuevo PreRegistro</Button>
-                                                
-                                            </Grid>
-                                            <div style={{ height: 400, width: '100%' ,marginTop:20}}>
-                                                <DataGrid rows={rows} columns={columns} pageSize={5} checkboxSelection />
-                                            </div>
-                                        </Grid>
-                                    </Grid>
-                                </Container>
-
-                    </Grid>
-                </Container>
+            <Container maxWidth={false} style={style.barContain}>
+                <Grid style={style.gridcontainer}>
+                    <Container maxWidth={false}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} md={12}>
+                                <Grid item xs={12} md={6}>
+                                    <Button color="primary" onClick={goCreate} style={{ marginTop: 20 }} fullWidth variant="outlined" size="medium">Nuevo Email</Button>
+                                </Grid>
+                                <div style={{ height: 400, width: '100%', marginTop: 20 }}>
+                                    <DataGrid rows={rows} columns={columns} pageSize={5} checkboxSelection />
+                                </div>
+                            </Grid>
+                        </Grid>
+                    </Container>
+                </Grid>
+            </Container>
         </Container>
     );
 }

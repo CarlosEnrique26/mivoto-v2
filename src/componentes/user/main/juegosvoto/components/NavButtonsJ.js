@@ -6,20 +6,19 @@ import { Link } from 'react-router-dom';
 import PrincipalJ from './Principal/PrincipalJ';
 import PreguntasJ from './Preguntas/PreguntasJ';
 import ParticipantesJ from './Participantes/ParticipantesJ';
+import { blue, orange, red } from '@material-ui/core/colors';
 
 
 
 const NavButtonsJ = () => {
-    const [componenteAMostrar, setComponenteAMostrar] = useState(null);
-    
-const mostrarPrincipalJ = () => {
-    setComponenteAMostrar(<PrincipalJ />);
-    };
-const mostrarPreguntasJ = () => {
-    setComponenteAMostrar(<PreguntasJ />);
-    };
-const mostrarParticipantesJ = () => {
-    setComponenteAMostrar(<ParticipantesJ />);
+    const [activeButton, setActiveButton] = useState(null);
+
+    const handleButtonClick = (buttonId) => {
+        if (activeButton === buttonId) {
+            setActiveButton(null); // Deselect the button if already active
+        } else {
+            setActiveButton(buttonId);// Set the clicked button as active
+        }
     };
 
 
@@ -49,11 +48,19 @@ const mostrarParticipantesJ = () => {
                 transform: 'scale(1.1)', // Scale the image slightly on hover
                 filter: 'contrast (220%)', 
                 opacity: 1,
+                backgroundColor: orange[500], // Change background color to red when button is clicked
+                color: '#ffffff',
+                borderColor: orange[500],
                 //zIndex: 9 
             }
         },
         horizontal: {
             flexDirection: 'row',
+        },
+        buttonClicked: {
+            backgroundColor: orange[500], // Change background color to red when button is clicked
+            color: '#ffffff', // Change text color to blue when button is clicked
+            borderColor: '#f69100',
         }
     }));
 
@@ -70,19 +77,25 @@ const mostrarParticipantesJ = () => {
                             <Grid item xs={12} md={12}>
                                 <div className={`${classes.buttonContainer} ${isDesktop ? classes.horizontal : ''}`}>
                                     
-                                    <Button variant="contained" color="primary" className={classes.button} onClick={mostrarPrincipalJ}>
+                                    <Button variant="contained" color="primary" className={`${classes.button} ${activeButton === 'principalj' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('principalj')}
+                                    >
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>star</i>
                                         Principal
                                     </Button>
                                     
                                     
-                                    <Button variant="contained" color="primary" className={classes.button} onClick={mostrarPreguntasJ}>
+                                    <Button variant="contained" color="primary" className={`${classes.button} ${activeButton === 'preguntasj' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('preguntasj')}
+                                    >
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>help</i>
                                         Preguntas
                                     </Button>
                                     
                                     
-                                    <Button variant="contained" color="primary" className={classes.button} onClick={mostrarParticipantesJ}>
+                                    <Button variant="contained" color="primary" className={`${classes.button} ${activeButton === 'participantesj' ? classes.buttonClicked : ''}`}
+                                        onClick={() => handleButtonClick('participantesj')}
+                                    >
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>leaderboard</i>
                                         Participantes
                                     </Button>
@@ -91,7 +104,9 @@ const mostrarParticipantesJ = () => {
                             </Grid>
 
                             <Grid item xs={12} md={12}>
-                                {componenteAMostrar}
+                                {activeButton === 'principalj' && <PrincipalJ />}
+                                {activeButton === 'preguntasj' && <PreguntasJ />}
+                                {activeButton === 'participantesj' && <ParticipantesJ />}
                             </Grid>
                         </Grid>
                     </Container>
