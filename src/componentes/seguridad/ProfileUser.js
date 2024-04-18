@@ -4,7 +4,7 @@ import { Container, TextField, Typography, Grid, Button, Avatar, Card } from "@m
 import { LockOutlined } from "@material-ui/icons";
 
 
-const ProfileUser = () => {
+const ProfileUser = (props) => {
     const [usuario, setUsuario] = useState({
         nombres: '',
         apellidos: '',
@@ -22,6 +22,12 @@ const ProfileUser = () => {
             ...anterior,
             [name] : value
         }));
+    }
+
+    const ProfileUserBoton = e => {
+        e.preventDefault();
+        console.log('login exitoso', usuario)
+        props.history.push("/auth/login");
     }
     
     const changeNewConfirmar = (e) => {
@@ -64,7 +70,7 @@ const ProfileUser = () => {
                     </Grid>
                     <Grid container justifyContent="center">
                         <Grid item xs={12} md="6">
-                            <Button type="submit" fullWidth variant="contained" size="large" color="primary" style={style.submit}>
+                            <Button type="submit" onClick={ProfileUserBoton} fullWidth variant="contained" size="large" color="primary" style={style.submit}>
                                 Guardar Datos
                             </Button>
                         </Grid>

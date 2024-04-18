@@ -31,10 +31,26 @@ const useStyles = makeStyles((theme) =>({
     }
 }));
 
-const PassRecovery = ({ visible ,funcVisible,actionSave}) => {
+const PassRecovery = ({ visible ,funcVisible,actionSave, props}) => {
     const classes = useStyles();
     const [openDialog, setOpenDialig] = useState(false);
     const [email, setOpenEmail] = useState("");
+    const [usuario, setUsuario] = useState({
+        correoelectronico: ''
+    })
+
+    const SaveValors = e => {
+        const {name, value} = e.target;
+        setUsuario(anterior => ({
+            ...anterior,
+            [name] : value
+        }));
+    }
+
+    const passrecoveryBoton = e => {
+        e.preventDefault();
+        console.log('login exitoso', usuario)
+    }
 
     const handleClose = () =>{
         funcVisible(false);
@@ -71,13 +87,15 @@ const PassRecovery = ({ visible ,funcVisible,actionSave}) => {
                             </Grid>
                             <Grid item xs={12} md={12} >
                                         <TextField variant="outlined" 
-                                        onChange={changeInputEmail}
+                                        name="Login" 
+                                        value={usuario.Login} 
+                                        onChange={SaveValors}
                                         fullWidth label="Correo electrónico" margin="normal" />        
                             </Grid>  
 
                             <Grid item xs={12} md={6} >
                             
-                                <Button onClick={usercredentialById} variant="contained" color="primary">
+                                <Button type="submit" onClick={passrecoveryBoton} variant="contained" color="primary">
                                     Recuperar contraseña
                                 </Button>
                             </Grid>

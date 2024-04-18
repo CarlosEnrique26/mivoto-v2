@@ -4,29 +4,17 @@ import { DataGrid } from '@material-ui/data-grid';
 import style from "../../../Tool/Style";
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
-import PauseCircleOutlineIcon from '@material-ui/icons/PauseCircleOutline';
 
-const PreRegister = (props) => {
+const Sonido = (props) => {
     const columns = [
-        { field: 'id', headerName: 'Nombre', width: 300 },
-        { field: 'firstName', headerName: 'URL', width: 300 },
-        { field: 'lastName', headerName: 'Estado', width: 300 },
+        { field: 'id', headerName: 'Nombre', width: 450 },
+        { field: 'firstName', headerName: 'Empresa', width: 450 },
         {
-            field: 'option', headerName: '', width: 220, renderCell: (params) => (
+            field: 'option', headerName: '', width: 200, renderCell: (params) => (
                 <React.Fragment>
-                    <Button 
-                        variant="contained"
-                        color="error" 
-                        style={{ marginRight: '5px', 
-                        color: '#fff'
-                                    }}
-                        
-                        >
-                        <PauseCircleOutlineIcon />
-                    </Button>
                     <Button variant="contained" 
                             color="secondary" 
-                            style={{ marginRight: '5px', 
+                            style={{ marginRight: '15px',marginLeft: '15px', 
                                     color: '#fff'
                                     }}
                                     >
@@ -34,9 +22,8 @@ const PreRegister = (props) => {
                     </Button>
                     <Button 
                         variant="contained"
-                        color="error"
-                        style={{    color: '#fff'
-                                    }}
+                        color="error" 
+                        
                         >
                         <DeleteOutlineOutlinedIcon />
                     </Button>
@@ -64,8 +51,8 @@ const PreRegister = (props) => {
     return (
         <Container maxWidth={false} style={style.barSup}>
             <Container maxWidth={false} style={style.barTitle}>
-                <h1 style={style.title}> Establecer Pre Registro</h1>
-                <label style={style.titleinfo}>Listado de todos los email</label>
+                <h1 style={style.title}>Sonidos</h1>
+                <label style={style.titleinfo}></label>
             </Container>
             <Container maxWidth={false} style={style.barContain}>
                 <Grid style={style.gridcontainer}>
@@ -73,7 +60,7 @@ const PreRegister = (props) => {
                         <Grid container spacing={2}>
                             <Grid item xs={12} md={12}>
                                 <Grid item xs={12} md={6}>
-                                    <Button color="primary" onClick={goCreate} style={{ marginTop: 20 }} fullWidth variant="outlined" size="medium">Nuevo PreRegistro</Button>
+                                    <Button color="primary" onClick={goCreate} style={{ marginTop: 20 }} fullWidth variant="outlined" size="medium">Nuevo Email</Button>
                                 </Grid>
                                 <div style={{ height: 400, width: '100%', marginTop: 20 }}>
                                     <DataGrid rows={rows} columns={columns} pageSize={5} checkboxSelection />
@@ -87,4 +74,4 @@ const PreRegister = (props) => {
     );
 }
 
-export default PreRegister;
+export default Sonido;

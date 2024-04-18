@@ -15,7 +15,7 @@ const Mail = (props) => {
                 <React.Fragment>
                     <Button variant="contained" 
                             color="secondary" 
-                            style={{ marginRight: '5px', 
+                            style={{ marginRight: '15px',marginLeft: '15px', 
                                     color: '#fff'
                                     }}
                                     >

@@ -52,8 +52,8 @@ const PersonalizacionDif = () => {
                 transform: 'scale(1.1)', // Scale the image slightly on hover
                 filter: 'contrast (220%)', 
                 opacity: 1,
-                borderColor: '#f69100',
-                color: '#f69100',
+                //borderColor: '#f69100',
+                //color: '#f69100',
             }
         },
         horizontal: {
@@ -133,7 +133,7 @@ const PersonalizacionDif = () => {
                                     </Button>
                                     
                                     
-                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'radiodiv' ? classes.buttonClicked : ''}`}
+                                    <Button variant="outlined" color="primary" className={`${classes.button} ${activeButton === 'radiodif' ? classes.buttonClicked : ''}`}
                                         onClick={() => handleButtonClick('radiodif')}>
                                         <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>lock</i>
                                         Radio

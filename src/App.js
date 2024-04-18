@@ -23,6 +23,13 @@ import IndexJuegos from "./componentes/user/main/juegosvoto/IndexJuegos";
 import NavButtonsJ from "./componentes/user/main/juegosvoto/components/NavButtonsJ";
 import ControlesDif from "./componentes/user/main/votodiferido/ControlesDif/ControlesDif";
 import ControlesJ from "./componentes/user/main/juegosvoto/ControlesJ/ControlesJ";
+import Sonido from "./componentes/user/tool/mantenimiento/Sonido";
+import Usuarios from "./componentes/user/tool/mantenimentoUsuario/Usuarios";
+import Email from "./componentes/user/tool/mantenimiento/Email";
+import Votaciones from "./componentes/user/tool/mantenimiento/Votaciones";
+import Empresas from "./componentes/user/tool/mantenimiento/Empresas";
+import Perfiles from "./componentes/user/tool/mantenimentoUsuario/Perfiles";
+import Roles from "./componentes/user/tool/mantenimentoUsuario/Roles";
 
 
 function App() {
@@ -56,6 +63,34 @@ function App() {
                         <Route exact path="/auth/mail">
                             <AppNavbar />
                             <Mail />
+                        </Route>
+                        <Route exact path="/auth/sonido">
+                            <AppNavbar />
+                            <Sonido />
+                        </Route>
+                        <Route exact path="/auth/email">
+                            <AppNavbar />
+                            <Email />
+                        </Route>
+                        <Route exact path="/auth/votaciones">
+                            <AppNavbar />
+                            <Votaciones />
+                        </Route>
+                        <Route exact path="/auth/empresas">
+                            <AppNavbar />
+                            <Empresas />
+                        </Route>
+                        <Route exact path="/auth/usuario">
+                            <AppNavbar />
+                            <Usuarios />
+                        </Route>
+                        <Route exact path="/auth/perfiles">
+                            <AppNavbar />
+                            <Perfiles />
+                        </Route>
+                        <Route exact path="/auth/roles">
+                            <AppNavbar />
+                            <Roles />
                         </Route>
                         <Route exact path="/auth/indexdirect">
                             <AppNavbar />

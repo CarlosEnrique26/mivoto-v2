@@ -96,7 +96,8 @@ const Login = (props) => {
                                 <Grid container spacing={2}>
                                     <Grid item xs={6} md={3} >
                                         <Button type="submit" onClick={loginUsuarioBoton} fullWidth variant="contained" color="primary" size="large" style={style.submit}>
-                                            Ingresar </Button>
+                                            Ingresar 
+                                        </Button>
                                     </Grid>
                                     <Grid item xs={6} md={3} >
                                         <Button  onClick={OlvidadoContraseña} fullWidth   color="primary" size="large" style={style.submit}>

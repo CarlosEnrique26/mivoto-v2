@@ -49,8 +49,8 @@ const VotacionDif = () => {
                 transform: 'scale(1.1)', // Scale the image slightly on hover
                 filter: 'contrast (220%)', 
                 opacity: 1,
-                borderColor: '#f69100',
-                color: '#f69100',
+                //borderColor: '#f69100',
+                //color: '#f69100',
             }
         },
         horizontal: {

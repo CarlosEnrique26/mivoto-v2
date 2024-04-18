@@ -48,9 +48,9 @@ const NavButtonsJ = () => {
                 transform: 'scale(1.1)', // Scale the image slightly on hover
                 filter: 'contrast (220%)', 
                 opacity: 1,
-                backgroundColor: orange[500], // Change background color to red when button is clicked
-                color: '#ffffff',
-                borderColor: orange[500],
+                //backgroundColor: orange[500], // Change background color to red when button is clicked
+                //color: '#ffffff',
+                //borderColor: orange[500],
                 //zIndex: 9 
             }
         },

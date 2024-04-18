@@ -99,8 +99,8 @@ export const BarSesion = (props) => {
                 <Typography variant='h6'>Mi Voto</Typography>
                 <div className={classes.grow}></div>
 
-                <div className={classes.seccionDesktop}>
-                    <Button color="inherit">
+                <div className={classes.seccionDesktop} >
+                    <Button color="inherit" >
                         Salir
                     </Button>
                     <Button color="inherit">
