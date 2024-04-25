@@ -40,9 +40,36 @@ const Login = (props) => {
 
     const loginUsuarioBoton = e => {
         e.preventDefault();
-        console.log('login exitoso', usuario)
-        props.history.push("/auth/pagprincipal")
+        
+        // Regular expressions for validation
+        const usernameRegex = /^[a-zA-Z0-9]+$/; // Alphanumeric characters only
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // Minimum eight characters, at least one letter and one number
+    
+        // Validate username
+        if (!usuario.Login.trim()) {
+            alert("Por favor ingrese su nombre de usuario.");
+            return;
+        } else if (!usernameRegex.test(usuario.Login.trim())) {
+            alert("El nombre de usuario solo puede contener letras y números.");
+            return;
+        }
+    
+        // Validate password
+        if (!usuario.Password.trim()) {
+            alert("Por favor ingrese su contraseña.");
+            return;
+        } else if (!passwordRegex.test(usuario.Password.trim())) {
+            alert("La contraseña debe tener al menos ocho caracteres, una letra y un número.");
+            return;
+        }
+    
+        // If the input is valid, proceed with login
+        console.log('Intento de inicio de sesión:', usuario);
+        props.history.push("/auth/pagprincipal");
     }
+       // console.log('login exitoso', usuario)
+      //  props.history.push("/auth/pagprincipal")
+    
 
     const OlvidadoContraseña = e => {
         e.preventDefault();
@@ -95,12 +122,12 @@ const Login = (props) => {
                                 </Grid>
                                 <Grid container spacing={2}>
                                     <Grid item xs={6} md={3} >
-                                        <Button type="submit" onClick={loginUsuarioBoton} fullWidth variant="contained" color="primary" size="large" style={style.submit}>
+                                        <Button type="button" onClick={loginUsuarioBoton} fullWidth variant="contained" color="primary" size="large" style={style.submit}>
                                             Ingresar 
                                         </Button>
                                     </Grid>
                                     <Grid item xs={6} md={3} >
-                                        <Button  onClick={OlvidadoContraseña} fullWidth   color="primary" size="large" style={style.submit}>
+                                        <Button type="button" onClick={OlvidadoContraseña} fullWidth   color="primary" size="large" style={style.submit}>
                                                 Olvide mi contraseña 
                                         </Button>
                                     </Grid>

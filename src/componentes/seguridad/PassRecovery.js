@@ -31,41 +31,51 @@ const useStyles = makeStyles((theme) =>({
     }
 }));
 
-const PassRecovery = ({ visible ,funcVisible,actionSave, props}) => {
+const PassRecovery = ({ visible, funcVisible }) => {
     const classes = useStyles();
-    const [openDialog, setOpenDialig] = useState(false);
-    const [email, setOpenEmail] = useState("");
-    const [usuario, setUsuario] = useState({
-        correoelectronico: ''
-    })
+    const [email, setEmail] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
-    const SaveValors = e => {
-        const {name, value} = e.target;
-        setUsuario(anterior => ({
-            ...anterior,
-            [name] : value
-        }));
-    }
+    const handleChangeEmail = (e) => {
+        setEmail(e.target.value);
+    };
 
-    const passrecoveryBoton = e => {
+    const passrecoveryBoton = (e) => {
         e.preventDefault();
-        console.log('login exitoso', usuario)
-    }
+        // Validar el formato del correo electrónico
+        if (!validateEmail(email)) {
+            setErrorMessage("Por favor ingrese un correo electrónico válido.");
+            return;
+        }
+        // Llamar a la función para recuperar la contraseña
+        usercredentialById();
+    };
 
-    const handleClose = () =>{
-        funcVisible(false);
-    }
+    const usercredentialById = () => {
+        getUsersCredentialByEmail(email)
+            .then((response) => {
+                // Manejar la respuesta de la recuperación de la contraseña
+                console.log(response);
+                // Mostrar mensaje de éxito o error según la respuesta
+                if (response.success) {
+                    setErrorMessage("Se ha enviado una nueva contraseña a su correo electrónico.");
+                } else {
+                    setErrorMessage("No se pudo recuperar la contraseña. Por favor, inténtelo de nuevo más tarde.");
+                }
+            })
+            .catch((error) => {
+                // Manejar errores de la solicitud
+                console.error("Error:", error);
+                setErrorMessage("Ocurrió un error al intentar recuperar la contraseña. Por favor, inténtelo de nuevo más tarde.");
+            });
+    };
 
-    const changeInputEmail = (e) =>{ 
-        setOpenEmail(e.target.value);
-        
-    }
+    const validateEmail = (email) => {
+        // Validar el formato del correo electrónico usando una expresión regular
+        const regex = /\S+@\S+\.\S+/;
+        return regex.test(email);
+    };
 
-    const usercredentialById = () =>{
-        getUsersCredentialByEmail(email).then(response => {
-            
-        })
-    }
 
     return(
 
@@ -86,16 +96,20 @@ const PassRecovery = ({ visible ,funcVisible,actionSave, props}) => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} md={12} >
-                                        <TextField variant="outlined" 
-                                        name="Login" 
-                                        value={usuario.Login} 
-                                        onChange={SaveValors}
-                                        fullWidth label="Correo electrónico" margin="normal" />        
+                                    <TextField
+                                    variant="outlined"
+                                    fullWidth
+                                    label="Correo electrónico"
+                                    value={email}
+                                    onChange={handleChangeEmail}
+                                    error={!!errorMessage}
+                                    helperText={errorMessage}
+                                />        
                             </Grid>  
 
                             <Grid item xs={12} md={6} >
                             
-                                <Button type="submit" onClick={passrecoveryBoton} variant="contained" color="primary">
+                                <Button type="button" onClick={passrecoveryBoton} variant="contained" color="primary">
                                     Recuperar contraseña
                                 </Button>
                             </Grid>
