@@ -4,11 +4,15 @@ import { DataGrid } from '@material-ui/data-grid';
 import style from "../../../Tool/Style";
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
+import { v4 as uuidv4 } from 'uuid';
 
 const Empresas = (props) => {
     const [openModal, setOpenModal] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
     const [editId, setEditId] = useState(null);
+    const [triggerRerender, setTriggerRerender] = useState(false);
+    const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+    const [rowToDelete, setRowToDelete] = useState(null);
     const [empresaData, setEmpresaData] = useState({
         BusinessName: '',
         Representative: '',
@@ -53,7 +57,8 @@ const Empresas = (props) => {
     };
 
     const columns = [
-        { field: 'id', headerName: 'Razón Social', width: 150 },
+        { field: 'id', headerName: 'ID', width: 100 },
+        { field: 'razon', headerName: 'Razón Social', width: 150 },
         { field: 'address', headerName: 'Dirección', width: 150 },
         { field: 'typeDocument', headerName: 'Tipo de Documento', width: 150 },
         { field: 'representative', headerName: 'Representante', width: 150 },
@@ -94,7 +99,7 @@ const Empresas = (props) => {
     
     const handleSubmit = () => {
         const newRow = {
-            id: empresaData.BusinessName,
+            razon: empresaData.BusinessName,
             address: empresaData.Address,
             typeDocument: empresaData.TypeDocument,
             representative: empresaData.Representative,
@@ -136,7 +141,7 @@ const Empresas = (props) => {
         const rowToEdit = rows.find(row => row.id === id);
         if (rowToEdit) {
             setEmpresaData({
-                BusinessName: rowToEdit.id,
+                BusinessName: rowToEdit.razon,
                 Address: rowToEdit.address,
                 TypeDocument: rowToEdit.typeDocument,
                 Representative: rowToEdit.representative,
