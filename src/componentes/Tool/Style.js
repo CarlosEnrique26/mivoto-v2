@@ -205,8 +205,55 @@ const style = {
         flexDirection: "column",
         alignItems: "center",
         textAlign: "center"
+    },
+    successMessage: {
+        color: "#155724",
+        backgroundColor: "#d4edda",
+        borderColor: "#c3e6cb",
+        padding: "0.75rem 1.25rem",
+        border: "1px solid #c3e6cb",  // Hacer el borde visible
+        borderRadius: "0.25rem",
+        boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+        textAlign: "center",
+        fontSize: "20px",
+        width: "90%",  // Ajustar el ancho para centrar en la pantalla
+        position: 'fixed',  // Posición fija respecto a la ventana del navegador
+        top: "150px",  // Espacio desde la parte superior
+        left: "50%",  // Centrar horizontalmente
+        transform: "translateX(-50%)",  // Ajuste para centrar exactamente
+        zIndex: 9999,  // Asegurar que el mensaje esté por encima de otros elementos
+        animation: "slideDown 0.3s ease-out forwards"
+    },
+    updateMessage: {
+        color: '#0c5460',
+        backgroundColor: '#d1ecf1',
+        border: '1px solid #bee5eb',
+        padding: "0.75rem 1.25rem",
+        marginTop: "20px",
+        marginBottom: "20px",
+        border: "1px solid transparent",
+        borderRadius: "0.25rem",
+        boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+        textAlign: "center",
+        fontSize: "20px",
+        width: "100%",
+        animation: "slideDown 0.3s ease-out forwards"
+    },
+    deleteMessage: {
+        color: '#721c24',
+        backgroundColor: '#f8d7da',
+        border: '1px solid #f5c6cb',
+        padding: "0.75rem 1.25rem",
+        marginTop: "20px",
+        marginBottom: "20px",
+        border: "1px solid transparent",
+        borderRadius: "0.25rem",
+        boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+        textAlign: "center",
+        fontSize: "20px",
+        width: "100%",
+        animation: "slideDown 0.3s ease-out forwards"
     }
-
 }
 export default style;
 
