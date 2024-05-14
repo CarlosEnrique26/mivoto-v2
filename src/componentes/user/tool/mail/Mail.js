@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Container, Grid, Button, Dialog, DialogContentText, DialogTitle, DialogContent, DialogActions, TextField } from "@material-ui/core";
 import { DataGrid } from '@material-ui/data-grid';
+import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from "@material-ui/core";
 import style from "../../../Tool/Style";
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
@@ -37,7 +38,6 @@ const Mail = (props) => {
             Predetermined: '',
             // Asegúrate de restablecer todos los campos necesarios
         });
-        setOpenModal(false); // Cerrar el modal
         setIsEditMode(false); // Restablecer el modo de edición
         setEditId(null); // Limpiar el ID de edición
         setErrors({}); // Limpiar cualquier error de validación
@@ -68,8 +68,9 @@ const Mail = (props) => {
         { field: 'id', headerName: 'ID', width: 100 },
         { field: 'name', headerName: 'Nombre', width: 350 },
         { field: 'email', headerName: 'Correo', width: 350 },
-        { field: 'predetermined', headerName: 'Predeterminado', width: 350 },
-      
+        { field: 'predetermined', headerName: 'Predeterminado', width: 200,
+        renderCell: (params) => params.value ? "Sí" : "No"  // Renderiza "Sí" o "No" basado en el valor
+        },
         // Aquí puedes agregar más columnas según los campos que tengas
         {
             field: 'actions', headerName: 'Acciones', width: 150, renderCell: (params) => (
@@ -105,7 +106,7 @@ const Mail = (props) => {
                 id: editId || uuidv4(), // Utiliza el ID original almacenado en editId
                 name: MailData.Nombre,
                 email: MailData.Email,
-                predetermined: MailData.Predetermined,
+                predetermined: MailData.Predetermined === "Sí",
             };
             // Actualizar la fila en el estado
         if (isEditMode) {
@@ -149,17 +150,6 @@ const Mail = (props) => {
     };
 
     const handleDelete = (id) => {
-        // Filtra las filas para eliminar la fila con el id dado
-    //const updatedRows = rows.filter(row => row.id !== id);
-    //setRows(updatedRows);
-    //setRows(prevRows => prevRows.filter(row => row.id !== id));
-
-    /*setRows(prevRows => {
-        return prevRows.filter(row => row.id !== id);
-    });
-    setTriggerRerender(prev => !prev);
-    };*/
-
     if (rowToDelete !== null) {
         setRows(prevRows => prevRows.filter(row => row.id !== rowToDelete));
         setRowToDelete(null);
@@ -250,14 +240,18 @@ const validate = () => {
                             error={!!errors.Email}
                             helperText={errors.Email}
                         />
-                        <TextField
+                        <FormControl component="fieldset">
+                        <FormLabel component="legend">Predeterminado</FormLabel>
+                        <RadioGroup
                             name="Predetermined"
                             value={MailData.Predetermined}
                             onChange={handleInputChange}
-                            label="Predeterminado"
-                            fullWidth
-                            margin="normal"
-                        />
+                            row
+                        >
+                            <FormControlLabel value="Sí" control={<Radio />} label="Sí" />
+                            <FormControlLabel value="No" control={<Radio />} label="No" />
+                        </RadioGroup>
+                        </FormControl>
                     </form>
                 </DialogContent>
                 <DialogActions>
