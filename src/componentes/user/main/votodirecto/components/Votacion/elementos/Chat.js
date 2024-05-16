@@ -121,6 +121,10 @@ import JoditEditor from 'jodit-react';
             marginBottom: theme.spacing(2), // Add some margin between rows
             width: '20%'
         },
+        editor: {
+            width: '100%',
+            height: '500px', // Ajusta la altura según tus necesidades
+        }
     }));
 
     const Chat = ({ id }) => {
@@ -134,7 +138,6 @@ import JoditEditor from 'jodit-react';
         };
     
         const [formData, setFormData] = useState({
-            modoVoto: '',
             logo: null,
             titulo: '',
             activo: false,
@@ -161,13 +164,32 @@ import JoditEditor from 'jodit-react';
         });
     
         const [formErrors, setFormErrors] = useState({
-            titulo: ''
+            titulo: '',
+            colorCabecera: '',
+            documentacion: '',
+            fondoTexto: '',
+            fondoTextoLetra: '',
+            fondoTextoAdmin: '',
+            fondoTextoAdminLetra: '',
+            fondoTextoUsuarios: '',
+            fondoTextoUsuariosLetra: '',
+            etiquetaOpcion: '',
+            urlChat: '',
+            informacion: '',
         });
     
         const handleChange = (event) => {
             const { name, value, type, checked } = event.target;
     
-            if (type === 'checkbox') {
+            if (name in formData.etiquetaParticipantes) {
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    etiquetaParticipantes: {
+                        ...prevFormData.etiquetaParticipantes,
+                        [name]: checked
+                    }
+                }));
+            } else if (type === 'checkbox') {
                 setFormData(prevFormData => ({
                     ...prevFormData,
                     [name]: checked
@@ -187,9 +209,16 @@ import JoditEditor from 'jodit-react';
                 [name]: files[0]
             }));
         };
+
+        const handleEditorChange = (newContent) => {
+            setFormData(prevFormData => ({
+                ...prevFormData,
+                informacion: newContent
+            }));
+        };
     
         const handleSave = () => {
-            if (!validateTitle()) {
+            if (!validateForm()) {
                 console.log('Validación fallida.');
                 return;
             }
@@ -197,23 +226,66 @@ import JoditEditor from 'jodit-react';
             console.log('Datos del formulario:', formData);
         };
     
-        const validateTitle = () => {
-            let errorMsg = '';
+        const validateForm = () => {
+            let errors = {};
+    
             if (!formData.titulo.trim()) {
-                errorMsg = 'El título es requerido.';
+                errors.titulo = 'El título es requerido.';
             } else if (formData.titulo.length < 5) {
-                errorMsg = 'El título debe tener al menos 5 caracteres.';
+                errors.titulo = 'El título debe tener al menos 5 caracteres.';
             } else if (formData.titulo.length > 15) {
-                errorMsg = 'El título no puede tener más de 15 caracteres.';
+                errors.titulo = 'El título no puede tener más de 15 caracteres.';
             }
     
-            setFormErrors(prevErrors => ({
-                ...prevErrors,
-                titulo: errorMsg
-            }));
+            if (!formData.colorCabecera) {
+                errors.colorCabecera = 'El color de cabecera es requerido.';
+            }
     
-            return errorMsg === '';
+            if (!formData.documentacion.trim()) {
+                errors.documentacion = 'La documentación es requerida.';
+            }
+    
+            if (!formData.fondoTexto) {
+                errors.fondoTexto = 'El color de fondo de texto es requerido.';
+            }
+    
+            if (!formData.fondoTextoLetra) {
+                errors.fondoTextoLetra = 'El color de letra del fondo de texto es requerido.';
+            }
+    
+            if (!formData.fondoTextoAdmin) {
+                errors.fondoTextoAdmin = 'El color de fondo de texto del admin es requerido.';
+            }
+    
+            if (!formData.fondoTextoAdminLetra) {
+                errors.fondoTextoAdminLetra = 'El color de letra del fondo de texto del admin es requerido.';
+            }
+    
+            if (!formData.fondoTextoUsuarios) {
+                errors.fondoTextoUsuarios = 'El color de fondo de texto de usuarios es requerido.';
+            }
+    
+            if (!formData.fondoTextoUsuariosLetra) {
+                errors.fondoTextoUsuariosLetra = 'El color de letra del fondo de texto de usuarios es requerido.';
+            }
+    
+            if (!formData.etiquetaOpcion.trim()) {
+                errors.etiquetaOpcion = 'La etiqueta de opción es requerida.';
+            }
+    
+            if (!formData.urlChat.trim()) {
+                errors.urlChat = 'La URL del chat es requerida.';
+            }
+    
+            if (!formData.informacion.trim()) {
+                errors.informacion = 'La información es requerida.';
+            }
+    
+            setFormErrors(errors);
+    
+            return Object.keys(errors).length === 0;
         };
+    
 
     return (
         <div>
@@ -372,6 +444,8 @@ import JoditEditor from 'jodit-react';
                                                 name="colorCabecera"
                                                 value={formData.colorCabecera}
                                                 onChange={handleChange}
+                                                error={!!formErrors.colorCabecera}
+                                                helperText={formErrors.colorCabecera}
                                             /> 
                                             </div>
                                         </div>
@@ -389,6 +463,8 @@ import JoditEditor from 'jodit-react';
                                                 name="colorCabecera"
                                                 value={formData.colorCabecera}
                                                 onChange={handleChange}
+                                                error={!!formErrors.colorCabecera}
+                                                helperText={formErrors.colorCabecera}
                                             />
                                             </div>
                                         </>
@@ -409,6 +485,8 @@ import JoditEditor from 'jodit-react';
                                                 name="documentacion"
                                                 value={formData.documentacion}
                                                 onChange={handleChange}
+                                                error={!!formErrors.documentacion}
+                                                helperText={formErrors.documentacion}
                                             />
                                             </div>
                                         </div>
@@ -427,6 +505,8 @@ import JoditEditor from 'jodit-react';
                                                 name="documentacion"
                                                 value={formData.documentacion}
                                                 onChange={handleChange}
+                                                error={!!formErrors.documentacion}
+                                                helperText={formErrors.documentacion}
                                             />
                                             </div>
                                         </>
@@ -446,6 +526,8 @@ import JoditEditor from 'jodit-react';
                                                     name="fondoTexto"
                                                     value={formData.fondoTexto}
                                                     onChange={handleChange}
+                                                    error={!!formErrors.fondoTexto}
+                                                    helperText={formErrors.fondoTexto}
                                                 />
                                             </div>
                                             <div className={classes.cajon2}>
@@ -457,6 +539,8 @@ import JoditEditor from 'jodit-react';
                                                     name="fondoTextoLetra"
                                                     value={formData.fondoTextoLetra}
                                                     onChange={handleChange}
+                                                    error={!!formErrors.fondoTextoLetra}
+                                                    helperText={formErrors.fondoTextoLetra}
                                                 />
                                         
                                             </div>
@@ -475,6 +559,8 @@ import JoditEditor from 'jodit-react';
                                                 name="fondoTexto"
                                                 value={formData.fondoTexto}
                                                 onChange={handleChange}
+                                                error={!!formErrors.fondoTexto}
+                                                helperText={formErrors.fondoTexto}
                                             />    
                                             </div>
                                             <div className={classes.alineadoMovile}>
@@ -486,6 +572,8 @@ import JoditEditor from 'jodit-react';
                                                 name="fondoTextoLetra"
                                                 value={formData.fondoTextoLetra}
                                                 onChange={handleChange}
+                                                error={!!formErrors.fondoTextoLetra}
+                                                helperText={formErrors.fondoTextoLetra}
                                             />
                                             </div>
                                         </>
@@ -505,6 +593,8 @@ import JoditEditor from 'jodit-react';
                                                 name="fondoTextoAdmin"
                                                 value={formData.fondoTextoAdmin}
                                                 onChange={handleChange}
+                                                error={!!formErrors.fondoTextoAdmin}
+                                                helperText={formErrors.fondoTextoAdmin}
                                             />
                                                 
                                             </div>
@@ -517,6 +607,8 @@ import JoditEditor from 'jodit-react';
                                                 name="fondoTextoAdminLetra"
                                                 value={formData.fondoTextoAdminLetra}
                                                 onChange={handleChange}
+                                                error={!!formErrors.fondoTextoAdminLetra}
+                                                helperText={formErrors.fondoTextoAdminLetra}
                                             />
                                         
                                             </div>
@@ -535,6 +627,8 @@ import JoditEditor from 'jodit-react';
                                                 name="fondoTextoAdmin"
                                                 value={formData.fondoTextoAdmin}
                                                 onChange={handleChange}
+                                                error={!!formErrors.fondoTextoAdmin}
+                                                helperText={formErrors.fondoTextoAdmin}
                                             />
                                             </div>
                                             <div className={classes.alineadoMovile}>
@@ -546,6 +640,8 @@ import JoditEditor from 'jodit-react';
                                                 name="fondoTextoAdminLetra"
                                                 value={formData.fondoTextoAdminLetra}
                                                 onChange={handleChange}
+                                                error={!!formErrors.fondoTextoAdminLetra}
+                                                helperText={formErrors.fondoTextoAdminLetra}
                                             />
                                             </div>
                                         </>
@@ -565,6 +661,8 @@ import JoditEditor from 'jodit-react';
                                                     name="fondoTextoUsuarios"
                                                     value={formData.fondoTextoUsuarios}
                                                     onChange={handleChange}
+                                                    error={!!formErrors.fondoTextoUsuarios}
+                                                    helperText={formErrors.fondoTextoUsuarios}
                                                 />
                                                 
                                             </div>
@@ -577,6 +675,8 @@ import JoditEditor from 'jodit-react';
                                                     name="fondoTextoUsuariosLetra"
                                                     value={formData.fondoTextoUsuariosLetra}
                                                     onChange={handleChange}
+                                                    error={!!formErrors.fondoTextoUsuariosLetra}
+                                                    helperText={formErrors.fondoTextoUsuariosLetra}
                                                 />
                                         
                                             </div>
@@ -595,6 +695,8 @@ import JoditEditor from 'jodit-react';
                                                     name="fondoTextoUsuarios"
                                                     value={formData.fondoTextoUsuarios}
                                                     onChange={handleChange}
+                                                    error={!!formErrors.fondoTextoUsuarios}
+                                                    helperText={formErrors.fondoTextoUsuarios}
                                                 />
                                                 
                                             </div>
@@ -607,6 +709,8 @@ import JoditEditor from 'jodit-react';
                                                     name="fondoTextoUsuariosLetra"
                                                     value={formData.fondoTextoUsuariosLetra}
                                                     onChange={handleChange}
+                                                    error={!!formErrors.fondoTextoUsuariosLetra}
+                                                    helperText={formErrors.fondoTextoUsuariosLetra}
                                                 />
                                         
                                             </div>
@@ -619,7 +723,18 @@ import JoditEditor from 'jodit-react';
                                                 <Typography style={{fontSize: 18, marginLeft: 15}}>Etiqueta de Opcion</Typography>
                                             </div>
                                             <div className={classes.cajones}>
-                                                <TextField style={{width:'80%'}} color='primary' id="outlined-basic" label="" variant="outlined" />
+                                            <TextField
+                                                style={{width:'80%'}}
+                                                color='primary'
+                                                id="outlined-basic"
+                                                label=""
+                                                variant="outlined"
+                                                name="etiquetaOpcion"
+                                                value={formData.etiquetaOpcion}
+                                                onChange={handleChange}
+                                                error={!!formErrors.etiquetaOpcion}
+                                                helperText={formErrors.etiquetaOpcion}
+                                            />
                                             </div>
                                         </div>
                                         ):(
@@ -628,7 +743,18 @@ import JoditEditor from 'jodit-react';
                                                 <Typography style={{fontSize: 18}}>Etiqueta de Opcion</Typography>
                                             </div>
                                             <div className={classes.alineadoMovile}>
-                                                <TextField style={{width:'100%'}} color='primary' id="outlined-basic" label="" variant="outlined" />
+                                            <TextField
+                                                style={{width:'100%'}}
+                                                color='primary'
+                                                id="outlined-basic"
+                                                label=""
+                                                variant="outlined"
+                                                name="etiquetaOpcion"
+                                                value={formData.etiquetaOpcion}
+                                                onChange={handleChange}
+                                                error={!!formErrors.etiquetaOpcion}
+                                                helperText={formErrors.etiquetaOpcion}
+                                            />
                                             </div>
                                         </>
                                         )}
@@ -875,6 +1001,8 @@ import JoditEditor from 'jodit-react';
                                                         name="urlChat"
                                                         value={formData.urlChat}
                                                         onChange={handleChange}
+                                                        error={!!formErrors.urlChat}
+                                                        helperText={formErrors.urlChat}
                                                     />
                                                 </div>
                                             </div>
@@ -893,6 +1021,8 @@ import JoditEditor from 'jodit-react';
                                                         name="urlChat"
                                                         value={formData.urlChat}
                                                         onChange={handleChange}
+                                                        error={!!formErrors.urlChat}
+                                                        helperText={formErrors.urlChat}
                                                     />
                                                 </div>
                                             </>
@@ -961,36 +1091,48 @@ import JoditEditor from 'jodit-react';
                                         )}
                                         
                                         {isDesktop ? (
-                                            <div className={classes.alineado}>
-                                                <div className={classes.element}>
-                                                    <Typography style={{fontSize: 18, marginLeft: 15}}>Informacion</Typography>
-                                                </div>
-                                                <div className={classes.cajones}>
+                                        <div className={classes.alineado}>
+                                            <div className={classes.element}>
+                                                <Typography style={{fontSize: 18, marginLeft: 15}}>Informacion</Typography>
+                                            </div>
+                                            <div className={classes.cajones}>
+                                                <div style={{width: '80%'}}>
                                                     <JoditEditor 
                                                         ref={editor}
-                                                        value={content}
-                                                        config={config}
+                                                        value={formData.informacion}
+                                                        config={{ readonly: false }}
                                                         tabIndex={1}
-                                                        onBlur={newContent => setContent(newContent)}
+                                                        className={classes.editor}
+                                                        onBlur={handleEditorChange}
                                                         onChange={newContent => {}}
-                                                    /> 
+                                                    />
+                                                    {formErrors.informacion && (
+                                                        <Typography color="error">{formErrors.informacion}</Typography>
+                                                    )}
                                                 </div>
                                             </div>
+                                        </div>
                                         ) : (
                                             <>
-                                                <div className={classes.element}>
-                                                    <Typography style={{fontSize: 18}}>Informacion</Typography>
-                                                </div>
-                                                <div className={classes.alineadoMovile}>
+                                            <div className={classes.element}>
+                                                <Typography style={{fontSize: 18}}>Informacion</Typography>
+                                            </div>
+                                            <div className={classes.alineadoMovile}>
+                                                <div style={{width: '100%'}}>
                                                     <JoditEditor 
                                                         ref={editor}
-                                                        value={content}
-                                                        config={config}
+                                                        value={formData.informacion}
+                                                        config={{ readonly: false }}
                                                         tabIndex={1}
-                                                        onBlur={newContent => setContent(newContent)}
+                                                        className={classes.editor}
+                                                        onBlur={handleEditorChange}
                                                         onChange={newContent => {}}
-                                                    /> 
+                                                    />
+                                                    {formErrors.informacion && (
+                                                        <Typography color="error">{formErrors.informacion}</Typography>
+                                                    )}
                                                 </div>
+                                            </div>
                                             </>
                                         )}
 
