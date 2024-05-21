@@ -163,57 +163,73 @@ const PrincipalJ = () => {
         },
     }));
 
-    const  editor  =  useRef ( null ) 
-	const  [ content ,  setContent ]  =  useState ( '' )
-	
-	const  config  =  { 
-		lectura : false,  // todas las opciones de https://xdsoft.net/jodit/doc/ 
-	}
-
-
-    const [checked, setChecked] = React.useState(true);
-    const handleChange = (event) => {
-        setChecked(event.target.checked);
-    };
-
-    const [selectValues, setSelectValues] = React.useState({
-        Select0: '',
-        Select1: '',
-        Select2: '',
-        Select3: '',
-        Select4: ''
-    });
-    
-    const handleChangeSelect = (name, value) => {
-        setSelectValues(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
-    };  
-    
     const classes = useStyles();
+  const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
-    const [sliderValues, setSliderValues] = useState({
-        Ancho: 20,
-        Alto: 20,
-        TamanoFuente: 20,
-        TamanoFuente1: 20
-    }); 
+  const [formData, setFormData] = useState({
+    logo: null,
+    logo1: null,
+    titulo: '',
+    descripcion: '',
+    video: '',
+    respuestaCorrecta: '',
+    respuestaIncorrecta: '',
+    tipoIngreso: 'codigo',
+    juegoCerrado: '',
+    juegoIniciado: '',
+    juegoEspera: '',
+    juegoFinalizado: '',
+    respuestaCorrectaText: '',
+    respuestaIncorrectaText: ''
+  });
 
-    const handleSliderChange = (name, event, newValue) => {
-        setSliderValues(prevState => ({
-            ...prevState,
-            [name]: newValue
-        }));
-    };
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
-    const [value, setValue] = React.useState('principio');
+  const handleEditorChange = (name, content) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: content,
+    }));
+  };
 
-    const handleChangeRadio = (event) => {
-        setValue(event.target.value);
-    };
+  const handleFileChange = (event) => {
+    const { name, files } = event.target;
+    setFormData(prevFormData => ({
+        ...prevFormData,
+        [name]: files[0]
+    }));
+};
 
-    const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
+  const handleSave = () => {
+    console.log("Form Data:", formData);
+
+    setFormData({
+      logo: null,
+      logo1: null,
+      titulo: '',
+      descripcion: '',
+      video: '',
+      respuestaCorrecta: '',
+      respuestaIncorrecta: '',
+      tipoIngreso: 'codigo',
+      juegoCerrado: '',
+      juegoIniciado: '',
+      juegoEspera: '',
+      juegoFinalizado: '',
+      respuestaCorrectaText: '',
+      respuestaIncorrectaText: ''
+    });
+  };
+
+  const config = {
+    readonly: false,
+  };
 
     return (
             <div>
@@ -223,17 +239,28 @@ const PrincipalJ = () => {
                                     {isDesktop ? (
                                         <div className={classes.alineado}>
                                             <div className={classes.element}>
-                                                <TextField type='text' style={{width:'80%'}} color='primary' id="outlined-basic" label="Titulo" variant="outlined" />
+                                            <TextField
+                                                type="text"
+                                                style={{ width: '80%' }}
+                                                color="primary"
+                                                id="outlined-basic"
+                                                label="Titulo"
+                                                variant="outlined"
+                                                name="titulo"
+                                                value={formData.titulo}
+                                                onChange={handleInputChange}
+                                                />
                                             </div>
                                             <div className={classes.alineado}>
                                                 <div className={classes.roots}>
                                                     <input
-
                                                         accept="image/*"
                                                         className={classes.input}
-                                                        id="contained-button-file"
+                                                        id="logo"
+                                                        name="logo"
                                                         multiple
                                                         type="file"
+                                                        onChange={handleFileChange}
                                                     />
                                                     <label htmlFor="contained-button-file">
                                                         <Button variant="contained" color="primary" component="span">
@@ -253,16 +280,28 @@ const PrincipalJ = () => {
                                         ):(
                                         <>
                                             <div className={classes.elementMovile}>
-                                                <TextField type='text' style={{width:'100%'}} color='primary' id="outlined-basic" label="Titulo" variant="outlined" />
+                                            <TextField
+                                                type="text"
+                                                style={{ width: '100%' }}
+                                                color="primary"
+                                                id="outlined-basic"
+                                                label="Titulo"
+                                                variant="outlined"
+                                                name="titulo"
+                                                value={formData.titulo}
+                                                onChange={handleInputChange}
+                                                />
                                             </div>
                                             <div className={classes.alineadoMovile}>
                                                 <div className={classes.roots}>
                                                     <input
                                                         accept="image/*"
                                                         className={classes.input}
-                                                        id="contained-button-file"
+                                                        id="logo"
+                                                        name="logo"
                                                         multiple
                                                         type="file"
+                                                        onChange={handleFileChange}
                                                     />
                                                     <label htmlFor="contained-button-file">
                                                         <Button variant="contained" color="primary" component="span">
@@ -281,23 +320,22 @@ const PrincipalJ = () => {
                                                     <Typography style={{fontSize: 18, marginLeft: 15}}>Descripción</Typography>
                                                 </div>
                                                 < JoditEditor 
-                                                ref = { editor } 
-                                                value = { content } 
-                                                config = { config } 
-                                                tabIndex = { 1 }  // tabIndex del área de texto 
-                                                onBlur = { newContent  =>  setContent ( newContent ) }  // prefería usar solo esta opción para actualizar el contenido por motivos de rendimiento 
-                                                onChange = { newContent  =>  { } } 
-                                            /> 
+                                                    value={formData.descripcion} 
+                                                    config = { config } 
+                                                    tabIndex = { 1 }  // tabIndex del área de texto 
+                                                    onBlur={(newContent) => handleEditorChange('descripcion', newContent)}
+                                                    onChange={() => { }}
+                                                /> 
                                             </div>
                                             <div className={classes.alineado}>
                                                 <div className={classes.roots}>
                                                     <input
-
                                                         accept="image/*"
                                                         className={classes.input}
                                                         id="contained-button-file"
                                                         multiple
                                                         type="file"
+                                                        onChange={handleFileChange}
                                                     />
                                                     <label htmlFor="contained-button-file">
                                                         <Button variant="contained" color="primary" component="span">
@@ -320,15 +358,14 @@ const PrincipalJ = () => {
                                                 <div className={classes.elementMovile}>
                                                     <Typography style={{fontSize: 18, marginLeft: 15}}>Descripción</Typography>
                                                 </div>
-                                                < JoditEditor 
-                                                ref = { editor } 
-                                                value = { content } 
-                                                config = { config } 
-                                                tabIndex = { 1 }  // tabIndex del área de texto 
-                                                onBlur = { newContent  =>  setContent ( newContent ) }  // prefería usar solo esta opción para actualizar el contenido por motivos de rendimiento 
-                                                onChange = { newContent  =>  { } } 
-                                            /> 
-                                            </div>
+                                                    < JoditEditor 
+                                                        value={formData.descripcion} 
+                                                        config = { config } 
+                                                        tabIndex = { 1 }  // tabIndex del área de texto 
+                                                        onBlur={(newContent) => handleEditorChange('descripcion', newContent)}
+                                                        onChange={() => { }}
+                                                    /> 
+                                                </div>
 
                                             <div className={classes.alineadoMovile}>
                                                 <div className={classes.roots}>
@@ -355,7 +392,17 @@ const PrincipalJ = () => {
                                                 <div className={classes.element}>
                                                     <Typography style={{fontSize: 18, marginLeft: 15}}>Video</Typography>
                                                 
-                                                    <TextField type='text' style={{width:'100%'}} color='primary' id="outlined-basic" label="Video" variant="outlined" />
+                                                    <TextField
+                                                        type="text"
+                                                        style={{ width: '100%' }}
+                                                        color="primary"
+                                                        id="outlined-basic"
+                                                        label="Video"
+                                                        variant="outlined"
+                                                        name="video"
+                                                        value={formData.video}
+                                                        onChange={handleInputChange}
+                                                    />
                                                 </div>
                                             </div>
                                             ):(
@@ -363,7 +410,17 @@ const PrincipalJ = () => {
                                                 <div className={classes.elementMovile}>
                                                     <Typography style={{fontSize: 18}}>Video</Typography>
                                                 
-                                                    <TextField type='text' style={{width:'100%'}} color='primary' id="outlined-basic" label="Video" variant="outlined" />
+                                                    <TextField
+                                                        type="text"
+                                                        style={{ width: '100%' }}
+                                                        color="primary"
+                                                        id="outlined-basic"
+                                                        label="Video"
+                                                        variant="outlined"
+                                                        name="video"
+                                                        value={formData.video}
+                                                        onChange={handleInputChange}
+                                                    />
                                                 </div>
                                             </>
                                             )} 
@@ -378,10 +435,11 @@ const PrincipalJ = () => {
                                                 <Select
                                                     labelId="demo-simple-select-outlined-label"
                                                     id="demo-simple-select-outlined"
-                                                    value={selectValues.Select3}
-                                                    onChange={(e) => handleChangeSelect('Select3', e.target.value)}
-                                                    style={{width:'100%'}}
-                                                    label="Calibri"
+                                                    name="respuestaCorrecta"
+                                                    value={formData.respuestaCorrecta}
+                                                    onChange={handleInputChange}
+                                                    style={{ width: '100%' }}
+                                                    label="Correcta"
                                                 >
                                                 <MenuItem value="">
                                                     <em>Calibri</em>
@@ -403,10 +461,11 @@ const PrincipalJ = () => {
                                                     <Select
                                                         labelId="demo-simple-select-outlined-label"
                                                         id="demo-simple-select-outlined"
-                                                        value={selectValues.Select3}
-                                                        onChange={(e) => handleChangeSelect('Select3', e.target.value)}
-                                                        style={{width:'100%'}}
-                                                        label="Calibri"
+                                                        name="respuestaIncorrecta"
+                                                        value={formData.respuestaIncorrecta}
+                                                        onChange={handleInputChange}
+                                                        style={{ width: '100%' }}
+                                                        label="Incorrecta"
                                                     >
                                                     <MenuItem value="">
                                                         <em>Calibri</em>
@@ -431,10 +490,11 @@ const PrincipalJ = () => {
                                                 <Select
                                                     labelId="demo-simple-select-outlined-label"
                                                     id="demo-simple-select-outlined"
-                                                    value={selectValues.Select3}
-                                                    onChange={(e) => handleChangeSelect('Select3', e.target.value)}
-                                                    style={{width:'100%'}}
-                                                    label="Calibri"
+                                                    name="respuestaCorrecta"
+                                                    value={formData.respuestaCorrecta}
+                                                    onChange={handleInputChange}
+                                                    style={{ width: '100%' }}
+                                                    label="Correcta"
                                                 >
                                                 <MenuItem value="">
                                                     <em>Calibri</em>
@@ -458,10 +518,11 @@ const PrincipalJ = () => {
                                                 <Select
                                                     labelId="demo-simple-select-outlined-label"
                                                     id="demo-simple-select-outlined"
-                                                    value={selectValues.Select3}
-                                                    onChange={(e) => handleChangeSelect('Select3', e.target.value)}
-                                                    style={{width:'100%'}}
-                                                    label="Calibri"
+                                                    name="respuestaIncorrecta"
+                                                    value={formData.respuestaIncorrecta}
+                                                    onChange={handleInputChange}
+                                                    style={{ width: '100%' }}
+                                                    label="Incorrecta"
                                                 >
                                                 <MenuItem value="">
                                                     <em>Calibri</em>
@@ -483,12 +544,17 @@ const PrincipalJ = () => {
                                                 <Typography style={{fontSize: 18, marginLeft: 15}}>Tipo de Ingreso</Typography>
                                             </div>
                                             <div className={classes.alineado}>
-                                                <FormControl component="fieldset">
-                                                    <RadioGroup aria-label="gender" name="gender1" onChange={handleChange}>
-                                                    <FormControlLabel value="female" control={<Radio />} label="Codigo" />
-                                                    <FormControlLabel value="male" control={<Radio />} label="Codigo y login" />
-                                                    </RadioGroup>
-                                                </FormControl>
+                                            <FormControl component="fieldset">
+                                                <RadioGroup
+                                                    aria-label="tipoIngreso"
+                                                    name="tipoIngreso"
+                                                    value={formData.tipoIngreso}
+                                                    onChange={handleInputChange}
+                                                >
+                                                    <FormControlLabel value="codigo" control={<Radio />} label="Codigo" />
+                                                    <FormControlLabel value="codigoLogin" control={<Radio />} label="Codigo y login" />
+                                                </RadioGroup>
+                                            </FormControl>
                                             </div>
                                         </div>
                                         ) : (
@@ -500,12 +566,17 @@ const PrincipalJ = () => {
                                             </Typography>
                                             </div>
                                             <div  className={classes.alineadoMovile}>
-                                                <FormControl component="fieldset">
-                                                    <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChangeRadio}>
-                                                        <FormControlLabel value="principio" control={<Radio />} label="Codigo" />
-                                                        <FormControlLabel value="final" control={<Radio />} label="Codigo y login" />
-                                                    </RadioGroup>
-                                                </FormControl>
+                                            <FormControl component="fieldset">
+                                                <RadioGroup
+                                                    aria-label="tipoIngreso"
+                                                    name="tipoIngreso"
+                                                    value={formData.tipoIngreso}
+                                                    onChange={handleInputChange}
+                                                >
+                                                    <FormControlLabel value="codigo" control={<Radio />} label="Codigo" />
+                                                    <FormControlLabel value="codigoLogin" control={<Radio />} label="Codigo y login" />
+                                                </RadioGroup>
+                                            </FormControl>
                                             </div>
                                             </>
                                         )}
@@ -521,12 +592,11 @@ const PrincipalJ = () => {
                                                     Juego cerrado
                                                 </Typography>
                                                 <JoditEditor
-                                                    ref={editor}
-                                                    value={content}
+                                                    value={formData.juegoCerrado}
                                                     config={config}
                                                     tabIndex={1}
-                                                    onBlur={newContent => setContent(newContent)}
-                                                    onChange={newContent => {}}
+                                                    onBlur={(newContent) => handleEditorChange('juegoCerrado', newContent)}
+                                                    onChange={() => { }}
                                                 />
                                             </div>
                                         </div>
@@ -542,12 +612,11 @@ const PrincipalJ = () => {
                                                     Juego iniciado
                                                 </Typography>
                                                 <JoditEditor
-                                                    ref={editor}
-                                                    value={content}
+                                                    value={formData.juegoIniciado}
                                                     config={config}
                                                     tabIndex={1}
-                                                    onBlur={newContent => setContent(newContent)}
-                                                    onChange={newContent => {}}
+                                                    onBlur={(newContent) => handleEditorChange('juegoIniciado', newContent)}
+                                                    onChange={() => { }}
                                                 />
                                             </div>
                                         </div>
@@ -563,12 +632,11 @@ const PrincipalJ = () => {
                                                     Juego en espera
                                                 </Typography>
                                                 <JoditEditor
-                                                    ref={editor}
-                                                    value={content}
+                                                    value={formData.juegoEspera}
                                                     config={config}
                                                     tabIndex={1}
-                                                    onBlur={newContent => setContent(newContent)}
-                                                    onChange={newContent => {}}
+                                                    onBlur={(newContent) => handleEditorChange('juegoEspera', newContent)}
+                                                    onChange={() => { }}
                                                 />
                                             </div>
                                         </div>
@@ -584,12 +652,11 @@ const PrincipalJ = () => {
                                                     Juego finalizado
                                                 </Typography>
                                                 <JoditEditor
-                                                    ref={editor}
-                                                    value={content}
+                                                    value={formData.juegoFinalizado}
                                                     config={config}
                                                     tabIndex={1}
-                                                    onBlur={newContent => setContent(newContent)}
-                                                    onChange={newContent => {}}
+                                                    onBlur={(newContent) => handleEditorChange('juegoFinalizado', newContent)}
+                                                    onChange={() => { }}
                                                 />
                                             </div>
                                         </div>
@@ -606,12 +673,11 @@ const PrincipalJ = () => {
                                                     Respuesta Correcta
                                                 </Typography>
                                                 <JoditEditor
-                                                    ref={editor}
-                                                    value={content}
+                                                    value={formData.respuestaCorrectaText}
                                                     config={config}
                                                     tabIndex={1}
-                                                    onBlur={newContent => setContent(newContent)}
-                                                    onChange={newContent => {}}
+                                                    onBlur={(newContent) => handleEditorChange('respuestaCorrectaText', newContent)}
+                                                    onChange={() => { }}
                                                 />
                                             </div>
                                         </div>
@@ -627,22 +693,21 @@ const PrincipalJ = () => {
                                                     Respuesta Incorrecta
                                                 </Typography>
                                                 <JoditEditor
-                                                    ref={editor}
-                                                    value={content}
+                                                    value={formData.respuestaIncorrectaText}
                                                     config={config}
                                                     tabIndex={1}
-                                                    onBlur={newContent => setContent(newContent)}
-                                                    onChange={newContent => {}}
+                                                    onBlur={(newContent) => handleEditorChange('respuestaIncorrectaText', newContent)}
+                                                    onChange={() => { }}
                                                 />
                                             </div>
                                         </div>
 
                                         <div className={classes.alineado}>
                                             <div className={classes.alineado}>
-                                                <Button style={{marginTop: 20}} variant="contained" color="primary">
-                                                    <i className="material-icons" style={{fontSize: 20, marginRight: 5}}>star</i>
-                                                    Guardar 
-                                                </Button>
+                                            <Button style={{ marginTop: 20 }} variant="contained" color="primary" onClick={handleSave}>
+                                                <i className="material-icons" style={{ fontSize: 20, marginRight: 5 }}>star</i>
+                                                Guardar
+                                            </Button>
                                             </div>
                                         </div>
 

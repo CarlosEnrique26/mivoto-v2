@@ -1,4 +1,4 @@
-/*import HttpClient from '../services/HttpClient';
+import HttpClient from '../services/HttpClient';
 import axios from 'axios';
 
 const instance = axios.create();
@@ -10,7 +10,7 @@ const token_seguridad = window.localStorage.getItem("token_id");
 
 export const saveUser = (user) => {
     return new Promise((resolve, reject) => {
-        instance.post('/UserSystemApi/Save', user).then(response => {
+        instance.post('UserCredentialApi/SaveUserCredential', user).then(response => {
             resolve(response.data);
         })
     })
@@ -108,4 +108,3 @@ export const getUsersByKey = (key) => {
         })
     })
 }
-*/
