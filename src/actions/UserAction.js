@@ -1,4 +1,4 @@
-import HttpClient from '../services/HttpClient';
+import HttpClient from '../servicios/HttpClient';
 import axios from 'axios';
 
 const instance = axios.create();
