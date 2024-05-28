@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Container, Grid, Button, Dialog, DialogContentText, DialogTitle, DialogContent, DialogActions, TextField } from "@material-ui/core";
 import { DataGrid } from '@material-ui/data-grid';
 import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from "@material-ui/core";
-import style from "../../../Tool/Style";
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
 import { v4 as uuidv4 } from 'uuid';
+import style from "../../../Tool/Style";
 
 const PreRegister = (props) => {
     const [openModal, setOpenModal] = useState(false);
@@ -22,10 +22,8 @@ const PreRegister = (props) => {
         Nombre: '',
         Url: '',
         Estado: '',
-        // Agrega los otros campos aquí
     });
     const [rows, setRows] = useState([]);
-
 
     const handleOpenModal = () => {
         setOpenModal(true);
@@ -36,11 +34,10 @@ const PreRegister = (props) => {
             Nombre: '',
             Url: '',
             Estado: '',
-            // Asegúrate de restablecer todos los campos necesarios
         });
-        setIsEditMode(false); // Restablecer el modo de edición
-        setEditId(null); // Limpiar el ID de edición
-        setErrors({}); // Limpiar cualquier error de validación
+        setIsEditMode(false);
+        setEditId(null);
+        setErrors({});
         setOpenModal(false);
     };
 
@@ -52,29 +49,39 @@ const PreRegister = (props) => {
         }));
     };
 
-    /*const handleLogoPathChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const logoPath = URL.createObjectURL(file);
-            setMailData(prevState => ({
-                ...prevState,
-                LogoPath: logoPath,
-                LogoFile: file  // Guardar el archivo en el estado para uso posterior (opcional)
-            }));
-        }
-    };*/
+    const toggleButtonColor = (id) => {
+        setRows(prevRows => {
+            return prevRows.map(row => {
+                if (row.id === id) {
+                    const updatedRow = { ...row, isGreen: !row.isGreen };
+                    console.log(`Row ID: ${id}, Is Green: ${updatedRow.isGreen}`);
+                    return updatedRow;
+                }
+                return row;
+            });
+        });
+    };
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 100 },
         { field: 'name', headerName: 'Nombre', width: 350 },
         { field: 'url', headerName: 'Url', width: 350 },
         { field: 'estado', headerName: 'Estado', width: 200,
-        renderCell: (params) => params.value ? "Sí" : "No"  // Renderiza "Sí" o "No" basado en el valor
-        },
-        // Aquí puedes agregar más columnas según los campos que tengas
+        renderCell: (params) => params.value ? "Sí" : "No" },
         {
-            field: 'actions', headerName: 'Acciones', width: 150, renderCell: (params) => (
+            field: 'actions', headerName: 'Acciones', width: 350, renderCell: (params) => (
                 <React.Fragment>
+                    <Button
+                        variant="contained"
+                        onClick={() => toggleButtonColor(params.row.id)}
+                        style={{
+                            backgroundColor: params.row.isGreen ? 'green' : 'grey',
+                            color: '#fff',
+                            marginRight: '8px'
+                        }}
+                    >
+                        Toggle Color
+                    </Button>
                     <Button
                         variant="contained"
                         color="secondary"
@@ -88,7 +95,7 @@ const PreRegister = (props) => {
                         variant="contained"
                         aria-label="Eliminar"
                         onClick={() => handleDeleteClick(params.row.id)}
-                        style={{ backgroundColor: 'red', color: '#fff' }}  // Ajusta el color de fondo a rojo
+                        style={{ backgroundColor: 'red', color: '#fff' }} 
                     >
                         <DeleteOutlineOutlinedIcon />
                     </Button>
@@ -100,35 +107,30 @@ const PreRegister = (props) => {
     const handleSubmit = () => {
         if (!validate()) {
             console.error("Validación fallida.");
-            return; // Detener la función si hay errores
+            return; 
         }
         const newRow = {
-                id: editId || uuidv4(), // Utiliza el ID original almacenado en editId
-                name: MailData.Nombre,
-                url: MailData.Url,
-                estado: MailData.Estado === "Sí",
-            };
-            // Actualizar la fila en el estado
+            id: editId || uuidv4(),
+            name: MailData.Nombre,
+            url: MailData.Url,
+            estado: MailData.Estado === "Sí",
+            isGreen: false // Initial state for the toggle button
+        };
+
         if (isEditMode) {
-                // Mantener el ID original
             setRows(prevRows => prevRows.map(row => row.id === editId ? newRow : row));
-            console.log('Actualizando datos de la fila:', newRow);
             setIsEditMode(false);
             setUpdateMessage("Datos de la empresa actualizados correctamente.");
-            setEditId(null);
-            setTimeout(() => setUpdateMessage(""), 3000);  // Limpia el mensaje después de 3 segundos
+            setTimeout(() => setUpdateMessage(""), 3000);
         } else {
             setRows(prevRows => [...prevRows, newRow]);
             setSuccessMessage("Empresa agregada correctamente.");
-            setTimeout(() => setSuccessMessage(""), 3000);  // Limpia el mensaje después de 3 segundos
-            console.log('Agregando nueva fila:', newRow);  // Imprime los datos de la nueva fila en la consola
+            setTimeout(() => setSuccessMessage(""), 3000);
         }
-    
-        // Limpiar los datos del formulario y cerrar el modal
+
         setMailData({ Nombre: '', Url: '', Estado: '' });
         setOpenModal(false);
     };
-
 
     const handleEdit = (id) => {
         const rowToEdit = rows.find(row => row.id === id);
@@ -136,9 +138,9 @@ const PreRegister = (props) => {
             setMailData({
                 Nombre: rowToEdit.name,
                 Url: rowToEdit.url,
-                Estado: rowToEdit.estado,
+                Estado: rowToEdit.estado ? "Sí" : "No",
             });
-            setEditId(id); // Guarda el ID de la fila que se está editando
+            setEditId(id);
             setIsEditMode(true);
             setOpenModal(true);
         }
@@ -149,24 +151,24 @@ const PreRegister = (props) => {
         setOpenConfirmDialog(true);
     };
 
-    const handleDelete = (id) => {
-    if (rowToDelete !== null) {
-        setRows(prevRows => prevRows.filter(row => row.id !== rowToDelete));
-        setRowToDelete(null);
-    }
-    setOpenConfirmDialog(false);
-    setDeleteMessage("Registro eliminado correctamente.");
-    setTimeout(() => setDeleteMessage(""), 3000);  // Limpia el mensaje después de 3 segundos
-};
+    const handleDelete = () => {
+        if (rowToDelete !== null) {
+            setRows(prevRows => prevRows.filter(row => row.id !== rowToDelete));
+            setRowToDelete(null);
+        }
+        setOpenConfirmDialog(false);
+        setDeleteMessage("Registro eliminado correctamente.");
+        setTimeout(() => setDeleteMessage(""), 3000);
+    };
 
-const validate = () => {
-    let tempErrors = {};
-    tempErrors.Nombre = MailData.Nombre ? "" : "El nombre de la empresa es obligatorio.";
-    tempErrors.Url = (MailData.Url && /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(MailData.Url)) ? "" : "URL no válida.";
+    const validate = () => {
+        let tempErrors = {};
+        tempErrors.Nombre = MailData.Nombre ? "" : "El nombre de la empresa es obligatorio.";
+        tempErrors.Url = (MailData.Url && /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(MailData.Url)) ? "" : "URL no válida.";
 
-    setErrors(tempErrors);
-    return Object.values(tempErrors).every(x => x === "");
-};
+        setErrors(tempErrors);
+        return Object.values(tempErrors).every(x => x === "");
+    };
 
     return (
         <Container maxWidth={false} style={style.barSup}>
@@ -174,7 +176,6 @@ const validate = () => {
                 <h1 style={style.title}>Establecer Pre Registro</h1>
                 <label style={style.titleinfo}>Listado de Pre Registro</label>
             </Container>
-            {/* Mensaje de éxito */}
             <>
                 {successMessage && (
                     <div style={style.successMessage}>
@@ -198,15 +199,15 @@ const validate = () => {
                         <Grid container spacing={2}>
                             <Grid item xs={12} md={12}>
                                 <Grid item xs={12} md={6}>
-                                <Button
-                                color="primary"
-                                onClick={handleOpenModal}
-                                style={{ marginTop: 20, marginBottom: 20, width: 250 }}
-                                variant="outlined"
-                                size="medium"
-                                >
-                                    Nuevo Pre Registro
-                                </Button>
+                                    <Button
+                                        color="primary"
+                                        onClick={handleOpenModal}
+                                        style={{ marginTop: 20, marginBottom: 20, width: 250 }}
+                                        variant="outlined"
+                                        size="medium"
+                                    >
+                                        Nuevo Pre Registro
+                                    </Button>
                                 </Grid>
                                 <div style={{ height: 400, width: '100%', marginTop: 20 }}>
                                     <DataGrid key={triggerRerender} rows={rows} columns={columns} pageSize={5} checkboxSelection />
@@ -240,27 +241,22 @@ const validate = () => {
                             error={!!errors.Url}
                             helperText={errors.Url}
                         />
-                        <FormControl component="fieldset">
-                        <FormLabel component="legend">Predeterminado</FormLabel>
-                        <RadioGroup
-                            name="Estado"
-                            value={MailData.Estado}
-                            onChange={handleInputChange}
-                            row
-                        >
-                            <FormControlLabel value="Sí" control={<Radio />} label="Sí" />
-                            <FormControlLabel value="No" control={<Radio />} label="No" />
-                        </RadioGroup>
+                        <FormControl component="fieldset" margin="normal">
+                            <FormLabel component="legend">Predeterminado</FormLabel>
+                            <RadioGroup
+                                name="Estado"
+                                value={MailData.Estado}
+                                onChange={handleInputChange}
+                                row
+                            >
+                                <FormControlLabel value="Sí" control={<Radio />} label="Sí" />
+                                <FormControlLabel value="No" control={<Radio />} label="No" />
+                            </RadioGroup>
                         </FormControl>
                     </form>
                 </DialogContent>
                 <DialogActions>
-                <Button onClick={() => {
-                        setOpenModal(false);
-                        setIsEditMode(false);
-                        handleCloseModal();
-                        setEditId(null);
-                    }} color="secondary">
+                    <Button onClick={handleCloseModal} color="secondary">
                         Cancelar
                     </Button>
                     <Button onClick={handleSubmit} color="primary">
@@ -277,14 +273,14 @@ const validate = () => {
                 <DialogTitle id="alert-dialog-title">{"Confirmar eliminar "}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        ¿Esta seguro que desea eliminar?
+                        ¿Está seguro que desea eliminar?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpenConfirmDialog(false)} color="primary">
                         NO
                     </Button>
-                    <Button onClick={() => handleDelete()} color="primary" autoFocus>
+                    <Button onClick={handleDelete} color="primary" autoFocus>
                         SI
                     </Button>
                 </DialogActions>

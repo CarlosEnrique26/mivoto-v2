@@ -7,8 +7,15 @@ instance.isCancel = axios.isCancel;
 
 const token_seguridad = window.localStorage.getItem("token_id");
 
+export const SaveEnterprise = (user) => {
+    return new Promise((resolve, reject) => {
+        instance.post('EnterpriseApi/SaveEnterprise', user).then(response => {
+            resolve(response.data);
+        })
+    })
+}
 
-export const saveUser = (user) => {
+export const SaveUserCredential = (user) => {
     return new Promise((resolve, reject) => {
         instance.post('UserCredentialApi/SaveUserCredential', user).then(response => {
             resolve(response.data);

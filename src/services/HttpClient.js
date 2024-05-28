@@ -1,6 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL = 'https://localhost:44337/weatherforecast';
+axios.defaults.baseURL = 'http://localhost:5000/api/';
 
 const requestGeneric = {
     get: (url) => axios.get(url),
