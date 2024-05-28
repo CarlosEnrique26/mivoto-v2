@@ -253,6 +253,12 @@ const style = {
         fontSize: "20px",
         width: "100%",
         animation: "slideDown 0.3s ease-out forwards"
+    },
+    customAlert: {
+        fontSize: '1.25rem',
+    },
+    customAlertTitle: {
+        fontSize: '1.5rem',
     }
 }
 export default style;

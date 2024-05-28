@@ -7,13 +7,51 @@ instance.isCancel = axios.isCancel;
 
 const token_seguridad = window.localStorage.getItem("token_id");
 
+/*
+const instance = axios.create({
+    baseURL: 'your_base_url', // Reemplaza con tu URL base
+    timeout: 1000,
+    headers: { 'Content-Type': 'application/json' }
+});
+*/
+
 export const SaveEnterprise = (user) => {
     return new Promise((resolve, reject) => {
-        instance.post('EnterpriseApi/SaveEnterprise', user).then(response => {
-            resolve(response.data);
-        })
-    })
-}
+        instance.post('EnterpriseApi/SaveEnterprise', user)
+            .then(response => resolve(response.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const UpdateEnterprise = (id, user) => {
+    return new Promise((resolve, reject) => {
+        instance.post(`/EnterpriseApi/SaveEnterprise/${id}`, user)
+            .then(response => resolve(response.data))
+            .catch(error => reject(error));
+    });
+};
+
+export const DeleteEnterprise = (id) => {
+    return new Promise((resolve, reject) => {
+        instance.delete(`EnterpriseApi/DeleteEnterprise/${id}`)
+            .then(response => resolve(response.data))
+            .catch(error => reject(error));
+    });
+};
+/*
+export const UpdateEnterprise = (user) => {
+    return instance.put(`/EnterpriseApi/UpdateEnterprise/${user.id}`, user)
+        .then(response => response.data)
+        .catch(error => { throw error });
+};
+
+export const DeleteEnterprise = (id) => {
+    return instance.delete(`/EnterpriseApi/DeleteEnterprise/${id}`)
+        .then(response => response.data)
+        .catch(error => { throw error });
+};
+*/
+// OTROS // ...............................................
 
 export const SaveUserCredential = (user) => {
     return new Promise((resolve, reject) => {
