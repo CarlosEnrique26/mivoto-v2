@@ -1,48 +1,56 @@
-import React, { useState } from "react";
-import { Container, Grid, Button, Dialog, DialogContentText, DialogTitle, DialogContent, DialogActions, TextField } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { Container, Grid, Button, Dialog, DialogContentText, DialogTitle, DialogContent, DialogActions, TextField, Snackbar } from "@material-ui/core";
 import { DataGrid } from '@material-ui/data-grid';
+import { Alert, AlertTitle } from '@material-ui/lab';
+import { makeStyles } from '@material-ui/core/styles';
 import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from "@material-ui/core";
 import style from "../../../Tool/Style";
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
-import { v4 as uuidv4 } from 'uuid';
+import { getEnterpriseMail ,SaveEnterpriseMail , DeleteEnterpriseMail } from "../../../../actions/MailAction";
+import { validateForm, isFormValid } from "../../tool/mail/validaciones/mail"; // Asegúrate de que la ruta sea correcta
+
+const useStyles = makeStyles((theme) => ({
+    customAlert: {
+        fontSize: '1.25rem',
+    },
+    customAlertTitle: {
+        fontSize: '1.5rem',
+    },
+}));
 
 const Mail = (props) => {
     const [openModal, setOpenModal] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
-    const [editId, setEditId] = useState(null);
-    const [triggerRerender, setTriggerRerender] = useState(false);
     const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
     const [rowToDelete, setRowToDelete] = useState(null);
-    const [successMessage, setSuccessMessage] = useState("");
-    const [updateMessage, setUpdateMessage] = useState("");
-    const [deleteMessage, setDeleteMessage] = useState("");
     const [errors, setErrors] = useState({});
     const [MailData, setMailData] = useState({
-        Nombre: '',
-        Email: '',
-        Predetermined: '',
+        id : 0,
+        nombre: '',
+        email: '',
+        predeterminado: '',
         // Agrega los otros campos aquí
     });
-    const [rows, setRows] = useState([]);
+    const [alertMessage, setAlertMessage] = useState("");
+    const [alertSeverity, setAlertSeverity] = useState("success");
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
 
+    /* traer empresas */
+    const [mail, setMail] = useState([]);
 
-    const handleOpenModal = () => {
-        setOpenModal(true);
-    };
+    useEffect(() => {
+        consumeGetMail();
+    }, [openModal]);
 
-    const handleCloseModal = () => {
-        setMailData({
-            Nombre: '',
-            Email: '',
-            Predetermined: '',
-            // Asegúrate de restablecer todos los campos necesarios
+    const consumeGetMail = () => {
+        getEnterpriseMail().then( response => {
+            console.log("my response", response);
+            if(response.isSuccess){
+                setMail(response.model);
+            }
         });
-        setIsEditMode(false); // Restablecer el modo de edición
-        setEditId(null); // Limpiar el ID de edición
-        setErrors({}); // Limpiar cualquier error de validación
-        setOpenModal(false);
-    };
+    }
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -52,23 +60,20 @@ const Mail = (props) => {
         }));
     };
 
-    /*const handleLogoPathChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const logoPath = URL.createObjectURL(file);
-            setMailData(prevState => ({
-                ...prevState,
-                LogoPath: logoPath,
-                LogoFile: file  // Guardar el archivo en el estado para uso posterior (opcional)
-            }));
-        }
-    };*/
+    const handleOpenModal = () => {
+        setOpenModal(true);
+    };
+
+    const handleCloseModal = () => {
+        resetForm();
+        setOpenModal(false);
+    };
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 100 },
-        { field: 'name', headerName: 'Nombre', width: 350 },
-        { field: 'email', headerName: 'Correo', width: 350 },
-        { field: 'predetermined', headerName: 'Predeterminado', width: 200,
+        { field: 'id', headerName: 'id', width: 100 },
+        { field: 'nombre', headerName: 'nombre', width: 350 },
+        { field: 'email', headerName: 'email', width: 350 },
+        { field: 'predeterminado', headerName: 'predeterminado', width: 200,
         renderCell: (params) => params.value ? "Sí" : "No"  // Renderiza "Sí" o "No" basado en el valor
         },
         // Aquí puedes agregar más columnas según los campos que tengas
@@ -98,50 +103,36 @@ const Mail = (props) => {
     ];
     
     const handleSubmit = () => {
-        if (!validate()) {
-            console.error("Validación fallida.");
-            return; // Detener la función si hay errores
-        }
-        const newRow = {
-                id: editId || uuidv4(), // Utiliza el ID original almacenado en editId
-                name: MailData.Nombre,
-                email: MailData.Email,
-                predetermined: MailData.Predetermined === "Sí",
-            };
-            // Actualizar la fila en el estado
-        if (isEditMode) {
-                // Mantener el ID original
-            setRows(prevRows => prevRows.map(row => row.id === editId ? newRow : row));
-            console.log('Actualizando datos de la fila:', newRow);
-            setIsEditMode(false);
-            setUpdateMessage("Datos de la empresa actualizados correctamente.");
-            setEditId(null);
-            setTimeout(() => setUpdateMessage(""), 3000);  // Limpia el mensaje después de 3 segundos
-        } else {
-            setRows(prevRows => [...prevRows, newRow]);
-            setSuccessMessage("Empresa agregada correctamente.");
-            setTimeout(() => setSuccessMessage(""), 3000);  // Limpia el mensaje después de 3 segundos
-            console.log('Agregando nueva fila:', newRow);  // Imprime los datos de la nueva fila en la consola
-        }
-    
-        // Limpiar los datos del formulario y cerrar el modal
-        setMailData({ Nombre: '', Email: '', Predetermined: '' });
+        const validationErrors = validateForm(MailData);
+        setErrors(validationErrors);
+
+        SaveEnterpriseMail(MailData)
+                .then(response => {
+                console.log('Se registró exitosamente la empresa en la base de datos', response);
+                setAlertMessage((isEditMode) ? "Empresa actualizada correctamente.":"Empresa agregada correctamente.");
+                setAlertSeverity("success");
+                setSnackbarOpen(true);
+
+        }).catch(error => {
+                console.error('Error al registrar la empresa en la base de datos', error);
+                setAlertMessage("Error al registrar la empresa.");
+                setAlertSeverity("error");
+                setSnackbarOpen(true);
+        });
+
+        resetForm();
         setOpenModal(false);
     };
 
 
     const handleEdit = (id) => {
-        const rowToEdit = rows.find(row => row.id === id);
-        if (rowToEdit) {
-            setMailData({
-                Nombre: rowToEdit.name,
-                Email: rowToEdit.email,
-                Predetermined: rowToEdit.predetermined,
-            });
-            setEditId(id); // Guarda el ID de la fila que se está editando
-            setIsEditMode(true);
-            setOpenModal(true);
-        }
+        const empresaRow = mail.find(row => row.id === id);
+        console.log("empresaRow" , empresaRow);
+        
+        setMailData(empresaRow);
+        setIsEditMode(true);
+        setOpenModal(true);
+        
     };
 
     const handleDeleteClick = (id) => {
@@ -149,24 +140,35 @@ const Mail = (props) => {
         setOpenConfirmDialog(true);
     };
 
-    const handleDelete = (id) => {
-    if (rowToDelete !== null) {
-        setRows(prevRows => prevRows.filter(row => row.id !== rowToDelete));
-        setRowToDelete(null);
-    }
-    setOpenConfirmDialog(false);
-    setDeleteMessage("Empresa eliminada correctamente.");
-    setTimeout(() => setDeleteMessage(""), 3000);  // Limpia el mensaje después de 3 segundos
-};
+    const handleDelete = () => {
+        if (rowToDelete !== null) {
+            DeleteEnterpriseMail(rowToDelete).then(response => {
+                console.log('Se ha eliminado exitosamente la empresa en la base de datos', response);
+                setAlertMessage("Empresa eliminada correctamente.");
+                setAlertSeverity("success");
+                setSnackbarOpen(true);
+                setRowToDelete(null);
+            }).catch(error => {
+                console.error('Error al eliminar la empresa en la base de datos', error);
+                setAlertMessage("Error al eliminar la empresa.");
+                setAlertSeverity("error");
+                setSnackbarOpen(true);
+            });
+        }
+        setOpenConfirmDialog(false);
+    };
 
-const validate = () => {
-    let tempErrors = {};
-    tempErrors.Nombre = MailData.Nombre ? "" : "El nombre de la empresa es obligatorio.";
-    tempErrors.Email = (MailData.Email && /^\S+@\S+\.\S+$/.test(MailData.Email)) ? "" : "Correo electrónico no válido.";
+    const resetForm = () => {
+        setMailData({ });
+        setIsEditMode(false);
+        setErrors({});
+    };
 
-    setErrors(tempErrors);
-    return Object.values(tempErrors).every(x => x === "");
-};
+    const handleCloseSnackbar = () => {
+        setSnackbarOpen(false);
+    };
+
+
 
     return (
         <Container maxWidth={false} style={style.barSup}>
@@ -174,24 +176,12 @@ const validate = () => {
                 <h1 style={style.title}>Establecer email</h1>
                 <label style={style.titleinfo}>Listado de email</label>
             </Container>
-            {/* Mensaje de éxito */}
-            <>
-                {successMessage && (
-                    <div style={style.successMessage}>
-                        {successMessage}
-                    </div>
-                )}
-                {updateMessage && (
-                    <div style={style.updateMessage}>
-                        {updateMessage}
-                    </div>
-                )}
-                {deleteMessage && (
-                    <div style={style.deleteMessage}>
-                        {deleteMessage}
-                    </div>
-                )}
-            </>
+            <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={handleCloseSnackbar}>
+                <Alert onClose={handleCloseSnackbar} severity={alertSeverity} variant="filled" style={style.customAlert}>
+                    <AlertTitle style={style.customAlertTitle}>{alertSeverity === "success" ? "Exito" : "Error"}</AlertTitle>
+                    {alertMessage}
+                </Alert>
+            </Snackbar>
             <Container maxWidth={false} style={style.barContain}>
                 <Grid style={style.gridcontainer}>
                     <Container maxWidth={false}>
@@ -209,7 +199,7 @@ const validate = () => {
                                 </Button>
                                 </Grid>
                                 <div style={{ height: 400, width: '100%', marginTop: 20 }}>
-                                    <DataGrid key={triggerRerender} rows={rows} columns={columns} pageSize={5} checkboxSelection />
+                                    <DataGrid key={mail} columns={columns} pageSize={5} checkboxSelection />
                                 </div>
                             </Grid>
                         </Grid>
@@ -221,30 +211,30 @@ const validate = () => {
                 <DialogContent>
                     <form>
                         <TextField
-                            name="Nombre"
-                            value={MailData.Nombre}
+                            name="nombre"
+                            value={MailData.nombre}
                             onChange={handleInputChange}
-                            label="Nombre"
+                            label="nombre"
                             fullWidth
                             margin="normal"
-                            error={!!errors.Nombre}
-                            helperText={errors.Nombre}
+                            error={!!errors.nombre}
+                            helperText={errors.nombre}
                         />
                         <TextField
-                            name="Email"
-                            value={MailData.Email}
+                            name="email"
+                            value={MailData.email}
                             onChange={handleInputChange}
                             label="Correo"
                             fullWidth
                             margin="normal"
-                            error={!!errors.Email}
-                            helperText={errors.Email}
+                            error={!!errors.email}
+                            helperText={errors.email}
                         />
                         <FormControl component="fieldset">
                         <FormLabel component="legend">Predeterminado</FormLabel>
                         <RadioGroup
                             name="Predetermined"
-                            value={MailData.Predetermined}
+                            value={MailData.predeterminado}
                             onChange={handleInputChange}
                             row
                         >
@@ -259,7 +249,7 @@ const validate = () => {
                         setOpenModal(false);
                         setIsEditMode(false);
                         handleCloseModal();
-                        setEditId(null);
+
                     }} color="secondary">
                         Cancelar
                     </Button>

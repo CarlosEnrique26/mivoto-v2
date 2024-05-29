@@ -6,8 +6,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import style from "../../../Tool/Style";
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
-import { v4 as uuidv4 } from 'uuid'; 
 import { getEnterprises ,SaveEnterprise , DeleteEnterprise } from "../../../../actions/EnterpriseAction";
+import { validateForm, isFormValid } from "../mantenimiento/validaciones/empresa"; // Asegúrate de que la ruta sea correcta
 
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +25,6 @@ const Empresas = (props) => {
     const [isEditMode, setIsEditMode] = useState(false);
     const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
     const [rowToDelete, setRowToDelete] = useState(null);
-
     const [errors, setErrors] = useState({});
     const [empresaData, setEmpresaData] = useState({
         id : 0,
@@ -83,8 +82,6 @@ const Empresas = (props) => {
         setOpenModal(false);
     };
 
-
-
     const handleLogoPathChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -138,10 +135,13 @@ const Empresas = (props) => {
     ];
 
     const handleSubmit = () => {
-        if (!validateForm()) return;
-  
-        SaveEnterprise(empresaData).then(response => {
+        const validationErrors = validateForm(empresaData);
+        setErrors(validationErrors);
 
+        if (!isFormValid(validationErrors)) return;
+  
+        SaveEnterprise(empresaData)
+                .then(response => {
                 console.log('Se registró exitosamente la empresa en la base de datos', response);
                 setAlertMessage((isEditMode) ? "Empresa actualizada correctamente.":"Empresa agregada correctamente.");
                 setAlertSeverity("success");
@@ -191,22 +191,8 @@ const Empresas = (props) => {
         setOpenConfirmDialog(false);
     };
 
-    const validateForm = () => {
-        let tempErrors = {};
-        tempErrors.BusinessName = empresaData.businessName ? "" : "El nombre de la empresa es obligatorio.";
-        tempErrors.Representative = empresaData.representative ? "" : "El nombre del representante es obligatorio.";
-        tempErrors.Address = empresaData.address ? "" : "La dirección es obligatoria.";
-        tempErrors.TypeDocument = empresaData.typeDocument ? "" : "El tipo de documento es obligatorio.";
-        tempErrors.AddressEmail = (empresaData.addressEmail && /^\S+@\S+\.\S+$/.test(empresaData.addressEmail)) ? "" : "Correo electrónico no válido.";
-        tempErrors.Phone = (empresaData.phone && empresaData.phone.length >= 9) ? "" : "El teléfono debe tener al menos 10 dígitos.";
-
-        setErrors(tempErrors);
-        return Object.values(tempErrors).every(x => x === "");
-    };
-
     const resetForm = () => {
         setEmpresaData({ });
-         
         setIsEditMode(false);
         setErrors({});
     };
@@ -258,8 +244,8 @@ const Empresas = (props) => {
                             label="Nombre de la Empresa"
                             fullWidth
                             margin="normal"
-                            error={!!errors.BusinessName}
-                            helperText={errors.BusinessName}
+                            error={!!errors.businessName}
+                            helperText={errors.businessName}
                         />
                         <TextField
                             name="representative"
@@ -268,8 +254,8 @@ const Empresas = (props) => {
                             label="Representante"
                             fullWidth
                             margin="normal"
-                            error={!!errors.Representative}
-                            helperText={errors.Representative}
+                            error={!!errors.representative}
+                            helperText={errors.representative}
                         />
                         <TextField
                             name="address"
@@ -278,8 +264,48 @@ const Empresas = (props) => {
                             label="Dirección"
                             fullWidth
                             margin="normal"
-                            error={!!errors.Address}
-                            helperText={errors.Address}
+                            error={!!errors.address}
+                            helperText={errors.address}
+                        />
+                        <TextField
+                            name="typeDocument"
+                            value={empresaData.typeDocument}
+                            onChange={handleInputChange}
+                            label="Tipo de Documento"
+                            fullWidth
+                            margin="normal"
+                            error={!!errors.typeDocument}
+                            helperText={errors.typeDocument}
+                        />
+                        <TextField
+                            name="addressEmail"
+                            value={empresaData.addressEmail}
+                            onChange={handleInputChange}
+                            label="Correo Electrónico"
+                            fullWidth
+                            margin="normal"
+                            error={!!errors.addressEmail}
+                            helperText={errors.addressEmail}
+                        />
+                        <TextField
+                            name="documentNumber"
+                            value={empresaData.documentNumber}
+                            onChange={handleInputChange}
+                            label="Numero de Documento"
+                            fullWidth
+                            margin="normal"
+                            error={!!errors.documentNumber}
+                            helperText={errors.documentNumber}
+                        />
+                        <TextField
+                            name="phone"
+                            value={empresaData.phone}
+                            onChange={handleInputChange}
+                            label="Teléfono"
+                            fullWidth
+                            margin="normal"
+                            error={!!errors.phone}
+                            helperText={errors.phone}
                         />
                         {/* Botón para seleccionar el logo */}
                         <input
@@ -300,56 +326,6 @@ const Empresas = (props) => {
                                 <img src={empresaData.LogoPath} alt="Logo Preview" style={{ height: '100px' }} />
                             </div>
                         )}
-                        <TextField
-                            name="logoName"
-                            value={empresaData.logoName}
-                            onChange={handleInputChange}
-                            label="Nombre del logo"
-                            fullWidth
-                            margin="normal"
-                            error={!!errors.LogoName}
-                            helperText={errors.LogoName}
-                        />
-                        <TextField
-                            name="typeDocument"
-                            value={empresaData.typeDocument}
-                            onChange={handleInputChange}
-                            label="Tipo de Documento"
-                            fullWidth
-                            margin="normal"
-                            error={!!errors.TypeDocument}
-                            helperText={errors.TypeDocument}
-                        />
-                        <TextField
-                            name="addressEmail"
-                            value={empresaData.addressEmail}
-                            onChange={handleInputChange}
-                            label="Correo Electrónico"
-                            fullWidth
-                            margin="normal"
-                            error={!!errors.AddressEmail}
-                            helperText={errors.AddressEmail}
-                        />
-                        <TextField
-                            name="documentNumber"
-                            value={empresaData.documentNumber}
-                            onChange={handleInputChange}
-                            label="Numero de Documento"
-                            fullWidth
-                            margin="normal"
-                            error={!!errors.DocumentNumber}
-                            helperText={errors.DocumentNumber}
-                        />
-                        <TextField
-                            name="phone"
-                            value={empresaData.phone}
-                            onChange={handleInputChange}
-                            label="Teléfono"
-                            fullWidth
-                            margin="normal"
-                            error={!!errors.Phone}
-                            helperText={errors.Phone}
-                        />
                     </form>
                 </DialogContent>
                 <DialogActions>

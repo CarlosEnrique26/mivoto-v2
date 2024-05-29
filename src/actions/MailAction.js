@@ -5,9 +5,9 @@ const instance = axios.create();
 instance.Canceltoken = axios.CancelToken;
 instance.isCancel = axios.isCancel;
 
-export const getEnterprises = () => {
+export const getEnterpriseMail = () => {
     return new Promise((resolve, reject) => {
-        HttpClient.get('/EnterpriseApi/GetEnterprises').then(response => {
+        HttpClient.get('/EnterpriseApi/GetEnterpriseMail?enterpriseId=1').then(response => {
             resolve(response.data);
         }).catch(error => {
             resolve(error.response);
@@ -15,15 +15,15 @@ export const getEnterprises = () => {
     })
 }
 
-export const SaveEnterprise = (model) => {
+export const SaveEnterpriseMail = (model) => {
     return new Promise((resolve, reject) => {
-        instance.post('EnterpriseApi/SaveEnterprise', model)
+        instance.post('EnterpriseApi/SaveEnterpriseMail', model)
             .then(response => resolve(response.data))
             .catch(error => reject(error));
     });
 };
 
-export const DeleteEnterprise = () => {
+export const DeleteEnterpriseMail = () => {
     return new Promise((resolve, reject) => {
         HttpClient.get('/EnterpriseApi/DeleteEnterprise').then(response => {
             resolve(response.data);
