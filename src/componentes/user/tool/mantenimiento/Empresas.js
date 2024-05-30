@@ -234,7 +234,7 @@ const Empresas = (props) => {
                 </Grid>
             </Container>
             <Dialog open={openModal} onClose={handleCloseModal}>
-                <DialogTitle>Registrar Nueva Empresa</DialogTitle>
+                <DialogTitle>{isEditMode ? "Editar Empresa" : "Registrar Nueva Empresa"}</DialogTitle>
                 <DialogContent>
                     <form>
                     <TextField
@@ -302,12 +302,12 @@ const Empresas = (props) => {
                             value={empresaData.phone}
                             onChange={handleInputChange}
                             label="Teléfono"
+                            style={{ marginBottom: '30px' }}
                             fullWidth
                             margin="normal"
                             error={!!errors.phone}
                             helperText={errors.phone}
                         />
-                        {/* Botón para seleccionar el logo */}
                         <input
                             accept="image/*"
                             style={{ display: 'none' }}

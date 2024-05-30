@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Grid, Button, Dialog, DialogContentText, DialogTitle, DialogContent, DialogActions, TextField, Snackbar } from "@material-ui/core";
+import { Container, Grid, Button, Dialog, DialogContentText, DialogTitle, DialogContent, DialogActions, TextField, Snackbar, Checkbox } from "@material-ui/core";
 import { DataGrid } from '@material-ui/data-grid';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/core/styles';
@@ -26,10 +26,12 @@ const Mail = (props) => {
     const [rowToDelete, setRowToDelete] = useState(null);
     const [errors, setErrors] = useState({});
     const [MailData, setMailData] = useState({
-        id : 0,
-        nombre: '',
-        email: '',
-        predeterminado: '',
+        id: 0,
+        enterpriseId: '',
+        description: '',
+        mail: '',   
+        isActive: 0,
+        isPredeterminate: 0,
         // Agrega los otros campos aquí
     });
     const [alertMessage, setAlertMessage] = useState("");
@@ -53,12 +55,13 @@ const Mail = (props) => {
     }
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value , type, checked } = e.target;
         setMailData(prevState => ({
             ...prevState,
-            [name]: value
+            [name]: type === 'checkbox' ? (checked ? 1 : 0) : value
         }));
     };
+
 
     const handleOpenModal = () => {
         setOpenModal(true);
@@ -70,12 +73,16 @@ const Mail = (props) => {
     };
 
     const columns = [
-        { field: 'id', headerName: 'id', width: 100 },
-        { field: 'nombre', headerName: 'nombre', width: 350 },
-        { field: 'email', headerName: 'email', width: 350 },
-        { field: 'predeterminado', headerName: 'predeterminado', width: 200,
-        renderCell: (params) => params.value ? "Sí" : "No"  // Renderiza "Sí" o "No" basado en el valor
-        },
+    { field: 'id', headerName: 'ID', width: 100 },
+    //{ field: 'enterpriseId', headerName: 'Enterprise ID', width: 150 },
+    { field: 'description', headerName: 'nombre', width: 350 },
+    { field: 'mail', headerName: 'email', width: 350 },
+    { field: 'isActive', headerName: 'Active', width: 150,
+      renderCell: (params) => params.value ? "Yes" : "No"  // Render "Yes" or "No" based on the value
+    },
+    { field: 'isPredeterminate', headerName: 'Predeterminate', width: 200,
+      renderCell: (params) => params.value ? "Yes" : "No"  // Render "Yes" or "No" based on the value
+    },
         // Aquí puedes agregar más columnas según los campos que tengas
         {
             field: 'actions', headerName: 'Acciones', width: 150, renderCell: (params) => (
@@ -105,6 +112,8 @@ const Mail = (props) => {
     const handleSubmit = () => {
         const validationErrors = validateForm(MailData);
         setErrors(validationErrors);
+        
+        if (!isFormValid(validationErrors)) return;
 
         SaveEnterpriseMail(MailData)
                 .then(response => {
@@ -199,7 +208,7 @@ const Mail = (props) => {
                                 </Button>
                                 </Grid>
                                 <div style={{ height: 400, width: '100%', marginTop: 20 }}>
-                                    <DataGrid key={mail} columns={columns} pageSize={5} checkboxSelection />
+                                    <DataGrid rows={mail} columns={columns} pageSize={5} checkboxSelection />
                                 </div>
                             </Grid>
                         </Grid>
@@ -207,41 +216,59 @@ const Mail = (props) => {
                 </Grid>
             </Container>
             <Dialog open={openModal} onClose={handleCloseModal}>
-                <DialogTitle>Registrar Nuevo Email</DialogTitle>
+                <DialogTitle>{isEditMode ? "Editar Email" : "Registrar Nuevo Email"}</DialogTitle>
                 <DialogContent>
-                    <form>
-                        <TextField
-                            name="nombre"
-                            value={MailData.nombre}
-                            onChange={handleInputChange}
-                            label="nombre"
-                            fullWidth
-                            margin="normal"
-                            error={!!errors.nombre}
-                            helperText={errors.nombre}
-                        />
-                        <TextField
-                            name="email"
-                            value={MailData.email}
-                            onChange={handleInputChange}
-                            label="Correo"
-                            fullWidth
-                            margin="normal"
-                            error={!!errors.email}
-                            helperText={errors.email}
-                        />
-                        <FormControl component="fieldset">
-                        <FormLabel component="legend">Predeterminado</FormLabel>
-                        <RadioGroup
-                            name="Predetermined"
-                            value={MailData.predeterminado}
-                            onChange={handleInputChange}
-                            row
-                        >
-                            <FormControlLabel value="Sí" control={<Radio />} label="Sí" />
-                            <FormControlLabel value="No" control={<Radio />} label="No" />
-                        </RadioGroup>
-                        </FormControl>
+                <form>
+                    <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    name="description"
+                                    value={MailData.description}
+                                    onChange={handleInputChange}
+                                    label="Descripción"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.description}
+                                    helperText={errors.description}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    name="mail"
+                                    value={MailData.mail}
+                                    onChange={handleInputChange}
+                                    label="Correo"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.mail}
+                                    helperText={errors.mail}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            name="isActive"
+                                            checked={MailData.isActive === 1}
+                                            onChange={handleInputChange}
+                                        />
+                                    }
+                                    label="Activo"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            name="isPredeterminate"
+                                            checked={MailData.isPredeterminate === 1}
+                                            onChange={handleInputChange}
+                                        />
+                                    }
+                                    label="Predeterminado"
+                                />
+                            </Grid>
+                        </Grid>
                     </form>
                 </DialogContent>
                 <DialogActions>

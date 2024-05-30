@@ -16,6 +16,7 @@ export const getEnterpriseMail = () => {
 }
 
 export const SaveEnterpriseMail = (model) => {
+    console.log("model ", model);
     return new Promise((resolve, reject) => {
         instance.post('EnterpriseApi/SaveEnterpriseMail', model)
             .then(response => resolve(response.data))

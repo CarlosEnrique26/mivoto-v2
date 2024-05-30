@@ -1,12 +1,12 @@
 export const validateForm = (mailData) => {
     let errors = {};
 
-    if (!mailData.nombre) {
-        errors.nombre = "El nombre de la empresa es obligatorio.";
+    if (!mailData.description) {
+        errors.description = "El nombre de la empresa es obligatorio.";
     }
     
-    if (!mailData.email || !/^\S+@\S+\.\S+$/.test(mailData.email)) {
-        errors.email = "Correo electrónico no válido.";
+    if (!mailData.mail || !/^\S+@\S+\.\S+$/.test(mailData.mail)) {
+        errors.mail = "Correo electrónico no válido.";
     }
     
 
