@@ -1,11 +1,23 @@
-import { Button, Container, Grid, TextField, Typography, useMediaQuery, Checkbox, MenuItem, InputLabel, FormControl, Select, IconButton } from '@material-ui/core';
+import {
+    Button,
+    Grid,
+    TextField,
+    Typography,
+    useMediaQuery,
+    Checkbox,
+    MenuItem,
+    InputLabel,
+    FormControl,
+    Select,
+    IconButton,
+} from '@material-ui/core';
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        maxWidth: 450
+        maxWidth: 450,
     },
     buttonContainer: {
         display: 'flex',
@@ -16,7 +28,15 @@ const useStyles = makeStyles((theme) => ({
     },
     button: {
         margin: theme.spacing(1),
-        width: '100%'
+        width: '100%',
+    },
+    grupobutton: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        width: '70%',
     },
     horizontal: {
         flexDirection: 'row',
@@ -27,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: theme.spacing(2),
-        width: '100%'
+        width: '100%',
     },
     alineado: {
         display: 'flex',
@@ -35,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: theme.spacing(2),
-        width: '100%'
+        width: '100%',
     },
     element: {
         display: 'flex',
@@ -54,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
     },
     largerCheckbox: {
-        transform: "scale(1.5)",
+        transform: 'scale(1.5)',
     },
     roots: {
         '& > *': {
@@ -79,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: theme.spacing(2),
-        width: '100%'
+        width: '100%',
     },
     SelectMovile: {
         display: 'flex',
@@ -95,26 +115,27 @@ const PrePrincipal = () => {
     const classes = useStyles();
 
     const [formData, setFormData] = useState({
-        cantidadUsuarios: '',
-        titulo: '',
-        peso: false,
-        modoVoto: '',
-        autentificarVotacion: false,
-        envioPreguntas: false,
-        votacionSegmentada: false,
-        tipoLogin: '',
-        opcionMultiple: false,
-        fusionarVotacion: false,
-        smsVoto: false,
-        logoVotacion: null,
+        registroUnico: false,
+        nombre: '',
+        cargarCensoCSV: '',
+        cargarOtrasOpcionesCSV: false,
+        logoSuperior: '',
+        url: '',
+        envioCredencialesAlRegistrarse: '',
+        vincularConVotacion: '',
     });
 
     const handleInputChange = (e) => {
         const { name, value, type, checked, files } = e.target;
-        setFormData(prevState => ({
+        setFormData((prevState) => ({
             ...prevState,
-            [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value
+            [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value,
         }));
+    };
+
+    const handleButtonClick = (action) => {
+        // Implementar las funciones específicas para cada botón
+        console.log(`Action: ${action}`);
     };
 
     const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
@@ -127,15 +148,47 @@ const PrePrincipal = () => {
                         {isDesktop ? (
                             <div className={classes.alineado}>
                                 <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Cantidad de Usuarios</Typography>
+                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Registro único</Typography>
+                                </div>
+                                <div className={classes.alineado}>
+                                    <Checkbox
+                                        name="registroUnico"
+                                        checked={formData.registroUnico}
+                                        onChange={handleInputChange}
+                                        className={classes.largerCheckbox}
+                                        color="primary"
+                                    />
+                                </div>
+                            </div>
+                        ) : (
+                            <>
+                                <div className={classes.element}>
+                                    <Typography style={{ fontSize: 18 }}>Registro único</Typography>
+                                </div>
+                                <div className={classes.alineadoMovile}>
+                                    <Checkbox
+                                        name="registroUnico"
+                                        checked={formData.registroUnico}
+                                        onChange={handleInputChange}
+                                        className={classes.largerCheckbox}
+                                        color="primary"
+                                    />
+                                </div>
+                            </>
+                        )}
+
+                        {isDesktop ? (
+                            <div className={classes.alineado}>
+                                <div className={classes.element}>
+                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Nombre</Typography>
                                 </div>
                                 <div className={classes.cajones}>
                                     <TextField
-                                        name="cantidadUsuarios"
-                                        value={formData.cantidadUsuarios}
+                                        name="nombre"
+                                        value={formData.nombre}
                                         onChange={handleInputChange}
                                         style={{ width: '80%' }}
-                                        color='primary'
+                                        color="primary"
                                         id="outlined-basic"
                                         variant="outlined"
                                     />
@@ -144,15 +197,15 @@ const PrePrincipal = () => {
                         ) : (
                             <>
                                 <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Cantidad de Usuarios</Typography>
+                                    <Typography style={{ fontSize: 18 }}>Nombre</Typography>
                                 </div>
                                 <div className={classes.alineadoMovile}>
                                     <TextField
-                                        name="cantidadUsuarios"
-                                        value={formData.cantidadUsuarios}
+                                        name="nombre"
+                                        value={formData.nombre}
                                         onChange={handleInputChange}
                                         style={{ width: '100%' }}
-                                        color='primary'
+                                        color="primary"
                                         id="outlined-basic"
                                         variant="outlined"
                                     />
@@ -163,275 +216,111 @@ const PrePrincipal = () => {
                         {isDesktop ? (
                             <div className={classes.alineado}>
                                 <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Titulo</Typography>
+                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Cargar censo csv</Typography>
                                 </div>
-                                <div className={classes.cajones}>
-                                    <TextField
-                                        name="titulo"
-                                        value={formData.titulo}
-                                        onChange={handleInputChange}
-                                        style={{ width: '80%' }}
-                                        color='primary'
-                                        id="outlined-basic"
-                                        variant="outlined"
-                                    />
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Titulo</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <TextField
-                                        name="titulo"
-                                        value={formData.titulo}
-                                        onChange={handleInputChange}
-                                        style={{ width: '100%' }}
-                                        color='primary'
-                                        id="outlined-basic"
-                                        variant="outlined"
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Peso</Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <Checkbox
-                                        name="peso"
-                                        checked={formData.peso}
-                                        onChange={handleInputChange}
-                                        className={classes.largerCheckbox}
-                                        color="primary"
-                                    />
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Peso</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <Checkbox
-                                        name="peso"
-                                        checked={formData.peso}
-                                        onChange={handleInputChange}
-                                        className={classes.largerCheckbox}
-                                        color="primary"
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Modo de Voto</Typography>
-                                </div>
-                                <div className={classes.cajones}>
-                                    <FormControl variant="outlined" className={classes.formControlSelect}>
-                                        <InputLabel id="modoVoto-label">Modo de Voto</InputLabel>
-                                        <Select
-                                            name="modoVoto"
-                                            labelId="modoVoto-label"
-                                            id="modoVoto"
-                                            value={formData.modoVoto}
-                                            onChange={handleInputChange}
-                                            label="Modo de Voto"
-                                            style={{ width: '100%' }}
+                                <div className={classes.grupobutton}>
+                                    <div className={classes.roots}>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            component="span"
+                                            onClick={() => handleButtonClick('descargarPlantilla')}
                                         >
-                                            <MenuItem value="">
-                                                <em>Modo de Voto</em>
-                                            </MenuItem>
-                                            <MenuItem value={10}>Seleccione</MenuItem>
-                                            <MenuItem value={20}>ReVoto</MenuItem>
-                                            <MenuItem value={30}>Primer Voto</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Modo de Voto</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <FormControl variant="outlined" className={classes.SelectMovile}>
-                                        <InputLabel id="modoVoto-label">Modo de Voto</InputLabel>
-                                        <Select
-                                            name="modoVoto"
-                                            labelId="modoVoto-label"
-                                            id="modoVoto"
-                                            value={formData.modoVoto}
-                                            onChange={handleInputChange}
-                                            label="Modo de Voto"
-                                            style={{ width: '100%' }}
+                                            Descargar Plantilla
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            component="span"
+                                            onClick={() => handleButtonClick('descargarFicheroFinal')}
                                         >
-                                            <MenuItem value="">
-                                                <em>Modo de Voto</em>
-                                            </MenuItem>
-                                            <MenuItem value={10}>Seleccione</MenuItem>
-                                            <MenuItem value={20}>ReVoto</MenuItem>
-                                            <MenuItem value={30}>Primer Voto</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Autentificar Votación</Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <Checkbox
-                                        name="autentificarVotacion"
-                                        checked={formData.autentificarVotacion}
-                                        onChange={handleInputChange}
-                                        className={classes.largerCheckbox}
-                                        color="primary"
-                                    />
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Autentificar Votación</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <Checkbox
-                                        name="autentificarVotacion"
-                                        checked={formData.autentificarVotacion}
-                                        onChange={handleInputChange}
-                                        className={classes.largerCheckbox}
-                                        color="primary"
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Envío de Preguntas</Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <Checkbox
-                                        name="envioPreguntas"
-                                        checked={formData.envioPreguntas}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Envío de Preguntas</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <Checkbox
-                                        name="envioPreguntas"
-                                        checked={formData.envioPreguntas}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Votación Segmentada</Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <Checkbox
-                                        name="votacionSegmentada"
-                                        checked={formData.votacionSegmentada}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Votación Segmentada</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <Checkbox
-                                        name="votacionSegmentada"
-                                        checked={formData.votacionSegmentada}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Tipo de Login</Typography>
-                                </div>
-                                <div className={classes.cajones}>
-                                    <FormControl variant="outlined" className={classes.formControlSelect}>
-                                        <InputLabel id="tipoLogin-label">Tipo de Login</InputLabel>
-                                        <Select
-                                            name="tipoLogin"
-                                            labelId="tipoLogin-label"
-                                            id="tipoLogin"
-                                            value={formData.tipoLogin}
+                                            Descargar Fichero Final
+                                        </Button>
+                                        <input
+                                            accept=".csv"
+                                            className={classes.input}
+                                            id="cargarCensoCSV"
+                                            name="cargarCensoCSV"
+                                            type="file"
                                             onChange={handleInputChange}
-                                            label="Tipo de Login"
-                                            style={{ width: '100%' }}
+                                        />
+                                        <label htmlFor="cargarCensoCSV">
+                                            <Button variant="contained" color="primary" component="span">
+                                                Cargar Censo
+                                            </Button>
+                                        </label>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            component="span"
+                                            onClick={() => handleButtonClick('descargarCenso')}
                                         >
-                                            <MenuItem value="">
-                                                <em>Seleccione</em>
-                                            </MenuItem>
-                                            <MenuItem value={10}>Usuario y Contraseña</MenuItem>
-                                            <MenuItem value={20}>Certificado Digital</MenuItem>
-                                            <MenuItem value={30}>Ambos</MenuItem>
-                                        </Select>
-                                    </FormControl>
+                                            Descargar Censo
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            component="span"
+                                            onClick={() => handleButtonClick('eliminarCenso')}
+                                        >
+                                            Eliminar Censo
+                                        </Button>
+                                    </div>
                                 </div>
                             </div>
                         ) : (
                             <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Tipo de Login</Typography>
-                                </div>
                                 <div className={classes.alineadoMovile}>
-                                    <FormControl variant="outlined" className={classes.SelectMovile}>
-                                        <InputLabel id="tipoLogin-label">Tipo de Login</InputLabel>
-                                        <Select
-                                            name="tipoLogin"
-                                            labelId="tipoLogin-label"
-                                            id="tipoLogin"
-                                            value={formData.tipoLogin}
+                                    <div className={classes.element}>
+                                        <Typography style={{ fontSize: 18 }}>Cargar censo csv</Typography>
+                                    </div>
+                                    <div className={classes.roots}>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            component="span"
+                                            onClick={() => handleButtonClick('descargarPlantilla')}
+                                        >
+                                            Descargar Plantilla
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            component="span"
+                                            onClick={() => handleButtonClick('descargarFicheroFinal')}
+                                        >
+                                            Descargar Fichero Final
+                                        </Button>
+                                        <input
+                                            accept=".csv"
+                                            className={classes.input}
+                                            id="cargarCensoCSV"
+                                            name="cargarCensoCSV"
+                                            type="file"
                                             onChange={handleInputChange}
-                                            label="Tipo de Login"
-                                            style={{ width: '100%' }}
+                                        />
+                                        <label htmlFor="cargarCensoCSV">
+                                            <Button variant="contained" color="primary" component="span">
+                                                Cargar Censo
+                                            </Button>
+                                        </label>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            component="span"
+                                            onClick={() => handleButtonClick('descargarCenso')}
                                         >
-                                            <MenuItem value="">
-                                                <em>Seleccione</em>
-                                            </MenuItem>
-                                            <MenuItem value={10}>Usuario y Contraseña</MenuItem>
-                                            <MenuItem value={20}>Certificado Digital</MenuItem>
-                                            <MenuItem value={30}>Ambos</MenuItem>
-                                        </Select>
-                                    </FormControl>
+                                            Descargar Censo
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            component="span"
+                                            onClick={() => handleButtonClick('eliminarCenso')}
+                                        >
+                                            Eliminar Censo
+                                        </Button>
+                                    </div>
                                 </div>
                             </>
                         )}
@@ -439,12 +328,12 @@ const PrePrincipal = () => {
                         {isDesktop ? (
                             <div className={classes.alineado}>
                                 <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Opción Multiple</Typography>
+                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Cargar otras opciones csv</Typography>
                                 </div>
                                 <div className={classes.alineado}>
                                     <Checkbox
-                                        name="opcionMultiple"
-                                        checked={formData.opcionMultiple}
+                                        name="cargarOtrasOpcionesCSV"
+                                        checked={formData.cargarOtrasOpcionesCSV}
                                         onChange={handleInputChange}
                                         className={classes.largerCheckbox}
                                         color="primary"
@@ -454,12 +343,12 @@ const PrePrincipal = () => {
                         ) : (
                             <>
                                 <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Opción Multiple</Typography>
+                                    <Typography style={{ fontSize: 18 }}>Cargar otras opciones csv</Typography>
                                 </div>
                                 <div className={classes.alineadoMovile}>
                                     <Checkbox
-                                        name="opcionMultiple"
-                                        checked={formData.opcionMultiple}
+                                        name="cargarOtrasOpcionesCSV"
+                                        checked={formData.cargarOtrasOpcionesCSV}
                                         onChange={handleInputChange}
                                         className={classes.largerCheckbox}
                                         color="primary"
@@ -471,89 +360,29 @@ const PrePrincipal = () => {
                         {isDesktop ? (
                             <div className={classes.alineado}>
                                 <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Fusionar Votación</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <Checkbox
-                                        name="fusionarVotacion"
-                                        checked={formData.fusionarVotacion}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Fusionar Votación</Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <Checkbox
-                                        name="fusionarVotacion"
-                                        checked={formData.fusionarVotacion}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>SMS de Voto</Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <Checkbox
-                                        name="smsVoto"
-                                        checked={formData.smsVoto}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>SMS de Voto</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <Checkbox
-                                        name="smsVoto"
-                                        checked={formData.smsVoto}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Logo de Votación</Typography>
+                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Logo superior</Typography>
                                 </div>
                                 <div className={classes.alineado}>
                                     <div className={classes.roots}>
                                         <input
                                             accept="image/*"
                                             className={classes.input}
-                                            id="logoVotacion"
-                                            name="logoVotacion"
-                                            multiple
+                                            id="logoSuperior"
+                                            name="logoSuperior"
                                             type="file"
                                             onChange={handleInputChange}
                                         />
-                                        <label htmlFor="logoVotacion">
+                                        <label htmlFor="logoSuperior">
                                             <Button variant="contained" color="primary" component="span">
                                                 Cargar Imagen
                                             </Button>
                                         </label>
-                                        <input accept="image/*" className={classes.input} id="icon-button-file" type="file" />
+                                        <input
+                                            accept="image/*"
+                                            className={classes.input}
+                                            id="icon-button-file"
+                                            type="file"
+                                        />
                                         <label htmlFor="icon-button-file">
                                             <IconButton color="primary" aria-label="upload picture" component="span">
                                                 <PhotoCamera />
@@ -566,24 +395,28 @@ const PrePrincipal = () => {
                             <>
                                 <div className={classes.alineadoMovile}>
                                     <div className={classes.element}>
-                                        <Typography style={{ fontSize: 18 }}>Logo de Votación</Typography>
+                                        <Typography style={{ fontSize: 18 }}>Logo superior</Typography>
                                     </div>
                                     <div className={classes.roots}>
                                         <input
                                             accept="image/*"
                                             className={classes.input}
-                                            id="logoVotacion"
-                                            name="logoVotacion"
-                                            multiple
+                                            id="logoSuperior"
+                                            name="logoSuperior"
                                             type="file"
                                             onChange={handleInputChange}
                                         />
-                                        <label htmlFor="logoVotacion">
+                                        <label htmlFor="logoSuperior">
                                             <Button variant="contained" color="primary" component="span">
                                                 Cargar Imagen
                                             </Button>
                                         </label>
-                                        <input accept="image/*" className={classes.input} id="icon-button-file" type="file" />
+                                        <input
+                                            accept="image/*"
+                                            className={classes.input}
+                                            id="icon-button-file"
+                                            type="file"
+                                        />
                                         <label htmlFor="icon-button-file">
                                             <IconButton color="primary" aria-label="upload picture" component="span">
                                                 <PhotoCamera />
@@ -593,6 +426,155 @@ const PrePrincipal = () => {
                                 </div>
                             </>
                         )}
+
+                        {isDesktop ? (
+                            <div className={classes.alineado}>
+                                <div className={classes.element}>
+                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>URL</Typography>
+                                </div>
+                                <div className={classes.cajones}>
+                                    <TextField
+                                        name="url"
+                                        value={formData.url}
+                                        onChange={handleInputChange}
+                                        style={{ width: '80%' }}
+                                        color="primary"
+                                        id="outlined-basic"
+                                        variant="outlined"
+                                    />
+                                </div>
+                            </div>
+                        ) : (
+                            <>
+                                <div className={classes.element}>
+                                    <Typography style={{ fontSize: 18 }}>URL</Typography>
+                                </div>
+                                <div className={classes.alineadoMovile}>
+                                    <TextField
+                                        name="url"
+                                        value={formData.url}
+                                        onChange={handleInputChange}
+                                        style={{ width: '100%' }}
+                                        color="primary"
+                                        id="outlined-basic"
+                                        variant="outlined"
+                                    />
+                                </div>
+                            </>
+                        )}
+
+                        {isDesktop ? (
+                            <div className={classes.alineado}>
+                                <div className={classes.element}>
+                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Envío credenciales al registrarse</Typography>
+                                </div>
+                                <div className={classes.cajones}>
+                                    <FormControl variant="outlined" className={classes.formControlSelect}>
+                                        <InputLabel id="envioCredencialesAlRegistrarse-label">Envío credenciales al registrarse</InputLabel>
+                                        <Select
+                                            name="envioCredencialesAlRegistrarse"
+                                            labelId="envioCredencialesAlRegistrarse-label"
+                                            id="envioCredencialesAlRegistrarse"
+                                            value={formData.envioCredencialesAlRegistrarse}
+                                            onChange={handleInputChange}
+                                            label="Envío credenciales al registrarse"
+                                            style={{ width: '100%' }}
+                                        >
+                                            <MenuItem value="">
+                                                <em>Seleccione</em>
+                                            </MenuItem>
+                                            <MenuItem value={10}>Ambos</MenuItem>
+                                            <MenuItem value={20}>Correos</MenuItem>
+                                            <MenuItem value={30}>SMS</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </div>
+                            </div>
+                        ) : (
+                            <>
+                                <div className={classes.element}>
+                                    <Typography style={{ fontSize: 18 }}>Envío credenciales al registrarse</Typography>
+                                </div>
+                                <div className={classes.alineadoMovile}>
+                                    <FormControl variant="outlined" className={classes.SelectMovile}>
+                                        <InputLabel id="envioCredencialesAlRegistrarse-label">Envío credenciales al registrarse</InputLabel>
+                                        <Select
+                                            name="envioCredencialesAlRegistrarse"
+                                            labelId="envioCredencialesAlRegistrarse-label"
+                                            id="envioCredencialesAlRegistrarse"
+                                            value={formData.envioCredencialesAlRegistrarse}
+                                            onChange={handleInputChange}
+                                            label="Envío credenciales al registrarse"
+                                            style={{ width: '100%' }}
+                                        >
+                                            <MenuItem value="">
+                                                <em>Seleccione</em>
+                                            </MenuItem>
+                                            <MenuItem value={10}>Ambos</MenuItem>
+                                            <MenuItem value={20}>Correos</MenuItem>
+                                            <MenuItem value={30}>SMS</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </div>
+                            </>
+                        )}
+
+                        {isDesktop ? (
+                            <div className={classes.alineado}>
+                                <div className={classes.element}>
+                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Vincular con votación</Typography>
+                                </div>
+                                <div className={classes.cajones}>
+                                    <FormControl variant="outlined" className={classes.formControlSelect}>
+                                        <InputLabel id="vincularConVotacion-label">Vincular con votación</InputLabel>
+                                        <Select
+                                            name="vincularConVotacion"
+                                            labelId="vincularConVotacion-label"
+                                            id="vincularConVotacion"
+                                            value={formData.vincularConVotacion}
+                                            onChange={handleInputChange}
+                                            label="Vincular con votación"
+                                            style={{ width: '100%' }}
+                                        >
+                                            <MenuItem value="">
+                                                <em>Seleccione</em>
+                                            </MenuItem>
+                                            <MenuItem value={10}>Prueba 1</MenuItem>
+                                            <MenuItem value={20}>Prueba 2</MenuItem>
+                                            <MenuItem value={30}>Prueba 3</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </div>
+                            </div>
+                        ) : (
+                            <>
+                                <div className={classes.element}>
+                                    <Typography style={{ fontSize: 18 }}>Vincular con votación</Typography>
+                                </div>
+                                <div className={classes.alineadoMovile}>
+                                    <FormControl variant="outlined" className={classes.SelectMovile}>
+                                        <InputLabel id="vincularConVotacion-label">Vincular con votación</InputLabel>
+                                        <Select
+                                            name="vincularConVotacion"
+                                            labelId="vincularConVotacion-label"
+                                            id="vincularConVotacion"
+                                            value={formData.vincularConVotacion}
+                                            onChange={handleInputChange}
+                                            label="Vincular con votación"
+                                            style={{ width: '100%' }}
+                                        >
+                                            <MenuItem value="">
+                                                <em>Seleccione</em>
+                                            </MenuItem>
+                                            <MenuItem value={10}>Prueba 1</MenuItem>
+                                            <MenuItem value={20}>Prueba 2</MenuItem>
+                                            <MenuItem value={30}>Prueba 3</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </div>
+                            </>
+                        )}
+
                     </div>
                 </div>
             </Grid>

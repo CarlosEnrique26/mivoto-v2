@@ -1,11 +1,27 @@
-import { Button, Container, Grid, TextField, Typography, useMediaQuery, Checkbox, MenuItem, InputLabel, FormControl, Select, IconButton } from '@material-ui/core';
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import {
+    Button,
+    Grid,
+    Typography,
+    useMediaQuery,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    TextField,
+    makeStyles,
+    Input
+} from '@material-ui/core';
+import React, { useState, useRef } from 'react';
+import JoditEditor from 'jodit-react';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         maxWidth: 450
+    },
+    espacios: {
+        [theme.breakpoints.up("md")]: {
+            marginTop: "10%"
+        }
     },
     buttonContainer: {
         display: 'flex',
@@ -53,8 +69,21 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(2),
         width: '100%',
     },
-    largerCheckbox: {
-        transform: "scale(1.5)",
+    cajon1: {
+        display: 'flex',
+        flexDirection: 'column', // Arrange elements vertically in a column
+        alignItems: 'start', // Center elements horizontally
+        justifyContent: 'center', // Center elements vertically
+        marginBottom: theme.spacing(2),
+        width: '33%',
+    },
+    cajon2: {
+        display: 'flex',
+        flexDirection: 'column', // Arrange elements vertically in a column
+        alignItems: 'end', // Center elements horizontally
+        justifyContent: 'center', // Center elements vertically
+        marginBottom: theme.spacing(2),
+        width: '33%',
     },
     roots: {
         '& > *': {
@@ -72,8 +101,15 @@ const useStyles = makeStyles((theme) => ({
         width: '80%',
         margin: theme.spacing(1),
     },
-    // Styles for mobile
     alineadoMovile: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: theme.spacing(2),
+        width: '100%'
+    },
+    elementMovile: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -89,35 +125,77 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         margin: theme.spacing(1),
     },
+    editorContainer: {
+        width: '82%',
+        minHeight: '200px',
+    },
+    editor: {
+        width: '82%',
+        height: '200px',
+        overflow: 'auto',
+    },
 }));
 
 const PrePersonalizacion = () => {
-    const classes = useStyles();
-
+    const editor1 = useRef(null);
+    const editor2 = useRef(null);
+    const editor3 = useRef(null);
+    const [content1, setContent1] = useState('');
+    const [content2, setContent2] = useState('');
+    const [content3, setContent3] = useState('');
+    const [selectValue, setSelectValue] = useState('');
     const [formData, setFormData] = useState({
-        cantidadUsuarios: '',
-        titulo: '',
-        peso: false,
-        modoVoto: '',
-        autentificarVotacion: false,
-        envioPreguntas: false,
-        votacionSegmentada: false,
-        tipoLogin: '',
-        opcionMultiple: false,
-        fusionarVotacion: false,
-        smsVoto: false,
-        logoVotacion: null,
+        textoSuperior: '',
+        textoInferior: '',
+        botonIzquierdo: '',
+        botonIzquierdoColor: '',
+        botonDerecho: '',
+        botonDerechoColor: '',
+        textoPieDeFormulario: '',
+        mensajeConfirmacion: '',
+        preRegistroCerrado: '',
     });
+    const classes = useStyles();
+    const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
-    const handleInputChange = (e) => {
-        const { name, value, type, checked, files } = e.target;
-        setFormData(prevState => ({
+    const handleSelectChange = (event) => {
+        setSelectValue(event.target.value);
+    };
+
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setFormData((prevState) => ({
             ...prevState,
-            [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value
+            [name]: value,
         }));
     };
 
-    const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
+    const handleSave = () => {
+        console.log("Editor Content 1:", content1);
+        console.log("Editor Content 2:", content2);
+        console.log("Editor Content 3:", content3);
+        console.log("Selected Value:", selectValue);
+        console.log("Form Data:", formData);
+
+        // Clear the form
+        setContent1('');
+        setContent2('');
+        setContent3('');
+        setSelectValue('');
+        setFormData({
+            textoSuperior: '',
+            textoInferior: '',
+            botonIzquierdo: '',
+            botonDerecho: '',
+            textoPieDeFormulario: '',
+            mensajeConfirmacion: '',
+            preRegistroCerrado: '',
+        });
+    };
+
+    const config = {
+        readonly: false, // All options from https://xdsoft.net/jodit/doc/
+    };
 
     return (
         <div>
@@ -127,15 +205,262 @@ const PrePersonalizacion = () => {
                         {isDesktop ? (
                             <div className={classes.alineado}>
                                 <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Cantidad de Usuarios</Typography>
+                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Texto superior</Typography>
+                                </div>
+                                <div className={classes.cajones}>
+                                    <div className={classes.editorContainer}>
+                                        <JoditEditor
+                                            ref={editor1}
+                                            value={content1}
+                                            config={config}
+                                            tabIndex={1}
+                                            onBlur={(newContent) => setContent1(newContent)}
+                                            onChange={(newContent) => { }}
+                                            className={classes.editor}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <>
+                                <div className={classes.elementMovile}>
+                                    <Typography style={{ fontSize: 18 }}>Texto superior</Typography>
+                                </div>
+                                <div className={classes.alineadoMovile}>
+                                    <div className={classes.editorContainer}>
+                                        <JoditEditor
+                                            ref={editor1}
+                                            value={content1}
+                                            config={config}
+                                            tabIndex={1}
+                                            onBlur={(newContent) => setContent1(newContent)}
+                                            onChange={(newContent) => { }}
+                                            className={classes.editor}
+                                        />
+                                    </div>
+                                </div>
+                            </>
+                        )}
+
+                        {isDesktop ? (
+                            <div className={classes.alineado}>
+                                <div className={classes.element}>
+                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Texto inferior</Typography>
+                                </div>
+                                <div className={classes.cajones}>
+                                    <div className={classes.editorContainer}>
+                                        <JoditEditor
+                                            ref={editor2}
+                                            value={content2}
+                                            config={config}
+                                            tabIndex={1}
+                                            onBlur={(newContent) => setContent2(newContent)}
+                                            onChange={(newContent) => { }}
+                                            className={classes.editor}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <>
+                                <div className={classes.elementMovile}>
+                                    <Typography style={{ fontSize: 18 }}>Texto inferior</Typography>
+                                </div>
+                                <div className={classes.alineadoMovile}>
+                                    <div className={classes.editorContainer}>
+                                        <JoditEditor
+                                            ref={editor2}
+                                            value={content2}
+                                            config={config}
+                                            tabIndex={1}
+                                            onBlur={(newContent) => setContent2(newContent)}
+                                            onChange={(newContent) => { }}
+                                            className={classes.editor}
+                                        />
+                                    </div>
+                                </div>
+                            </>
+                        )}
+
+                        {isDesktop ? (
+                                        <div className={classes.alineado}>
+                                            <div className={classes.element}>
+                                                <Typography style={{fontSize: 18, marginLeft: 15}}>Boton Izquierdo</Typography>
+                                            </div>
+                                            <div className={classes.cajon1}>
+                                            <TextField
+                                                name="botonIzquierdo"
+                                                value={formData.botonIzquierdo}
+                                                onChange={handleInputChange}
+                                                style={{ width: '80%' }}
+                                                color="primary"
+                                                id="outlined-basic"
+                                                variant="outlined"
+                                            />
+                                            </div>
+                                            <div className={classes.cajon2}>
+                                                <Input
+                                                    type='color'
+                                                    style={{width:'95%'}}
+                                                    color='primary'
+                                                    id="botonIzquierdoColor"
+                                                    name="botonIzquierdoColor"
+                                                    value={formData.botonIzquierdoColor}
+                                                    onChange={handleInputChange}
+                                                    //error={!!formErrors.botonIzquierdoColor}
+                                                    //helperText={formErrors.botonIzquierdoColor}
+                                                />
+                                        
+                                            </div>
+                                        </div>
+                                        ):(
+                                        <>
+                                        <div className={classes.element}>
+                                                <Typography style={{fontSize: 18}}>Boton Izquierdo</Typography>
+                                            </div>
+                                            <div className={classes.alineadoMovile}>
+                                            <TextField
+                                                name="botonIzquierdo"
+                                                value={formData.botonIzquierdo}
+                                                onChange={handleInputChange}
+                                                style={{ width: '80%' }}
+                                                color="primary"
+                                                id="outlined-basic"
+                                                variant="outlined"
+                                            />
+                                            </div>
+                                            <div className={classes.alineadoMovile}>
+                                            <Input
+                                                type='color'
+                                                style={{width:'100%'}}
+                                                color='primary'
+                                                id="botonIzquierdoColor"
+                                                name="botonIzquierdoColor"
+                                                value={formData.botonIzquierdoColor}
+                                                onChange={handleInputChange}
+                                                //error={!!formErrors.botonIzquierdoColor}
+                                                //helperText={formErrors.botonIzquierdoColor}
+                                            />
+                                            </div>
+                                        </>
+                                        )}
+
+                                        {isDesktop ? (
+                                        <div className={classes.alineado}>
+                                            <div className={classes.element}>
+                                                <Typography style={{fontSize: 18, marginLeft: 15}}>Boton Derecho</Typography>
+                                            </div>
+                                            <div className={classes.cajon1}>
+                                            <TextField
+                                                name="botonDerecho"
+                                                value={formData.botonDerecho}
+                                                onChange={handleInputChange}
+                                                style={{ width: '80%' }}
+                                                color="primary"
+                                                id="outlined-basic"
+                                                variant="outlined"
+                                            />
+                                                
+                                            </div>
+                                            <div className={classes.cajon2}>
+                                            <Input
+                                                type='color'
+                                                style={{width:'95%'}}
+                                                color='primary'
+                                                id="botonDerechoColor"
+                                                name="botonDerechoColor"
+                                                value={formData.botonDerechoColor}
+                                                onChange={handleInputChange}
+                                                //error={!!formErrors.botonDerechoColor}
+                                                //helperText={formErrors.botonDerechoColor}
+                                            />
+                                        
+                                            </div>
+                                        </div>
+                                        ):(
+                                        <>
+                                        <div className={classes.element}>
+                                                <Typography style={{fontSize: 18}}>Boton Derecho</Typography>
+                                            </div>
+                                            <div className={classes.alineadoMovile}>
+                                            <TextField
+                                                name="botonDerecho"
+                                                value={formData.botonDerecho}
+                                                onChange={handleInputChange}
+                                                style={{ width: '80%' }}
+                                                color="primary"
+                                                id="outlined-basic"
+                                                variant="outlined"
+                                            />
+                                            </div>
+                                            <div className={classes.alineadoMovile}>
+                                            <Input
+                                                type='color'
+                                                style={{width:'100%'}}
+                                                color='primary'
+                                                id="botonDerechoColor"
+                                                name="botonDerechoColor"
+                                                value={formData.botonDerechoColor}
+                                                onChange={handleInputChange}
+                                                //error={!!formErrors.botonDerechoColor}
+                                                //helperText={formErrors.botonDerechoColor}
+                                            />
+                                            </div>
+                                        </>
+                                        )}
+
+                        {isDesktop ? (
+                            <div className={classes.alineado}>
+                                <div className={classes.element}>
+                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Texto pie de formulario</Typography>
+                                </div>
+                                <div className={classes.cajones}>
+                                    <div className={classes.editorContainer}>
+                                        <JoditEditor
+                                            ref={editor3}
+                                            value={content3}
+                                            config={config}
+                                            tabIndex={1}
+                                            onBlur={(newContent) => setContent3(newContent)}
+                                            onChange={(newContent) => { }}
+                                            className={classes.editor}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <>
+                                <div className={classes.element}>
+                                    <Typography style={{ fontSize: 18 }}>Texto pie de formulario</Typography>
+                                </div>
+                                <div className={classes.alineadoMovile}>
+                                    <div className={classes.editorContainer}>
+                                        <JoditEditor
+                                            ref={editor3}
+                                            value={content3}
+                                            config={config}
+                                            tabIndex={1}
+                                            onBlur={(newContent) => setContent3(newContent)}
+                                            onChange={(newContent) => { }}
+                                            className={classes.editor}
+                                        />
+                                    </div>
+                                </div>
+                            </>
+                        )}
+
+                        {isDesktop ? (
+                            <div className={classes.alineado}>
+                                <div className={classes.element}>
+                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Mensaje de confirmación</Typography>
                                 </div>
                                 <div className={classes.cajones}>
                                     <TextField
-                                        name="cantidadUsuarios"
-                                        value={formData.cantidadUsuarios}
+                                        name="mensajeConfirmacion"
+                                        value={formData.mensajeConfirmacion}
                                         onChange={handleInputChange}
                                         style={{ width: '80%' }}
-                                        color='primary'
+                                        color="primary"
                                         id="outlined-basic"
                                         variant="outlined"
                                     />
@@ -144,15 +469,15 @@ const PrePersonalizacion = () => {
                         ) : (
                             <>
                                 <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Cantidad de Usuarios</Typography>
+                                    <Typography style={{ fontSize: 18 }}>Mensaje de confirmación</Typography>
                                 </div>
                                 <div className={classes.alineadoMovile}>
                                     <TextField
-                                        name="cantidadUsuarios"
-                                        value={formData.cantidadUsuarios}
+                                        name="mensajeConfirmacion"
+                                        value={formData.mensajeConfirmacion}
                                         onChange={handleInputChange}
                                         style={{ width: '100%' }}
-                                        color='primary'
+                                        color="primary"
                                         id="outlined-basic"
                                         variant="outlined"
                                     />
@@ -163,15 +488,15 @@ const PrePersonalizacion = () => {
                         {isDesktop ? (
                             <div className={classes.alineado}>
                                 <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Titulo</Typography>
+                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Pre registro cerrado</Typography>
                                 </div>
                                 <div className={classes.cajones}>
                                     <TextField
-                                        name="titulo"
-                                        value={formData.titulo}
+                                        name="preRegistroCerrado"
+                                        value={formData.preRegistroCerrado}
                                         onChange={handleInputChange}
                                         style={{ width: '80%' }}
-                                        color='primary'
+                                        color="primary"
                                         id="outlined-basic"
                                         variant="outlined"
                                     />
@@ -180,15 +505,15 @@ const PrePersonalizacion = () => {
                         ) : (
                             <>
                                 <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Titulo</Typography>
+                                    <Typography style={{ fontSize: 18 }}>Pre registro cerrado</Typography>
                                 </div>
                                 <div className={classes.alineadoMovile}>
                                     <TextField
-                                        name="titulo"
-                                        value={formData.titulo}
+                                        name="preRegistroCerrado"
+                                        value={formData.preRegistroCerrado}
                                         onChange={handleInputChange}
                                         style={{ width: '100%' }}
-                                        color='primary'
+                                        color="primary"
                                         id="outlined-basic"
                                         variant="outlined"
                                     />
@@ -196,408 +521,515 @@ const PrePersonalizacion = () => {
                             </>
                         )}
 
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Peso</Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <Checkbox
-                                        name="peso"
-                                        checked={formData.peso}
-                                        onChange={handleInputChange}
-                                        className={classes.largerCheckbox}
-                                        color="primary"
-                                    />
-                                </div>
+                        <div className={classes.alineado}>
+                            <div className={classes.roots}>
+                                <Button style={{ marginTop: 20 }} variant="contained" color="primary" onClick={handleSave}>
+                                    <i className="material-icons" style={{ fontSize: 20, marginRight: 5 }}>star</i>
+                                    Guardar Votación
+                                </Button>
+                                <Button style={{ marginTop: 20 }} variant="contained" color="primary">
+                                    <i className="material-icons" style={{ fontSize: 20, marginRight: 5 }}>star</i>
+                                    Desactivar
+                                </Button>
+                                <Button style={{ marginTop: 20 }} variant="contained" color="primary" >
+                                    <i className="material-icons" style={{ fontSize: 20, marginRight: 5 }}>star</i>
+                                    Eliminar Usuario
+                                </Button>
                             </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Peso</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <Checkbox
-                                        name="peso"
-                                        checked={formData.peso}
-                                        onChange={handleInputChange}
-                                        className={classes.largerCheckbox}
-                                        color="primary"
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Modo de Voto</Typography>
-                                </div>
-                                <div className={classes.cajones}>
-                                    <FormControl variant="outlined" className={classes.formControlSelect}>
-                                        <InputLabel id="modoVoto-label">Modo de Voto</InputLabel>
-                                        <Select
-                                            name="modoVoto"
-                                            labelId="modoVoto-label"
-                                            id="modoVoto"
-                                            value={formData.modoVoto}
-                                            onChange={handleInputChange}
-                                            label="Modo de Voto"
-                                            style={{ width: '100%' }}
-                                        >
-                                            <MenuItem value="">
-                                                <em>Modo de Voto</em>
-                                            </MenuItem>
-                                            <MenuItem value={10}>Seleccione</MenuItem>
-                                            <MenuItem value={20}>ReVoto</MenuItem>
-                                            <MenuItem value={30}>Primer Voto</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Modo de Voto</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <FormControl variant="outlined" className={classes.SelectMovile}>
-                                        <InputLabel id="modoVoto-label">Modo de Voto</InputLabel>
-                                        <Select
-                                            name="modoVoto"
-                                            labelId="modoVoto-label"
-                                            id="modoVoto"
-                                            value={formData.modoVoto}
-                                            onChange={handleInputChange}
-                                            label="Modo de Voto"
-                                            style={{ width: '100%' }}
-                                        >
-                                            <MenuItem value="">
-                                                <em>Modo de Voto</em>
-                                            </MenuItem>
-                                            <MenuItem value={10}>Seleccione</MenuItem>
-                                            <MenuItem value={20}>ReVoto</MenuItem>
-                                            <MenuItem value={30}>Primer Voto</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Autentificar Votación</Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <Checkbox
-                                        name="autentificarVotacion"
-                                        checked={formData.autentificarVotacion}
-                                        onChange={handleInputChange}
-                                        className={classes.largerCheckbox}
-                                        color="primary"
-                                    />
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Autentificar Votación</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <Checkbox
-                                        name="autentificarVotacion"
-                                        checked={formData.autentificarVotacion}
-                                        onChange={handleInputChange}
-                                        className={classes.largerCheckbox}
-                                        color="primary"
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Envío de Preguntas</Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <Checkbox
-                                        name="envioPreguntas"
-                                        checked={formData.envioPreguntas}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Envío de Preguntas</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <Checkbox
-                                        name="envioPreguntas"
-                                        checked={formData.envioPreguntas}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Votación Segmentada</Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <Checkbox
-                                        name="votacionSegmentada"
-                                        checked={formData.votacionSegmentada}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Votación Segmentada</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <Checkbox
-                                        name="votacionSegmentada"
-                                        checked={formData.votacionSegmentada}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Tipo de Login</Typography>
-                                </div>
-                                <div className={classes.cajones}>
-                                    <FormControl variant="outlined" className={classes.formControlSelect}>
-                                        <InputLabel id="tipoLogin-label">Tipo de Login</InputLabel>
-                                        <Select
-                                            name="tipoLogin"
-                                            labelId="tipoLogin-label"
-                                            id="tipoLogin"
-                                            value={formData.tipoLogin}
-                                            onChange={handleInputChange}
-                                            label="Tipo de Login"
-                                            style={{ width: '100%' }}
-                                        >
-                                            <MenuItem value="">
-                                                <em>Seleccione</em>
-                                            </MenuItem>
-                                            <MenuItem value={10}>Usuario y Contraseña</MenuItem>
-                                            <MenuItem value={20}>Certificado Digital</MenuItem>
-                                            <MenuItem value={30}>Ambos</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Tipo de Login</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <FormControl variant="outlined" className={classes.SelectMovile}>
-                                        <InputLabel id="tipoLogin-label">Tipo de Login</InputLabel>
-                                        <Select
-                                            name="tipoLogin"
-                                            labelId="tipoLogin-label"
-                                            id="tipoLogin"
-                                            value={formData.tipoLogin}
-                                            onChange={handleInputChange}
-                                            label="Tipo de Login"
-                                            style={{ width: '100%' }}
-                                        >
-                                            <MenuItem value="">
-                                                <em>Seleccione</em>
-                                            </MenuItem>
-                                            <MenuItem value={10}>Usuario y Contraseña</MenuItem>
-                                            <MenuItem value={20}>Certificado Digital</MenuItem>
-                                            <MenuItem value={30}>Ambos</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Opción Multiple</Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <Checkbox
-                                        name="opcionMultiple"
-                                        checked={formData.opcionMultiple}
-                                        onChange={handleInputChange}
-                                        className={classes.largerCheckbox}
-                                        color="primary"
-                                    />
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Opción Multiple</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <Checkbox
-                                        name="opcionMultiple"
-                                        checked={formData.opcionMultiple}
-                                        onChange={handleInputChange}
-                                        className={classes.largerCheckbox}
-                                        color="primary"
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Fusionar Votación</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <Checkbox
-                                        name="fusionarVotacion"
-                                        checked={formData.fusionarVotacion}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Fusionar Votación</Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <Checkbox
-                                        name="fusionarVotacion"
-                                        checked={formData.fusionarVotacion}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>SMS de Voto</Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <Checkbox
-                                        name="smsVoto"
-                                        checked={formData.smsVoto}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>SMS de Voto</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <Checkbox
-                                        name="smsVoto"
-                                        checked={formData.smsVoto}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Logo de Votación</Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <div className={classes.roots}>
-                                        <input
-                                            accept="image/*"
-                                            className={classes.input}
-                                            id="logoVotacion"
-                                            name="logoVotacion"
-                                            multiple
-                                            type="file"
-                                            onChange={handleInputChange}
-                                        />
-                                        <label htmlFor="logoVotacion">
-                                            <Button variant="contained" color="primary" component="span">
-                                                Cargar Imagen
-                                            </Button>
-                                        </label>
-                                        <input accept="image/*" className={classes.input} id="icon-button-file" type="file" />
-                                        <label htmlFor="icon-button-file">
-                                            <IconButton color="primary" aria-label="upload picture" component="span">
-                                                <PhotoCamera />
-                                            </IconButton>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <div className={classes.alineadoMovile}>
-                                    <div className={classes.element}>
-                                        <Typography style={{ fontSize: 18 }}>Logo de Votación</Typography>
-                                    </div>
-                                    <div className={classes.roots}>
-                                        <input
-                                            accept="image/*"
-                                            className={classes.input}
-                                            id="logoVotacion"
-                                            name="logoVotacion"
-                                            multiple
-                                            type="file"
-                                            onChange={handleInputChange}
-                                        />
-                                        <label htmlFor="logoVotacion">
-                                            <Button variant="contained" color="primary" component="span">
-                                                Cargar Imagen
-                                            </Button>
-                                        </label>
-                                        <input accept="image/*" className={classes.input} id="icon-button-file" type="file" />
-                                        <label htmlFor="icon-button-file">
-                                            <IconButton color="primary" aria-label="upload picture" component="span">
-                                                <PhotoCamera />
-                                            </IconButton>
-                                        </label>
-                                    </div>
-                                </div>
-                            </>
-                        )}
+                        </div>
                     </div>
                 </div>
             </Grid>
         </div>
     );
-}
+};
 
 export default PrePersonalizacion;
+
+/*import {
+    Button,
+    Grid,
+    Typography,
+    useMediaQuery,
+    Checkbox,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    TextField,
+    makeStyles
+  } from '@material-ui/core';
+  import React, { useState, useRef } from 'react';
+  import JoditEditor from 'jodit-react';
+  
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      maxWidth: 450
+    },
+    espacios: {
+      [theme.breakpoints.up("md")]: {
+        marginTop: "10%"
+      }
+    },
+    buttonContainer: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'column',
+      width: '100%',
+    },
+    button: {
+      margin: theme.spacing(1),
+      width: '100%'
+    },
+    horizontal: {
+      flexDirection: 'row',
+    },
+    groupalineado: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: theme.spacing(2),
+      width: '100%'
+    },
+    alineado: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: theme.spacing(2),
+      width: '100%'
+    },
+    element: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'start',
+      justifyContent: 'center',
+      marginBottom: theme.spacing(2),
+      width: '100%',
+    },
+    cajones: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'end',
+      justifyContent: 'center',
+      marginBottom: theme.spacing(2),
+      width: '100%',
+    },
+    roots: {
+      '& > *': {
+        margin: theme.spacing(1),
+      },
+    },
+    input: {
+      display: 'none',
+    },
+    formControlSelect: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'end',
+      justifyContent: 'center',
+      width: '80%',
+      margin: theme.spacing(1),
+    },
+    alineadoMovile: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: theme.spacing(2),
+      width: '100%'
+    },
+    elementMovile: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: theme.spacing(2),
+      width: '100%'
+    },
+    SelectMovile: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'end',
+      justifyContent: 'center',
+      width: '100%',
+      margin: theme.spacing(1),
+    },
+    editorContainer: {
+      width: '82%',
+      minHeight: '200px',
+    },
+    editor: {
+      width: '82%',
+      height: '200px',
+      overflow: 'auto',
+    },
+  }));
+  
+  const PrePersonalizacion = () => {
+    const editor1 = useRef(null);
+    const editor2 = useRef(null);
+    const editor3 = useRef(null);
+    const editor4 = useRef(null);
+    const [content1, setContent1] = useState('');
+    const [content2, setContent2] = useState('');
+    const [content3, setContent3] = useState('');
+    const [content4, setContent4] = useState('');
+    const [selectValue, setSelectValue] = useState('');
+    const [formData, setFormData] = useState({
+        textoSuperior: '',
+        textoInferior: '',
+        botonIzquierdo: '',
+        botonDerecho: '',
+        textoPieDeFormulario: '',
+        mensajeConfirmacion: '',
+        preRegistroCerrado: '',
+    });
+    const classes = useStyles();
+    const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
+  
+    const handleSelectChange = (event) => {
+      setSelectValue(event.target.value);
+    };
+  
+    const handleInputChange = (event) => {
+      const { name, value } = event.target;
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    };
+  
+    const handleSave = () => {
+      console.log("Editor Content 1:", content1);
+      console.log("Editor Content 2:", content2);
+      console.log("Editor Content 3:", content3);
+      console.log("Editor Content 4:", content4);
+      console.log("Selected Value:", selectValue);
+      console.log("Mensaje de Confirmación:", formData.mensajeConfirmacion);
+      console.log("Pre Registro Cerrado:", formData.preRegistroCerrado);
+  
+      // Clear the form
+      setContent1('');
+      setContent2('');
+      setContent3('');
+      setContent4('');
+      setSelectValue('');
+      setFormData({
+        mensajeConfirmacion: '',
+        preRegistroCerrado: '',
+      });
+    };
+  
+    const config = {
+      readonly: false, // All options from https://xdsoft.net/jodit/doc/
+    };
+  
+    return (
+      <div>
+        <Grid item xs={12} md={12} style={{ marginTop: 20 }}>
+          <div className={`${classes.buttonContainer} ${isDesktop ? classes.horizontal : ''}`}>
+            <div className={classes.groupalineado}>
+              {isDesktop ? (
+                <div className={classes.alineado}>
+                  <div className={classes.element}>
+                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Texto superior</Typography>
+                  </div>
+                  <div className={classes.cajones}>
+                    <div className={classes.editorContainer}>
+                      <JoditEditor
+                        ref={editor1}
+                        value={content1}
+                        config={config}
+                        tabIndex={1}
+                        onBlur={(newContent) => setContent1(newContent)}
+                        onChange={(newContent) => { }}
+                        className={classes.editor}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className={classes.elementMovile}>
+                    <Typography style={{ fontSize: 18 }}>Texto superior</Typography>
+                  </div>
+                  <div className={classes.alineadoMovile}>
+                    <div className={classes.editorContainer}>
+                      <JoditEditor
+                        ref={editor1}
+                        value={content1}
+                        config={config}
+                        tabIndex={1}
+                        onBlur={(newContent) => setContent1(newContent)}
+                        onChange={(newContent) => { }}
+                        className={classes.editor}
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+  
+              {isDesktop ? (
+                <div className={classes.alineado}>
+                  <div className={classes.element}>
+                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Texto inferior</Typography>
+                  </div>
+                  <div className={classes.cajones}>
+                    <div className={classes.editorContainer}>
+                      <JoditEditor
+                        ref={editor2}
+                        value={content2}
+                        config={config}
+                        tabIndex={1}
+                        onBlur={(newContent) => setContent2(newContent)}
+                        onChange={(newContent) => { }}
+                        className={classes.editor}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className={classes.elementMovile}>
+                    <Typography style={{ fontSize: 18 }}>Texto inferior</Typography>
+                  </div>
+                  <div className={classes.alineadoMovile}>
+                    <div className={classes.editorContainer}>
+                      <JoditEditor
+                        ref={editor2}
+                        value={content2}
+                        config={config}
+                        tabIndex={1}
+                        onBlur={(newContent) => setContent2(newContent)}
+                        onChange={(newContent) => { }}
+                        className={classes.editor}
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+
+                {isDesktop ? (
+                                        <div className={classes.alineado}>
+                                            <div className={classes.element}>
+                                                <Typography style={{fontSize: 18, marginLeft: 15}}>Boton Izquierdo</Typography>
+                                            </div>
+                                            <div className={classes.cajon1}>
+                                            <TextField
+                      name="mensajeConfirmacion"
+                      value={formData.mensajeConfirmacion}
+                      onChange={handleInputChange}
+                      style={{ width: '80%' }}
+                      color="primary"
+                      id="outlined-basic"
+                      variant="outlined"
+                    />
+                                            </div>
+                                            <div className={classes.cajon2}>
+                                                <Input
+                                                    type='color'
+                                                    style={{width:'95%'}}
+                                                    color='primary'
+                                                    id="fondoTextoLetra"
+                                                    name="fondoTextoLetra"
+                                                    value={formData.fondoTextoLetra}
+                                                    onChange={handleChange}
+                                                    error={!!formErrors.fondoTextoLetra}
+                                                    helperText={formErrors.fondoTextoLetra}
+                                                />
+                                        
+                                            </div>
+                                        </div>
+                                        ):(
+                                        <>
+                                        <div className={classes.element}>
+                                                <Typography style={{fontSize: 18}}>Boton Izquierdo</Typography>
+                                            </div>
+                                            <div className={classes.alineadoMovile}>
+                                            <TextField
+                      name="mensajeConfirmacion"
+                      value={formData.mensajeConfirmacion}
+                      onChange={handleInputChange}
+                      style={{ width: '80%' }}
+                      color="primary"
+                      id="outlined-basic"
+                      variant="outlined"
+                    />  
+                                            </div>
+                                            <div className={classes.alineadoMovile}>
+                                            <Input
+                                                type='color'
+                                                style={{width:'100%'}}
+                                                color='primary'
+                                                id="fondoTextoLetra"
+                                                name="fondoTextoLetra"
+                                                value={formData.fondoTextoLetra}
+                                                onChange={handleChange}
+                                                error={!!formErrors.fondoTextoLetra}
+                                                helperText={formErrors.fondoTextoLetra}
+                                            />
+                                            </div>
+                                        </>
+                                        )}
+
+                                        {isDesktop ? (
+                                        <div className={classes.alineado}>
+                                            <div className={classes.element}>
+                                                <Typography style={{fontSize: 18, marginLeft: 15}}>Boton Derecho</Typography>
+                                            </div>
+                                            <div className={classes.cajon1}>
+                                            <TextField
+                      name="mensajeConfirmacion"
+                      value={formData.mensajeConfirmacion}
+                      onChange={handleInputChange}
+                      style={{ width: '80%' }}
+                      color="primary"
+                      id="outlined-basic"
+                      variant="outlined"
+                    />
+                                                
+                                            </div>
+                                            <div className={classes.cajon2}>
+                                            <Input
+                                                type='color'
+                                                style={{width:'95%'}}
+                                                color='primary'
+                                                id="fondoTextoAdminLetra"
+                                                name="fondoTextoAdminLetra"
+                                                value={formData.fondoTextoAdminLetra}
+                                                onChange={handleChange}
+                                                error={!!formErrors.fondoTextoAdminLetra}
+                                                helperText={formErrors.fondoTextoAdminLetra}
+                                            />
+                                        
+                                            </div>
+                                        </div>
+                                        ):(
+                                        <>
+                                        <div className={classes.element}>
+                                                <Typography style={{fontSize: 18}}>Boton Derecho</Typography>
+                                            </div>
+                                            <div className={classes.alineadoMovile}>
+                                            <TextField
+                      name="mensajeConfirmacion"
+                      value={formData.mensajeConfirmacion}
+                      onChange={handleInputChange}
+                      style={{ width: '80%' }}
+                      color="primary"
+                      id="outlined-basic"
+                      variant="outlined"
+                    />
+                                            </div>
+                                            <div className={classes.alineadoMovile}>
+                                            <Input
+                                                type='color'
+                                                style={{width:'100%'}}
+                                                color='primary'
+                                                id="fondoTextoAdminLetra"
+                                                name="fondoTextoAdminLetra"
+                                                value={formData.fondoTextoAdminLetra}
+                                                onChange={handleChange}
+                                                error={!!formErrors.fondoTextoAdminLetra}
+                                                helperText={formErrors.fondoTextoAdminLetra}
+                                            />
+                                            </div>
+                                        </>
+                                        )}
+  
+              {isDesktop ? (
+                <div className={classes.alineado}>
+                  <div className={classes.element}>
+                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Mensaje de confirmación</Typography>
+                  </div>
+                  <div className={classes.cajones}>
+                    <TextField
+                      name="mensajeConfirmacion"
+                      value={formData.mensajeConfirmacion}
+                      onChange={handleInputChange}
+                      style={{ width: '80%' }}
+                      color="primary"
+                      id="outlined-basic"
+                      variant="outlined"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className={classes.element}>
+                    <Typography style={{ fontSize: 18 }}>Mensaje de confirmación</Typography>
+                  </div>
+                  <div className={classes.alineadoMovile}>
+                    <TextField
+                      name="mensajeConfirmacion"
+                      value={formData.mensajeConfirmacion}
+                      onChange={handleInputChange}
+                      style={{ width: '100%' }}
+                      color="primary"
+                      id="outlined-basic"
+                      variant="outlined"
+                    />
+                  </div>
+                </>
+              )}
+  
+              {isDesktop ? (
+                <div className={classes.alineado}>
+                  <div className={classes.element}>
+                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Pre registro cerrado</Typography>
+                  </div>
+                  <div className={classes.cajones}>
+                    <TextField
+                      name="preRegistroCerrado"
+                      value={formData.preRegistroCerrado}
+                      onChange={handleInputChange}
+                      style={{ width: '80%' }}
+                      color="primary"
+                      id="outlined-basic"
+                      variant="outlined"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className={classes.element}>
+                    <Typography style={{ fontSize: 18 }}>Pre registro cerrado</Typography>
+                  </div>
+                  <div className={classes.alineadoMovile}>
+                    <TextField
+                      name="preRegistroCerrado"
+                      value={formData.preRegistroCerrado}
+                      onChange={handleInputChange}
+                      style={{ width: '100%' }}
+                      color="primary"
+                      id="outlined-basic"
+                      variant="outlined"
+                    />
+                  </div>
+                </>
+              )}
+  
+              <div className={classes.alineado}>
+                <Button style={{ marginTop: 20 }} variant="contained" color="primary" onClick={handleSave}>
+                  <i className="material-icons" style={{ fontSize: 20, marginRight: 5 }}>star</i>
+                  Guardar Votación
+                </Button>
+                <Button style={{ marginTop: 20 }} variant="contained" color="primary" onClick={handleSave}>
+                  <i className="material-icons" style={{ fontSize: 20, marginRight: 5 }}>star</i>
+                  Desactivar
+                </Button>
+                <Button style={{ marginTop: 20 }} variant="contained" color="primary" onClick={handleSave}>
+                  <i className="material-icons" style={{ fontSize: 20, marginRight: 5 }}>star</i>
+                  Eliminar Usuario
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Grid>
+      </div>
+    );
+  };
+  
+  export default PrePersonalizacion;*/

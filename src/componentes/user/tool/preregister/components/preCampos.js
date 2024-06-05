@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         alignItems: 'end',
         justifyContent: 'center',
-        width: '80%',
+        width: '100%',
         margin: theme.spacing(1),
     },
     // Styles for mobile
@@ -95,18 +95,12 @@ const PreCampos = () => {
     const classes = useStyles();
 
     const [formData, setFormData] = useState({
-        cantidadUsuarios: '',
-        titulo: '',
-        peso: false,
-        modoVoto: '',
-        autentificarVotacion: false,
-        envioPreguntas: false,
-        votacionSegmentada: false,
-        tipoLogin: '',
-        opcionMultiple: false,
-        fusionarVotacion: false,
-        smsVoto: false,
-        logoVotacion: null,
+        nombreDeCampo: '',
+        obligatorio: false,
+        relacion: '',
+        tipoDeCambio: '',
+        campoDeControl: false,
+        activo: false,
     });
 
     const handleInputChange = (e) => {
@@ -121,480 +115,265 @@ const PreCampos = () => {
 
     return (
         <div>
-            <Grid item xs={12} md={12} style={{ marginTop: 20 }}>
-                <div className={`${classes.buttonContainer} ${isDesktop ? classes.horizontal : ''}`}>
-                    <div className={classes.groupalineado}>
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Cantidad de Usuarios</Typography>
-                                </div>
-                                <div className={classes.cajones}>
-                                    <TextField
-                                        name="cantidadUsuarios"
-                                        value={formData.cantidadUsuarios}
-                                        onChange={handleInputChange}
-                                        style={{ width: '80%' }}
-                                        color='primary'
-                                        id="outlined-basic"
-                                        variant="outlined"
-                                    />
-                                </div>
+            <Grid container spacing={3} style={{ marginTop: 20 }}>
+                <Grid item xs={12} md={6}>
+                    {isDesktop ? (
+                        <div className={classes.alineado}>
+                            <div className={classes.element}>
+                                <Typography style={{ fontSize: 18, marginLeft: 15 }}>Nombre de Campo</Typography>
                             </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Cantidad de Usuarios</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <TextField
-                                        name="cantidadUsuarios"
-                                        value={formData.cantidadUsuarios}
+                            <div className={classes.cajones}>
+                                <TextField
+                                    name="nombreDeCampo"
+                                    value={formData.nombreDeCampo}
+                                    onChange={handleInputChange}
+                                    style={{ width: '80%' }}
+                                    color='primary'
+                                    id="outlined-basic"
+                                    variant="outlined"
+                                />
+                            </div>
+                        </div>
+                    ) : (
+                        <>
+                            <div className={classes.element}>
+                                <Typography style={{ fontSize: 18 }}>Nombre de Campo</Typography>
+                            </div>
+                            <div className={classes.alineadoMovile}>
+                                <TextField
+                                    name="nombreDeCampo"
+                                    value={formData.nombreDeCampo}
+                                    onChange={handleInputChange}
+                                    style={{ width: '100%' }}
+                                    color='primary'
+                                    id="outlined-basic"
+                                    variant="outlined"
+                                />
+                            </div>
+                        </>
+                    )}
+
+                    {isDesktop ? (
+                        <div className={classes.alineado}>
+                            <div className={classes.element}>
+                                <Typography style={{ fontSize: 18, marginLeft: 15 }}>Obligatorio</Typography>
+                            </div>
+                            <div className={classes.alineado}>
+                                <Checkbox
+                                    name="obligatorio"
+                                    checked={formData.obligatorio}
+                                    onChange={handleInputChange}
+                                    className={classes.largerCheckbox}
+                                    color="primary"
+                                />
+                            </div>
+                        </div>
+                    ) : (
+                        <>
+                            <div className={classes.element}>
+                                <Typography style={{ fontSize: 18 }}>Obligatorio</Typography>
+                            </div>
+                            <div className={classes.alineadoMovile}>
+                                <Checkbox
+                                    name="obligatorio"
+                                    checked={formData.obligatorio}
+                                    onChange={handleInputChange}
+                                    className={classes.largerCheckbox}
+                                    color="primary"
+                                />
+                            </div>
+                        </>
+                    )}
+
+                    {isDesktop ? (
+                        <div className={classes.alineado}>
+                            <div className={classes.element}>
+                                <Typography style={{ fontSize: 18, marginLeft: 15 }}>Relación</Typography>
+                            </div>
+                            <div className={classes.cajones}>
+                                <FormControl variant="outlined" className={classes.formControlSelect}>
+                                    <InputLabel id="relacion-label">Relación</InputLabel>
+                                    <Select
+                                        name="relacion"
+                                        labelId="relacion-label"
+                                        id="relacion"
+                                        value={formData.relacion}
                                         onChange={handleInputChange}
+                                        label="Relación"
                                         style={{ width: '100%' }}
-                                        color='primary'
-                                        id="outlined-basic"
-                                        variant="outlined"
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Titulo</Typography>
-                                </div>
-                                <div className={classes.cajones}>
-                                    <TextField
-                                        name="titulo"
-                                        value={formData.titulo}
-                                        onChange={handleInputChange}
-                                        style={{ width: '80%' }}
-                                        color='primary'
-                                        id="outlined-basic"
-                                        variant="outlined"
-                                    />
-                                </div>
+                                    >
+                                        <MenuItem value="">
+                                            <em>Seleccione</em>
+                                        </MenuItem>
+                                        <MenuItem value="Login">Login</MenuItem>
+                                        <MenuItem value="Nombre">Nombre</MenuItem>
+                                        <MenuItem value="Documento">Documento</MenuItem>
+                                        <MenuItem value="Telefono">Telefono</MenuItem>
+                                        <MenuItem value="Email">Email</MenuItem>
+                                        <MenuItem value="Equipo">Equipo</MenuItem>
+                                        <MenuItem value="Apellidos">Apellidos</MenuItem>
+                                        <MenuItem value="Otras Opciones">Otras Opciones</MenuItem>
+                                    </Select>
+                                </FormControl>
                             </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Titulo</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <TextField
-                                        name="titulo"
-                                        value={formData.titulo}
+                        </div>
+                    ) : (
+                        <>
+                            <div className={classes.element}>
+                                <Typography style={{ fontSize: 18 }}>Relación</Typography>
+                            </div>
+                            <div className={classes.alineadoMovile}>
+                                <FormControl variant="outlined" className={classes.SelectMovile}>
+                                    <InputLabel id="relacion-label">Relación</InputLabel>
+                                    <Select
+                                        name="relacion"
+                                        labelId="relacion-label"
+                                        id="relacion"
+                                        value={formData.relacion}
                                         onChange={handleInputChange}
+                                        label="Relación"
                                         style={{ width: '100%' }}
-                                        color='primary'
-                                        id="outlined-basic"
-                                        variant="outlined"
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Peso</Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <Checkbox
-                                        name="peso"
-                                        checked={formData.peso}
-                                        onChange={handleInputChange}
-                                        className={classes.largerCheckbox}
-                                        color="primary"
-                                    />
-                                </div>
+                                    >
+                                        <MenuItem value="">
+                                            <em>Seleccione</em>
+                                        </MenuItem>
+                                        <MenuItem value="Login">Login</MenuItem>
+                                        <MenuItem value="Nombre">Nombre</MenuItem>
+                                        <MenuItem value="Documento">Documento</MenuItem>
+                                        <MenuItem value="Telefono">Telefono</MenuItem>
+                                        <MenuItem value="Email">Email</MenuItem>
+                                        <MenuItem value="Equipo">Equipo</MenuItem>
+                                        <MenuItem value="Apellidos">Apellidos</MenuItem>
+                                        <MenuItem value="Otras Opciones">Otras Opciones</MenuItem>
+                                    </Select>
+                                </FormControl>
                             </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Peso</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <Checkbox
-                                        name="peso"
-                                        checked={formData.peso}
-                                        onChange={handleInputChange}
-                                        className={classes.largerCheckbox}
-                                        color="primary"
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Modo de Voto</Typography>
-                                </div>
-                                <div className={classes.cajones}>
-                                    <FormControl variant="outlined" className={classes.formControlSelect}>
-                                        <InputLabel id="modoVoto-label">Modo de Voto</InputLabel>
-                                        <Select
-                                            name="modoVoto"
-                                            labelId="modoVoto-label"
-                                            id="modoVoto"
-                                            value={formData.modoVoto}
-                                            onChange={handleInputChange}
-                                            label="Modo de Voto"
-                                            style={{ width: '100%' }}
-                                        >
-                                            <MenuItem value="">
-                                                <em>Modo de Voto</em>
-                                            </MenuItem>
-                                            <MenuItem value={10}>Seleccione</MenuItem>
-                                            <MenuItem value={20}>ReVoto</MenuItem>
-                                            <MenuItem value={30}>Primer Voto</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </div>
+                        </>
+                    )}
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    {isDesktop ? (
+                        <div className={classes.alineado}>
+                            <div className={classes.element}>
+                                <Typography style={{ fontSize: 18, marginLeft: 15 }}>Tipo de Cambio</Typography>
                             </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Modo de Voto</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <FormControl variant="outlined" className={classes.SelectMovile}>
-                                        <InputLabel id="modoVoto-label">Modo de Voto</InputLabel>
-                                        <Select
-                                            name="modoVoto"
-                                            labelId="modoVoto-label"
-                                            id="modoVoto"
-                                            value={formData.modoVoto}
-                                            onChange={handleInputChange}
-                                            label="Modo de Voto"
-                                            style={{ width: '100%' }}
-                                        >
-                                            <MenuItem value="">
-                                                <em>Modo de Voto</em>
-                                            </MenuItem>
-                                            <MenuItem value={10}>Seleccione</MenuItem>
-                                            <MenuItem value={20}>ReVoto</MenuItem>
-                                            <MenuItem value={30}>Primer Voto</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Autentificar Votación</Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <Checkbox
-                                        name="autentificarVotacion"
-                                        checked={formData.autentificarVotacion}
+                            <div className={classes.cajones}>
+                                <FormControl variant="outlined" className={classes.formControlSelect}>
+                                    <InputLabel id="tipoDeCampo-label">Tipo de Cambio</InputLabel>
+                                    <Select
+                                        name="tipoDeCambio"
+                                        labelId="tipoDeCampo-label"
+                                        id="tipoDeCampo"
+                                        value={formData.tipoDeCambio}
                                         onChange={handleInputChange}
-                                        className={classes.largerCheckbox}
-                                        color="primary"
-                                    />
-                                </div>
+                                        label="Tipo de Cambio"
+                                        style={{ width: '100%' }}
+                                    >
+                                        <MenuItem value="">
+                                            <em>Seleccione</em>
+                                        </MenuItem>
+                                        <MenuItem value="Numerico">Numerico</MenuItem>
+                                        <MenuItem value="Texto">Texto</MenuItem>
+                                        <MenuItem value="Telefono">Telefono</MenuItem>
+                                        <MenuItem value="Email">Email</MenuItem>
+                                    </Select>
+                                </FormControl>
                             </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Autentificar Votación</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <Checkbox
-                                        name="autentificarVotacion"
-                                        checked={formData.autentificarVotacion}
-                                        onChange={handleInputChange}
-                                        className={classes.largerCheckbox}
-                                        color="primary"
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Envío de Preguntas</Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <Checkbox
-                                        name="envioPreguntas"
-                                        checked={formData.envioPreguntas}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
+                        </div>
+                    ) : (
+                        <>
+                            <div className={classes.element}>
+                                <Typography style={{ fontSize: 18 }}>Tipo de Cambio</Typography>
                             </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Envío de Preguntas</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <Checkbox
-                                        name="envioPreguntas"
-                                        checked={formData.envioPreguntas}
+                            <div className={classes.alineadoMovile}>
+                                <FormControl variant="outlined" className={classes.SelectMovile}>
+                                    <InputLabel id="tipoDeCampo-label">Tipo de Cambio</InputLabel>
+                                    <Select
+                                        name="tipoDeCambio"
+                                        labelId="tipoDeCampo-label"
+                                        id="tipoDeCampo"
+                                        value={formData.tipoDeCambio}
                                         onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Votación Segmentada</Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <Checkbox
-                                        name="votacionSegmentada"
-                                        checked={formData.votacionSegmentada}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
+                                        label="Tipo de Cambio"
+                                        style={{ width: '100%' }}
+                                    >
+                                        <MenuItem value="">
+                                            <em>Seleccione</em>
+                                        </MenuItem>
+                                        <MenuItem value="Numerico">Numerico</MenuItem>
+                                        <MenuItem value="Texto">Texto</MenuItem>
+                                        <MenuItem value="Telefono">Telefono</MenuItem>
+                                        <MenuItem value="Email">Email</MenuItem>
+                                    </Select>
+                                </FormControl>
                             </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Votación Segmentada</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <Checkbox
-                                        name="votacionSegmentada"
-                                        checked={formData.votacionSegmentada}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
-                            </>
-                        )}
+                        </>
+                    )}
 
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Tipo de Login</Typography>
-                                </div>
-                                <div className={classes.cajones}>
-                                    <FormControl variant="outlined" className={classes.formControlSelect}>
-                                        <InputLabel id="tipoLogin-label">Tipo de Login</InputLabel>
-                                        <Select
-                                            name="tipoLogin"
-                                            labelId="tipoLogin-label"
-                                            id="tipoLogin"
-                                            value={formData.tipoLogin}
-                                            onChange={handleInputChange}
-                                            label="Tipo de Login"
-                                            style={{ width: '100%' }}
-                                        >
-                                            <MenuItem value="">
-                                                <em>Seleccione</em>
-                                            </MenuItem>
-                                            <MenuItem value={10}>Usuario y Contraseña</MenuItem>
-                                            <MenuItem value={20}>Certificado Digital</MenuItem>
-                                            <MenuItem value={30}>Ambos</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </div>
+                    {isDesktop ? (
+                        <div className={classes.alineado}>
+                            <div className={classes.element}>
+                                <Typography style={{ fontSize: 18, marginLeft: 15 }}>Campo de control</Typography>
                             </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Tipo de Login</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <FormControl variant="outlined" className={classes.SelectMovile}>
-                                        <InputLabel id="tipoLogin-label">Tipo de Login</InputLabel>
-                                        <Select
-                                            name="tipoLogin"
-                                            labelId="tipoLogin-label"
-                                            id="tipoLogin"
-                                            value={formData.tipoLogin}
-                                            onChange={handleInputChange}
-                                            label="Tipo de Login"
-                                            style={{ width: '100%' }}
-                                        >
-                                            <MenuItem value="">
-                                                <em>Seleccione</em>
-                                            </MenuItem>
-                                            <MenuItem value={10}>Usuario y Contraseña</MenuItem>
-                                            <MenuItem value={20}>Certificado Digital</MenuItem>
-                                            <MenuItem value={30}>Ambos</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </div>
-                            </>
-                        )}
+                            <div className={classes.alineado}>
+                                <Checkbox
+                                    name="campoDeControl"
+                                    checked={formData.campoDeControl}
+                                    onChange={handleInputChange}
+                                    color="primary"
+                                    className={classes.largerCheckbox}
+                                />
+                            </div>
+                        </div>
+                    ) : (
+                        <>
+                            <div className={classes.element}>
+                                <Typography style={{ fontSize: 18 }}>Campo de Control</Typography>
+                            </div>
+                            <div className={classes.alineadoMovile}>
+                                <Checkbox
+                                    name="campoDeControl"
+                                    checked={formData.campoDeControl}
+                                    onChange={handleInputChange}
+                                    color="primary"
+                                    className={classes.largerCheckbox}
+                                />
+                            </div>
+                        </>
+                    )}
 
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Opción Multiple</Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <Checkbox
-                                        name="opcionMultiple"
-                                        checked={formData.opcionMultiple}
-                                        onChange={handleInputChange}
-                                        className={classes.largerCheckbox}
-                                        color="primary"
-                                    />
-                                </div>
+                    {isDesktop ? (
+                        <div className={classes.alineado}>
+                            <div className={classes.element}>
+                                <Typography style={{ fontSize: 18, marginLeft: 15 }}>Activo</Typography>
                             </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Opción Multiple</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <Checkbox
-                                        name="opcionMultiple"
-                                        checked={formData.opcionMultiple}
-                                        onChange={handleInputChange}
-                                        className={classes.largerCheckbox}
-                                        color="primary"
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
                             <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Fusionar Votación</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <Checkbox
-                                        name="fusionarVotacion"
-                                        checked={formData.fusionarVotacion}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
+                                <Checkbox
+                                    name="activo"
+                                    checked={formData.activo}
+                                    onChange={handleInputChange}
+                                    color="primary"
+                                    className={classes.largerCheckbox}
+                                />
                             </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>Fusionar Votación</Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <Checkbox
-                                        name="fusionarVotacion"
-                                        checked={formData.fusionarVotacion}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>SMS de Voto</Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <Checkbox
-                                        name="smsVoto"
-                                        checked={formData.smsVoto}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
+                        </div>
+                    ) : (
+                        <>
+                            <div className={classes.element}>
+                                <Typography style={{ fontSize: 18 }}>Activo</Typography>
                             </div>
-                        ) : (
-                            <>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18 }}>SMS de Voto</Typography>
-                                </div>
-                                <div className={classes.alineadoMovile}>
-                                    <Checkbox
-                                        name="smsVoto"
-                                        checked={formData.smsVoto}
-                                        onChange={handleInputChange}
-                                        color="primary"
-                                        className={classes.largerCheckbox}
-                                    />
-                                </div>
-                            </>
-                        )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}>Logo de Votación</Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <div className={classes.roots}>
-                                        <input
-                                            accept="image/*"
-                                            className={classes.input}
-                                            id="logoVotacion"
-                                            name="logoVotacion"
-                                            multiple
-                                            type="file"
-                                            onChange={handleInputChange}
-                                        />
-                                        <label htmlFor="logoVotacion">
-                                            <Button variant="contained" color="primary" component="span">
-                                                Cargar Imagen
-                                            </Button>
-                                        </label>
-                                        <input accept="image/*" className={classes.input} id="icon-button-file" type="file" />
-                                        <label htmlFor="icon-button-file">
-                                            <IconButton color="primary" aria-label="upload picture" component="span">
-                                                <PhotoCamera />
-                                            </IconButton>
-                                        </label>
-                                    </div>
-                                </div>
+                            <div className={classes.alineadoMovile}>
+                                <Checkbox
+                                    name="activo"
+                                    checked={formData.activo}
+                                    onChange={handleInputChange}
+                                    color="primary"
+                                    className={classes.largerCheckbox}
+                                />
                             </div>
-                        ) : (
-                            <>
-                                <div className={classes.alineadoMovile}>
-                                    <div className={classes.element}>
-                                        <Typography style={{ fontSize: 18 }}>Logo de Votación</Typography>
-                                    </div>
-                                    <div className={classes.roots}>
-                                        <input
-                                            accept="image/*"
-                                            className={classes.input}
-                                            id="logoVotacion"
-                                            name="logoVotacion"
-                                            multiple
-                                            type="file"
-                                            onChange={handleInputChange}
-                                        />
-                                        <label htmlFor="logoVotacion">
-                                            <Button variant="contained" color="primary" component="span">
-                                                Cargar Imagen
-                                            </Button>
-                                        </label>
-                                        <input accept="image/*" className={classes.input} id="icon-button-file" type="file" />
-                                        <label htmlFor="icon-button-file">
-                                            <IconButton color="primary" aria-label="upload picture" component="span">
-                                                <PhotoCamera />
-                                            </IconButton>
-                                        </label>
-                                    </div>
-                                </div>
-                            </>
-                        )}
-                    </div>
-                </div>
+                        </>
+                    )}
+                </Grid>
             </Grid>
         </div>
     );
