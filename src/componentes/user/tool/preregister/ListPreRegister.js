@@ -1,87 +1,94 @@
-import React, { useState } from "react";
-import { Container, Grid, Button, Dialog, DialogContentText, DialogTitle, DialogContent, DialogActions, TextField } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { Container, Grid, Button, Dialog, DialogContentText, DialogTitle, DialogContent, DialogActions, TextField, Snackbar, Checkbox } from "@material-ui/core";
 import { DataGrid } from '@material-ui/data-grid';
+import { Alert, AlertTitle } from '@material-ui/lab';
+import { makeStyles } from '@material-ui/core/styles';
 import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from "@material-ui/core";
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
-import { v4 as uuidv4 } from 'uuid';
 import style from "../../../Tool/Style";
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import { Link } from 'react-router-dom';
+import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
+import { getEnterpriseMail ,SaveEnterpriseMail , DeleteEnterpriseMail } from "../../../../actions/MailAction";
+import { validateForm, isFormValid } from "../../tool/mail/validaciones/mail"; // Asegúrate de que la ruta sea correcta
+
+
+const useStyles = makeStyles((theme) => ({
+    customAlert: {
+        fontSize: '1.25rem',
+    },
+    customAlertTitle: {
+        fontSize: '1.5rem',
+    },
+}));
 
 const PreRegister = (props) => {
     const [openModal, setOpenModal] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
-    const [editId, setEditId] = useState(null);
-    const [triggerRerender, setTriggerRerender] = useState(false);
     const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
     const [rowToDelete, setRowToDelete] = useState(null);
-    const [successMessage, setSuccessMessage] = useState("");
-    const [updateMessage, setUpdateMessage] = useState("");
-    const [deleteMessage, setDeleteMessage] = useState("");
     const [errors, setErrors] = useState({});
     const [MailData, setMailData] = useState({
-        Nombre: '',
-        Url: '',
-        Estado: '',
+        id: 0,
+        enterpriseId: '',
+        description: '',
+        mail: '',   
+        //isActive: false,
+        //isPredeterminate: false,
+        // Agrega los otros campos aquí
     });
-    const [rows, setRows] = useState([]);
+    const [alertMessage, setAlertMessage] = useState("");
+    const [alertSeverity, setAlertSeverity] = useState("success");
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+    /* traer empresas */
+    const [mail, setMail] = useState([]);
+
+    useEffect(() => {
+        consumeGetMail();
+    }, [openModal]);
+
+    const consumeGetMail = () => {
+        getEnterpriseMail().then( response => {
+            console.log("my response", response);
+            if(response.isSuccess){
+                setMail(response.model);
+            }
+        });
+    }
+
+    const handleInputChange = (e) => {
+        const { name, value , type, checked } = e.target;
+        setMailData(prevState => ({
+            ...prevState,
+            [name]: type === 'checkbox' ? checked : value
+        }));
+    };
+
 
     const handleOpenModal = () => {
         setOpenModal(true);
     };
 
     const handleCloseModal = () => {
-        setMailData({
-            Nombre: '',
-            Url: '',
-            Estado: '',
-        });
-        setIsEditMode(false);
-        setEditId(null);
-        setErrors({});
+        resetForm();
         setOpenModal(false);
     };
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setMailData(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
-    };
-
-    const toggleButtonColor = (id) => {
-        setRows(prevRows => {
-            return prevRows.map(row => {
-                if (row.id === id) {
-                    const updatedRow = { ...row, isGreen: !row.isGreen };
-                    console.log(`Row ID: ${id}, Is Green: ${updatedRow.isGreen}`);
-                    return updatedRow;
-                }
-                return row;
-            });
-        });
-    };
-
     const columns = [
-        { field: 'id', headerName: 'ID', width: 100 },
-        { field: 'name', headerName: 'Nombre', width: 350 },
-        { field: 'url', headerName: 'Url', width: 350 },
-        { field: 'estado', headerName: 'Estado', width: 200,
-        renderCell: (params) => params.value ? "Sí" : "No" },
+    { field: 'id', headerName: 'ID', width: 100 },
+    //{ field: 'enterpriseId', headerName: 'Enterprise ID', width: 150 },
+    { field: 'description', headerName: 'nombre', width: 350 },
+    { field: 'mail', headerName: 'email', width: 350 },
+    { field: 'isActive', headerName: 'Active', width: 150,
+      renderCell: (params) => params.value ? "Yes" : "No"  // Render "Yes" or "No" based on the value
+    },
+    { field: 'isPredeterminate', headerName: 'Predeterminate', width: 200,
+      renderCell: (params) => params.value ? "Yes" : "No"  // Render "Yes" or "No" based on the value
+    },
+        // Aquí puedes agregar más columnas según los campos que tengas
         {
-            field: 'actions', headerName: 'Acciones', width: 350, renderCell: (params) => (
+            field: 'actions', headerName: 'Acciones', width: 150, renderCell: (params) => (
                 <React.Fragment>
-                    <Button
-                        variant="contained"
-                        onClick={() => toggleButtonColor(params.row.id)}
-                        style={{
-                            backgroundColor: params.row.isGreen ? 'green' : 'grey',
-                            color: '#fff',
-                            marginRight: '8px'
-                        }}
-                    >
-                        Toggle Color
-                    </Button>
                     <Button
                         variant="contained"
                         color="secondary"
@@ -95,7 +102,7 @@ const PreRegister = (props) => {
                         variant="contained"
                         aria-label="Eliminar"
                         onClick={() => handleDeleteClick(params.row.id)}
-                        style={{ backgroundColor: 'red', color: '#fff' }} 
+                        style={{ backgroundColor: 'red', color: '#fff' }}  // Ajusta el color de fondo a rojo
                     >
                         <DeleteOutlineOutlinedIcon />
                     </Button>
@@ -105,45 +112,43 @@ const PreRegister = (props) => {
     ];
     
     const handleSubmit = () => {
-        if (!validate()) {
-            console.error("Validación fallida.");
-            return; 
-        }
-        const newRow = {
-            id: editId || uuidv4(),
-            name: MailData.Nombre,
-            url: MailData.Url,
-            estado: MailData.Estado === "Sí",
-            isGreen: false // Initial state for the toggle button
-        };
+        const validationErrors = validateForm(MailData);
+        setErrors(validationErrors);
+        
+        if (!isFormValid(validationErrors)) return;
 
-        if (isEditMode) {
-            setRows(prevRows => prevRows.map(row => row.id === editId ? newRow : row));
-            setIsEditMode(false);
-            setUpdateMessage("Datos de la empresa actualizados correctamente.");
-            setTimeout(() => setUpdateMessage(""), 3000);
-        } else {
-            setRows(prevRows => [...prevRows, newRow]);
-            setSuccessMessage("Empresa agregada correctamente.");
-            setTimeout(() => setSuccessMessage(""), 3000);
-        }
+        SaveEnterpriseMail({
+            ...MailData,
+            isActive: MailData.isActive ? 1 : 0,
+            isPredeterminate: MailData.isPredeterminate ? 1 : 0,
+        })
+        //SaveEnterpriseMail(MailData)
+                .then(response => {
+                console.log('Se registró exitosamente la empresa en la base de datos', response);
+                setAlertMessage((isEditMode) ? "Empresa actualizada correctamente.":"Empresa agregada correctamente.");
+                setAlertSeverity("success");
+                setSnackbarOpen(true);
 
-        setMailData({ Nombre: '', Url: '', Estado: '' });
+        }).catch(error => {
+                console.error('Error al registrar la empresa en la base de datos', error);
+                setAlertMessage("Error al registrar la empresa.");
+                setAlertSeverity("error");
+                setSnackbarOpen(true);
+        });
+
+        resetForm();
         setOpenModal(false);
     };
 
+
     const handleEdit = (id) => {
-        const rowToEdit = rows.find(row => row.id === id);
-        if (rowToEdit) {
-            setMailData({
-                Nombre: rowToEdit.name,
-                Url: rowToEdit.url,
-                Estado: rowToEdit.estado ? "Sí" : "No",
-            });
-            setEditId(id);
-            setIsEditMode(true);
-            setOpenModal(true);
-        }
+        const empresaRow = mail.find(row => row.id === id);
+        console.log("empresaRow" , empresaRow);
+        
+        setMailData(empresaRow);
+        setIsEditMode(true);
+        setOpenModal(true);
+        
     };
 
     const handleDeleteClick = (id) => {
@@ -153,22 +158,34 @@ const PreRegister = (props) => {
 
     const handleDelete = () => {
         if (rowToDelete !== null) {
-            setRows(prevRows => prevRows.filter(row => row.id !== rowToDelete));
-            setRowToDelete(null);
+            DeleteEnterpriseMail(rowToDelete).then(response => {
+                console.log('Se ha eliminado exitosamente la empresa en la base de datos', response);
+                setAlertMessage("Empresa eliminada correctamente.");
+                setAlertSeverity("success");
+                setSnackbarOpen(true);
+                setRowToDelete(null);
+            }).catch(error => {
+                console.error('Error al eliminar la empresa en la base de datos', error);
+                setAlertMessage("Error al eliminar la empresa.");
+                setAlertSeverity("error");
+                setSnackbarOpen(true);
+            });
         }
         setOpenConfirmDialog(false);
-        setDeleteMessage("Registro eliminado correctamente.");
-        setTimeout(() => setDeleteMessage(""), 3000);
     };
 
-    const validate = () => {
-        let tempErrors = {};
-        tempErrors.Nombre = MailData.Nombre ? "" : "El nombre de la empresa es obligatorio.";
-        tempErrors.Url = (MailData.Url && /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(MailData.Url)) ? "" : "URL no válida.";
-
-        setErrors(tempErrors);
-        return Object.values(tempErrors).every(x => x === "");
+    const resetForm = () => {
+        setMailData({ });
+        setIsEditMode(false);
+        setErrors({});
     };
+
+    const handleCloseSnackbar = () => {
+        setSnackbarOpen(false);
+    };
+
+    
+      
 
     return (
         <Container maxWidth={false} style={style.barSup}>
@@ -176,41 +193,32 @@ const PreRegister = (props) => {
                 <h1 style={style.title}>Establecer Pre Registro</h1>
                 <label style={style.titleinfo}>Listado de Pre Registro</label>
             </Container>
-            <>
-                {successMessage && (
-                    <div style={style.successMessage}>
-                        {successMessage}
-                    </div>
-                )}
-                {updateMessage && (
-                    <div style={style.updateMessage}>
-                        {updateMessage}
-                    </div>
-                )}
-                {deleteMessage && (
-                    <div style={style.deleteMessage}>
-                        {deleteMessage}
-                    </div>
-                )}
-            </>
+            <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={handleCloseSnackbar}>
+                <Alert onClose={handleCloseSnackbar} severity={alertSeverity} variant="filled" style={style.customAlert}>
+                    <AlertTitle style={style.customAlertTitle}>{alertSeverity === "success" ? "Exito" : "Error"}</AlertTitle>
+                    {alertMessage}
+                </Alert>
+            </Snackbar>
             <Container maxWidth={false} style={style.barContain}>
                 <Grid style={style.gridcontainer}>
                     <Container maxWidth={false}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} md={12}>
                                 <Grid item xs={12} md={6}>
-                                    <Button
+                                    <Link to="/auth/botonesnavegacionpr" /*className={classes.link}*/>
+                                        <Button
                                         color="primary"
-                                        onClick={handleOpenModal}
+                                        //onClick={handleNewPreRegister}
                                         style={{ marginTop: 20, marginBottom: 20, width: 250 }}
                                         variant="outlined"
                                         size="medium"
-                                    >
-                                        Nuevo Pre Registro
-                                    </Button>
+                                        >
+                                            Nuevo Pre Registro
+                                        </Button>                   
+                                    </Link>
                                 </Grid>
                                 <div style={{ height: 400, width: '100%', marginTop: 20 }}>
-                                    <DataGrid key={triggerRerender} rows={rows} columns={columns} pageSize={5} checkboxSelection />
+                                    <DataGrid rows={mail} columns={columns} pageSize={5} checkboxSelection />
                                 </div>
                             </Grid>
                         </Grid>
@@ -218,45 +226,70 @@ const PreRegister = (props) => {
                 </Grid>
             </Container>
             <Dialog open={openModal} onClose={handleCloseModal}>
-                <DialogTitle>Registrar Nuevo Email</DialogTitle>
+                <DialogTitle>{isEditMode ? "Editar Email" : "Registrar Nuevo Email"}</DialogTitle>
                 <DialogContent>
-                    <form>
-                        <TextField
-                            name="Nombre"
-                            value={MailData.Nombre}
-                            onChange={handleInputChange}
-                            label="Nombre"
-                            fullWidth
-                            margin="normal"
-                            error={!!errors.Nombre}
-                            helperText={errors.Nombre}
-                        />
-                        <TextField
-                            name="Url"
-                            value={MailData.Url}
-                            onChange={handleInputChange}
-                            label="Url"
-                            fullWidth
-                            margin="normal"
-                            error={!!errors.Url}
-                            helperText={errors.Url}
-                        />
-                        <FormControl component="fieldset" margin="normal">
-                            <FormLabel component="legend">Predeterminado</FormLabel>
-                            <RadioGroup
-                                name="Estado"
-                                value={MailData.Estado}
-                                onChange={handleInputChange}
-                                row
-                            >
-                                <FormControlLabel value="Sí" control={<Radio />} label="Sí" />
-                                <FormControlLabel value="No" control={<Radio />} label="No" />
-                            </RadioGroup>
-                        </FormControl>
+                <form>
+                    <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    name="description"
+                                    value={MailData.description}
+                                    onChange={handleInputChange}
+                                    label="Descripción"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.description}
+                                    helperText={errors.description}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    name="mail"
+                                    value={MailData.mail}
+                                    onChange={handleInputChange}
+                                    label="Correo"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.mail}
+                                    helperText={errors.mail}
+                                />
+                            </Grid>
+                            
+                            <Grid item xs={12}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            name="isActive"
+                                            checked={MailData.isActive}
+                                            onChange={handleInputChange}
+                                        />
+                                    }
+                                    label="Activo"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            name="isPredeterminate"
+                                            checked={MailData.isPredeterminate}
+                                            onChange={handleInputChange}
+                                        />
+                                    }
+                                    label="Predeterminado"
+                                />
+                            </Grid>
+                            
+                        </Grid>
                     </form>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseModal} color="secondary">
+                <Button onClick={() => {
+                        setOpenModal(false);
+                        setIsEditMode(false);
+                        handleCloseModal();
+
+                    }} color="secondary">
                         Cancelar
                     </Button>
                     <Button onClick={handleSubmit} color="primary">
@@ -273,14 +306,14 @@ const PreRegister = (props) => {
                 <DialogTitle id="alert-dialog-title">{"Confirmar eliminar "}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        ¿Está seguro que desea eliminar?
+                        ¿Esta seguro que desea eliminar?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpenConfirmDialog(false)} color="primary">
                         NO
                     </Button>
-                    <Button onClick={handleDelete} color="primary" autoFocus>
+                    <Button onClick={() => handleDelete()} color="primary" autoFocus>
                         SI
                     </Button>
                 </DialogActions>
@@ -290,3 +323,5 @@ const PreRegister = (props) => {
 }
 
 export default PreRegister;
+
+

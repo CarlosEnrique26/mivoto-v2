@@ -91,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Principal = () => {
+const PrePersonalizacion = () => {
     const classes = useStyles();
 
     const [formData, setFormData] = useState({
@@ -109,25 +109,13 @@ const Principal = () => {
         logoVotacion: null,
     });
 
-    const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
-
     const handleInputChange = (e) => {
         const { name, value, type, checked, files } = e.target;
-        if (type === 'file') {
-            const file = files[0];
-            setFormData(prevState => ({
-                ...prevState,
-                [name]: file
-            }));
-            setImagePreviewUrl(URL.createObjectURL(file));
-        } else {
-            setFormData(prevState => ({
-                ...prevState,
-                [name]: type === 'checkbox' ? checked : value
-            }));
-        }
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value
+        }));
     };
-
 
     const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
@@ -571,7 +559,6 @@ const Principal = () => {
                                                 <PhotoCamera />
                                             </IconButton>
                                         </label>
-                                    
                                     </div>
                                 </div>
                             </div>
@@ -606,34 +593,6 @@ const Principal = () => {
                                 </div>
                             </>
                         )}
-
-                        {isDesktop ? (
-                            <div className={classes.alineado}>
-                                <div className={classes.element}>
-                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}></Typography>
-                                </div>
-                                <div className={classes.alineado}>
-                                    <div className={classes.roots}>
-                                        {imagePreviewUrl && (
-                                            <img src={imagePreviewUrl} alt="Logo Preview" className={classes.imagePreview} />
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <div className={classes.alineadoMovile}>
-                                    <div className={classes.element}>
-                                        <Typography style={{ fontSize: 18 }}></Typography>
-                                    </div>
-                                    <div className={classes.roots}>
-                                        {imagePreviewUrl && (
-                                            <img src={imagePreviewUrl} alt="Logo Preview" className={classes.imagePreview} />
-                                        )}
-                                    </div>
-                                </div>
-                            </>
-                        )}
                     </div>
                 </div>
             </Grid>
@@ -641,4 +600,4 @@ const Principal = () => {
     );
 }
 
-export default Principal;
+export default PrePersonalizacion;

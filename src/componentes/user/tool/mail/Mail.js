@@ -30,8 +30,8 @@ const Mail = (props) => {
         enterpriseId: '',
         description: '',
         mail: '',   
-        isActive: 0,
-        isPredeterminate: 0,
+        //isActive: false,
+        //isPredeterminate: false,
         // Agrega los otros campos aquí
     });
     const [alertMessage, setAlertMessage] = useState("");
@@ -58,7 +58,7 @@ const Mail = (props) => {
         const { name, value , type, checked } = e.target;
         setMailData(prevState => ({
             ...prevState,
-            [name]: type === 'checkbox' ? (checked ? 1 : 0) : value
+            [name]: type === 'checkbox' ? checked : value
         }));
     };
 
@@ -115,7 +115,12 @@ const Mail = (props) => {
         
         if (!isFormValid(validationErrors)) return;
 
-        SaveEnterpriseMail(MailData)
+        SaveEnterpriseMail({
+            ...MailData,
+            isActive: MailData.isActive ? 1 : 0,
+            isPredeterminate: MailData.isPredeterminate ? 1 : 0,
+        })
+        //SaveEnterpriseMail(MailData)
                 .then(response => {
                 console.log('Se registró exitosamente la empresa en la base de datos', response);
                 setAlertMessage((isEditMode) ? "Empresa actualizada correctamente.":"Empresa agregada correctamente.");
@@ -244,12 +249,13 @@ const Mail = (props) => {
                                     helperText={errors.mail}
                                 />
                             </Grid>
+                            
                             <Grid item xs={12}>
                                 <FormControlLabel
                                     control={
                                         <Checkbox
                                             name="isActive"
-                                            checked={MailData.isActive === 1}
+                                            checked={MailData.isActive}
                                             onChange={handleInputChange}
                                         />
                                     }
@@ -261,13 +267,14 @@ const Mail = (props) => {
                                     control={
                                         <Checkbox
                                             name="isPredeterminate"
-                                            checked={MailData.isPredeterminate === 1}
+                                            checked={MailData.isPredeterminate}
                                             onChange={handleInputChange}
                                         />
                                     }
                                     label="Predeterminado"
                                 />
                             </Grid>
+                            
                         </Grid>
                     </form>
                 </DialogContent>

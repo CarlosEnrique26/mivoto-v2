@@ -11,6 +11,7 @@ import AppNavbar from "./componentes/navegacion/AppNavbar";
 import PagPrincipal from "./componentes/seguridad/PagPrincipal";
 import ListPreRegister from "./componentes/user/tool/preregister/ListPreRegister";
 import PreRegister from "./componentes/user/tool/preregister/PreRegister";
+import PrePrincipal from "./componentes/user/tool/preregister/components/prePrincipal";
 import Mail from "./componentes/user/tool/mail/Mail";
 import IndexDirect from "./componentes/user/main/votodirecto/IndexDirect";
 import IndexDiferido from "./componentes/user/main/votodiferido/IndexDiferido";
@@ -30,6 +31,9 @@ import Votaciones from "./componentes/user/tool/mantenimiento/Votaciones";
 import Empresas from "./componentes/user/tool/mantenimiento/Empresas";
 import Perfiles from "./componentes/user/tool/mantenimentoUsuario/Perfiles";
 import Roles from "./componentes/user/tool/mantenimentoUsuario/Roles";
+import NavButtonsPr from "./componentes/user/tool/preregister/NavButtonsPr";
+import PrePersonalizacion from "./componentes/user/tool/preregister/components/prePersonalizacion";
+import PreCampos from "./componentes/user/tool/preregister/components/preCampos";
 
 
 function App() {
@@ -56,6 +60,19 @@ function App() {
                             <AppNavbar />
                             <ListPreRegister />
                         </Route>
+                        <Route exact path="/auth/preprincipal">
+                            <AppNavbar />
+                            <PrePrincipal/>
+                        </Route>
+                        <Route exact path="/auth/prepersonalizacion">
+                            <AppNavbar/>
+                            <PrePersonalizacion/>
+                        </Route>
+                        <Route exact path="/auth/precampos">
+                            <AppNavbar/>
+                            <PreCampos/>
+                        </Route>
+
                         <Route exact path="/auth/preregister">
                             <AppNavbar />
                             <PreRegister />
@@ -139,6 +156,10 @@ function App() {
                         <Route exact path="/auth/botonesnavegacionJ">
                             <AppNavbar />
                             <NavButtonsJ />
+                        </Route>
+                        <Route exact path="/auth/botonesnavegacionpr">
+                            <AppNavbar />
+                            <NavButtonsPr/>
                         </Route>
                     </Switch>
                 </Grid>
