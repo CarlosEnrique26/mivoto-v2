@@ -27,11 +27,11 @@ const Mail = (props) => {
     const [errors, setErrors] = useState({});
     const [MailData, setMailData] = useState({
         id: 0,
-        enterpriseId: '',
+        enterpriseId: 1,
         description: '',
         mail: '',   
-        //isActive: false,
-        //isPredeterminate: false,
+        isActive: false,
+        isPredeterminate: false,
         // Agrega los otros campos aquí
     });
     const [alertMessage, setAlertMessage] = useState("");
@@ -56,6 +56,9 @@ const Mail = (props) => {
 
     const handleInputChange = (e) => {
         const { name, value , type, checked } = e.target;
+        console.log("resultado", name)
+        console.log("resultado", checked)
+        console.log("resultado", type)
         setMailData(prevState => ({
             ...prevState,
             [name]: type === 'checkbox' ? checked : value
@@ -115,12 +118,8 @@ const Mail = (props) => {
         
         if (!isFormValid(validationErrors)) return;
 
-        SaveEnterpriseMail({
-            ...MailData,
-            isActive: MailData.isActive ? 1 : 0,
-            isPredeterminate: MailData.isPredeterminate ? 1 : 0,
-        })
-        //SaveEnterpriseMail(MailData)
+        console.log("maildata ", MailData);
+        SaveEnterpriseMail(MailData)
                 .then(response => {
                 console.log('Se registró exitosamente la empresa en la base de datos', response);
                 setAlertMessage((isEditMode) ? "Empresa actualizada correctamente.":"Empresa agregada correctamente.");
