@@ -2,10 +2,8 @@ import React, { useState, useEffect } from "react";
 import style from "../Tool/Style";
 import { Container, Typography, Grid, TextField, Button, Link ,
         FormControlLabel,Checkbox,CardMedia,Box, makeStyles} from "@material-ui/core";
-//import { loginUser } from '../../actions/UserAction';
-//import { useStateValue } from '../../context/store';
-//import { withRouter } from "react-router-dom"; 
-//import swal from 'sweetalert';
+import { loginUser } from '../../actions/LoginAction';
+
 
 const useStyles = makeStyles((theme) =>({
     seccionDesktop: {

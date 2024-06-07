@@ -12,11 +12,17 @@ import {
   Select,
   MenuItem,
   InputLabel,
-  FormControl
+  FormControl,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
 } from "@material-ui/core";
+import { LockOutlined } from "@material-ui/icons";
 import style from "../Tool/Style";
 import { validateForm } from "../seguridad/validaciones/ValidacionRegistro";
-import { SaveUserCredential } from "../../actions/LoginAction";
+import { SaveUserCredential } from "../../actions/RegistroUsuarioAction";
 
 const useStyles = makeStyles((theme) => ({
   seccionDesktop: {
@@ -70,6 +76,7 @@ const RegistrarUsuario = (props) => {
   const [passConfirm, setPassConfirm] = useState('');
   const [confirmTerm, setConfirmTerm] = useState(false);
   const [errors, setErrors] = useState({});
+  const [openModal, setOpenModal] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -102,7 +109,7 @@ const RegistrarUsuario = (props) => {
         SaveUserCredential(newuser)
           .then(response => {
             console.log('User saved successfully:', response);
-            props.history.push("/auth/login");
+            setOpenModal(true); // Open modal on success
           })
           .catch(error => {
             console.error('Error saving user:', error);
@@ -116,6 +123,11 @@ const RegistrarUsuario = (props) => {
       ...newuser,
       confirmTerm
     });
+  };
+
+  const handleClose = () => {
+    setOpenModal(false);
+    props.history.push("/auth/login");
   };
 
   return (
@@ -171,9 +183,9 @@ const RegistrarUsuario = (props) => {
                     <MenuItem value="">
                       <em>Seleccione</em>
                     </MenuItem>
-                    <MenuItem value={"1"}>NIF</MenuItem>
-                    <MenuItem value={"2"}>CIF</MenuItem>
-                    <MenuItem value={"3"}>NIE</MenuItem>
+                    <MenuItem value={"NIF"}>NIF</MenuItem>
+                    <MenuItem value={"CIF"}>CIF</MenuItem>
+                    <MenuItem value={"NIE"}>NIE</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -276,6 +288,24 @@ const RegistrarUsuario = (props) => {
               </Typography>
             )}
           </form>
+          <Dialog
+            open={openModal}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{"Redirección a Login"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Será redirigido a la pantalla de login.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                Aceptar
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Grid>
       </Grid>
     </Container>
