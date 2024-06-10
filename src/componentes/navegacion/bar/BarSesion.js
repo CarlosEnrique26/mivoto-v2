@@ -3,6 +3,7 @@ import { IconButton, Toolbar, Typography, makeStyles, Button, Avatar, Drawer } f
 import { MenuIzquierda } from "./menuIzquierda";
 import { MenuDerecha } from "./menuDerecha";
 import { withRouter } from "react-router-dom"
+import { useStateValue } from "../../../context/store";
 
 const useStyles = makeStyles((theme) =>({
     seccionDesktop : {
@@ -37,7 +38,7 @@ const useStyles = makeStyles((theme) =>({
 
 export const BarSesion = (props) => {
     const classes = useStyles();
-    //const [(sessionUsuario), dispatch] = useStateValue
+    const [{sesionUsuario}, dispatch] = useStateValue();
     const [abrirMenuIzquierda, setAbrirMenuIzquierda] = useState(false);
 
     const [abrirMenuDerecha, setAbrirMenuDerecha] = useState(false);
@@ -55,7 +56,7 @@ export const BarSesion = (props) => {
     }
 
     const salirSesionApp = () => {
-        //localStorage.remove('token_seguridad');
+        localStorage.remove('token_seguridad');
         props.history.push("/auth/login")
     }
 
@@ -87,7 +88,7 @@ export const BarSesion = (props) => {
                     <MenuDerecha 
                         classes={classes} 
                         salirSesion={salirSesionApp}
-                        //usuario={sesionUsuario.Usuario}
+                        usuario={sesionUsuario.Usuario}
                         />
                 </div>
             </Drawer>
@@ -104,7 +105,8 @@ export const BarSesion = (props) => {
                         Salir
                     </Button>
                     <Button color="inherit">
-                        {"Nombre de Usuario"}
+                        
+                        {sesionUsuario ? sesionUsuario.usuario.nameUser: ''}
                     </Button>
                     <Avatar>
 

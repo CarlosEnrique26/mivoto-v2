@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import theme from "./theme/theme"
 import RegistrarUsuario from "./componentes/seguridad/RegistrarUsuario";
@@ -34,9 +34,18 @@ import Roles from "./componentes/user/tool/mantenimentoUsuario/Roles";
 import NavButtonsPr from "./componentes/user/tool/preregister/NavButtonsPr";
 import PrePersonalizacion from "./componentes/user/tool/preregister/components/prePersonalizacion";
 import PreCampos from "./componentes/user/tool/preregister/components/preCampos";
+import { useStateValue } from "./context/store";
 
 
 function App() {
+    const [{sesionUsuario}, dispatch] = useStateValue();
+    const [ iniciaApp, setIniciaApp] = useState(false);
+
+    useEffect(() => {
+        if(!iniciaApp) {
+            
+        }
+    },[iniciaApp])
 
     return (
         <Router>
