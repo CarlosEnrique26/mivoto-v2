@@ -36,7 +36,7 @@ export const validateForm = (newuser, passConfirm, confirmTerm) => {
     // Password validation
     if (!newuser.password.trim()) {
         newErrors.password = "Por favor ingrese una contraseña.";
-    } else if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(newuser.password.trim())) {
+    } else if (!/^[a-zA-Z0-9]+$/.test(newuser.password.trim())) /*else if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(newuser.password.trim()))*/{
         newErrors.password = "La contraseña debe tener al menos 8 caracteres, una letra y un número.";
     }
 

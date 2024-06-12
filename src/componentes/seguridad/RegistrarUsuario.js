@@ -71,7 +71,7 @@ const RegistrarUsuario = (props) => {
     logoName: '',
     logoPath: '',
     passConfirm: '',
-    IsActive: false,
+    IsActive: true,
   });
   const [passConfirm, setPassConfirm] = useState('');
   const [confirmTerm, setConfirmTerm] = useState(false);
@@ -183,9 +183,9 @@ const RegistrarUsuario = (props) => {
                     <MenuItem value="">
                       <em>Seleccione</em>
                     </MenuItem>
-                    <MenuItem value={"NIF"}>NIF</MenuItem>
-                    <MenuItem value={"CIF"}>CIF</MenuItem>
-                    <MenuItem value={"NIE"}>NIE</MenuItem>
+                    <MenuItem value={"1"}>NIF</MenuItem>
+                    <MenuItem value={"2"}>CIF</MenuItem>
+                    <MenuItem value={"3"}>NIE</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -294,7 +294,7 @@ const RegistrarUsuario = (props) => {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">{"Redirección a Login"}</DialogTitle>
+            <DialogTitle id="alert-dialog-title">{"Registro Exitoso"}</DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
                 Será redirigido a la pantalla de login.

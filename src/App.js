@@ -57,6 +57,8 @@ function App() {
                         <Route exact path="/auth/login" component={Login}/>
                         <Route exact path="/auth/registrarusuario" component={RegistrarUsuario}/>
                         <Route exact path="/auth/passrecovery" component={PassRecovery}/>
+                        <Route exact path="/auth/pagprincipal" component={PagPrincipal}/>
+                        
                         <Route exact path="/auth/profileuser">
                             <AppNavbar />
                             <ProfileUser/>

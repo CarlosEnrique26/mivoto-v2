@@ -13,7 +13,6 @@ import {
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { validateLogin } from '../seguridad/validaciones/ValidacionLogin';
-import axios from 'axios';
 import style from "../Tool/Style";
 import { loginUser } from "../../actions/LoginAction";
 

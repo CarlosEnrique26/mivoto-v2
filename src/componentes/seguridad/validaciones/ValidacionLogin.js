@@ -1,6 +1,7 @@
 export const validateLogin = (usuario) => {
     const usernameRegex = /^[a-zA-Z0-9]+$/;
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const passwordRegex = /^[a-zA-Z0-9]+$/;
+    //const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
   
     if (!usuario.Login.trim()) {
       return "Por favor ingrese su nombre de usuario.";
