@@ -10,7 +10,7 @@ instance.isCancel = axios.isCancel;
     export const loginUser = (user, dispatch,props) => {
         console.log("Login:", user);
         return new Promise((resolve, reject) => {
-            HttpClient.post('/UserCredentialApi/Login', user).then(response => {
+            instance.post('/UserCredentialApi/Login', user).then(response => {
                 let result = response.data;  
                 console.log(result);
                 resolve(result); 

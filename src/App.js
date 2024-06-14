@@ -35,6 +35,7 @@ import NavButtonsPr from "./componentes/user/tool/preregister/NavButtonsPr";
 import PrePersonalizacion from "./componentes/user/tool/preregister/components/prePersonalizacion";
 import PreCampos from "./componentes/user/tool/preregister/components/preCampos";
 import { useStateValue } from "./context/store";
+import RutaSegura from "./componentes/navegacion/RutaSegura";
 
 
 function App() {
@@ -57,121 +58,36 @@ function App() {
                         <Route exact path="/auth/login" component={Login}/>
                         <Route exact path="/auth/registrarusuario" component={RegistrarUsuario}/>
                         <Route exact path="/auth/passrecovery" component={PassRecovery}/>
-                        <Route exact path="/auth/pagprincipal" component={PagPrincipal}/>
-                        
-                        <Route exact path="/auth/profileuser">
-                            <AppNavbar />
-                            <ProfileUser/>
-                        </Route>
-                        <Route exact path="/auth/pagprincipal">
-                            <AppNavbar />
-                            <PagPrincipal />
-                        </Route>
-                        <Route exact path="/auth/listpreregister">
-                            <AppNavbar />
-                            <ListPreRegister />
-                        </Route>
-                        <Route exact path="/auth/preprincipal">
-                            <AppNavbar />
-                            <PrePrincipal/>
-                        </Route>
-                        <Route exact path="/auth/prepersonalizacion">
-                            <AppNavbar/>
-                            <PrePersonalizacion/>
-                        </Route>
-                        <Route exact path="/auth/precampos">
-                            <AppNavbar/>
-                            <PreCampos/>
-                        </Route>
-
-                        <Route exact path="/auth/preregister">
-                            <AppNavbar />
-                            <PreRegister />
-                        </Route>
-                        <Route exact path="/auth/mail">
-                            <AppNavbar />
-                            <Mail />
-                        </Route>
-                        <Route exact path="/auth/sonido">
-                            <AppNavbar />
-                            <Sonido />
-                        </Route>
-                        <Route exact path="/auth/email">
-                            <AppNavbar />
-                            <Email />
-                        </Route>
-                        <Route exact path="/auth/votaciones">
-                            <AppNavbar />
-                            <Votaciones />
-                        </Route>
-                        <Route exact path="/auth/empresas">
-                            <AppNavbar />
-                            <Empresas />
-                        </Route>
-                        <Route exact path="/auth/usuario">
-                            <AppNavbar />
-                            <Usuarios />
-                        </Route>
-                        <Route exact path="/auth/perfiles">
-                            <AppNavbar />
-                            <Perfiles />
-                        </Route>
-                        <Route exact path="/auth/roles">
-                            <AppNavbar />
-                            <Roles />
-                        </Route>
-                        <Route exact path="/auth/indexdirect">
-                            <AppNavbar />
-                            <IndexDirect />
-                        </Route>
-                        <Route exact path="/auth/indexdiferido">
-                            <AppNavbar />
-                            <IndexDiferido />
-                        </Route>
-                        <Route exact path="/auth/indexjuegos">
-                            <AppNavbar />
-                            <IndexJuegos />
-                        </Route>
-                        <Route exact path="/auth/soporte">
-                            <AppNavbar />
-                            <IndexDiferido />
-                        </Route>
-                        <Route exact path="/auth/botonesnavegacion">
-                            <AppNavbar />
-                            <NavButtons />
-                        </Route>
-                        <Route exact path="/auth/votacion">
-                            <AppNavbar />
-                            <Votacion />
-                        </Route>
-                        <Route exact path="/auth/question">
-                            <AppNavbar />
-                            <Question />
-                        </Route>
-                        <Route exact path="/auth/Controls">
-                            <AppNavbar />
-                            <Controls />
-                        </Route>
-                        <Route exact path="/auth/ControlesDif">
-                            <AppNavbar />
-                            <ControlesDif />
-                        </Route>
-                        <Route exact path="/auth/ControlesJ">
-                            <AppNavbar />
-                            <ControlesJ />
-                        </Route>
-                        <Route exact path="/auth/botonesnavegaciondif">
-                            <AppNavbar />
-                            <NavButtonsDif />
-                        </Route>
-                        <Route exact path="/auth/botonesnavegacionJ">
-                            <AppNavbar />
-                            <NavButtonsJ />
-                        </Route>
-                        <Route exact path="/auth/botonesnavegacionpr">
-                            <AppNavbar />
-                            <NavButtonsPr/>
-                        </Route>
+                        <RutaSegura exact path="/auth/profileuser" component={ProfileUser}/>
+                        {/* Routes with AppNavbar */}
+                        <Route exact path="/auth/pagprincipal" component={() => <><AppNavbar /><PagPrincipal /></>} />
+                        <Route exact path="/auth/profileuser" component={() => <><AppNavbar /><ProfileUser /></>} />
+                        <Route exact path="/auth/listpreregister" component={() => <><AppNavbar /><ListPreRegister /></>} />
+                        <Route exact path="/auth/preprincipal" component={() => <><AppNavbar /><PrePrincipal /></>} />
+                        <Route exact path="/auth/prepersonalizacion" component={() => <><AppNavbar /><PrePersonalizacion /></>} />
+                        <Route exact path="/auth/precampos" component={() => <><AppNavbar /><PreCampos /></>} />
+                        <Route exact path="/auth/preregister" component={() => <><AppNavbar /><PreRegister /></>} />
+                        <Route exact path="/auth/mail" component={() => <><AppNavbar /><Mail /></>} />
+                        <Route exact path="/auth/sonido" component={() => <><AppNavbar /><Sonido /></>} />
+                        <Route exact path="/auth/email" component={() => <><AppNavbar /><Email /></>} />
+                        <Route exact path="/auth/votaciones" component={() => <><AppNavbar /><Votaciones /></>} />
+                        <Route exact path="/auth/empresas" component={() => <><AppNavbar /><Empresas /></>} />
+                        <Route exact path="/auth/usuario" component={() => <><AppNavbar /><Usuarios /></>} />
+                        <Route exact path="/auth/perfiles" component={() => <><AppNavbar /><Perfiles /></>} />
+                        <Route exact path="/auth/roles" component={() => <><AppNavbar /><Roles /></>} />
+                        <Route exact path="/auth/indexdirect" component={() => <><AppNavbar /><IndexDirect /></>} />
+                        <Route exact path="/auth/indexdiferido" component={() => <><AppNavbar /><IndexDiferido /></>} />
+                        <Route exact path="/auth/indexjuegos" component={() => <><AppNavbar /><IndexJuegos /></>} />
+                        <Route exact path="/auth/soporte" component={() => <><AppNavbar /><IndexDiferido /></>} />
+                        <Route exact path="/auth/botonesnavegacion" component={() => <><AppNavbar /><NavButtons /></>} />
+                        <Route exact path="/auth/votacion" component={() => <><AppNavbar /><Votacion /></>} />
+                        <Route exact path="/auth/question" component={() => <><AppNavbar /><Question /></>} />
+                        <Route exact path="/auth/Controls" component={() => <><AppNavbar /><Controls /></>} />
+                        <Route exact path="/auth/ControlesDif" component={() => <><AppNavbar /><ControlesDif /></>} />
+                        <Route exact path="/auth/ControlesJ" component={() => <><AppNavbar /><ControlesJ /></>} />
+                        <Route exact path="/auth/botonesnavegaciondif" component={() => <><AppNavbar /><NavButtonsDif /></>} />
+                        <Route exact path="/auth/botonesnavegacionJ" component={() => <><AppNavbar /><NavButtonsJ /></>} />
+                        <Route exact path="/auth/botonesnavegacionpr" component={() => <><AppNavbar /><NavButtonsPr /></>} />
                     </Switch>
                 </Grid>
             </MuiThemeProvider>

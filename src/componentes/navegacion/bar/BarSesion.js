@@ -56,7 +56,15 @@ export const BarSesion = (props) => {
     }
 
     const salirSesionApp = () => {
-        localStorage.remove('token_seguridad');
+        console.log('salir sesion')
+        localStorage.removeItem('token_seguridad');
+
+        dispatch ({
+            type : "SALIR SESION",
+            nuevoUsuario : null,
+            autenticado : false
+        })
+        
         props.history.push("/auth/login")
     }
 

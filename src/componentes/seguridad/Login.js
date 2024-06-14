@@ -15,6 +15,8 @@ import { useHistory } from "react-router-dom";
 import { validateLogin } from '../seguridad/validaciones/ValidacionLogin';
 import style from "../Tool/Style";
 import { loginUser } from "../../actions/LoginAction";
+import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
+import { useStateValue } from "../../context/store";
 
 const useStyles = makeStyles((theme) => ({
   seccionDesktop: {
@@ -31,7 +33,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Login = () => {
+const Login = (props) => {
+  const [{usuarioSesion}, dispatch] = useStateValue();
   const classes = useStyles();
   const history = useHistory();
   const [usuario, setUsuario] = useState({
@@ -48,7 +51,7 @@ const Login = () => {
   };
 
   const loginUsuarioBoton = (e) => {
-    e.preventDefault();
+    e.preventDefault();/*
     const validationError = validateLogin(usuario);
     if (validationError) {
       alert(validationError);
@@ -65,7 +68,23 @@ const Login = () => {
         .catch(error => {
             alert('Nombre de usuario o contraseña incorrectos');
             console.error('Error de inicio de sesión', error);
-    });
+    });*/
+
+    loginUser(usuario, dispatch).then(response => {
+        if (response.status === 200) {
+          console.log('login exitoso', response);
+          window.localStorage.setItem('token_seguridad', response.data.token);
+          props.history.push("/auth/pagprincipal");
+          }else{
+            dispatch({
+              type : "OPEN_SNACKBAR",
+              openMensaje : {
+                open : true,
+                mensaje : "Las credenciales del usuario son incorrectas"
+              }
+            })
+          }
+      })
      
   };
 
@@ -162,4 +181,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default withRouter(Login);

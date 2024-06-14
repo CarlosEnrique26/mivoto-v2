@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "../Tool/Style";
 import { Container, TextField, Typography, Grid, Button, Avatar, Card } from "@material-ui/core";
 import { LockOutlined } from "@material-ui/icons";
@@ -23,6 +23,15 @@ const ProfileUser = (props) => {
             [name] : value
         }));
     }
+
+    useEffect (() => {
+        setUsuario(sesionUsuario.usuario);
+        setUsuario((...anterior) => ({
+            ...anterior,
+            fotoUrl: sesionUsuario.usuario.imagenPerfil,
+            imagenPerfil : null
+        }));
+    }, []);
 
     const ProfileUserBoton = e => {
         e.preventDefault();
