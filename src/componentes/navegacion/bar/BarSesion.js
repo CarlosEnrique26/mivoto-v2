@@ -64,7 +64,7 @@ export const BarSesion = (props) => {
             nuevoUsuario : null,
             autenticado : false
         })
-        
+
         props.history.push("/auth/login")
     }
 
@@ -109,7 +109,7 @@ export const BarSesion = (props) => {
                 <div className={classes.grow}></div>
 
                 <div className={classes.seccionDesktop} >
-                    <Button color="inherit" >
+                    <Button color="inherit" onClick={salirSesionApp}>
                         Salir
                     </Button>
                     <Button color="inherit">

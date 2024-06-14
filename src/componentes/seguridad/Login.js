@@ -69,12 +69,12 @@ const Login = (props) => {
             alert('Nombre de usuario o contraseña incorrectos');
             console.error('Error de inicio de sesión', error);
     });*/
-
+/*
     loginUser(usuario, dispatch).then(response => {
-        if (response.status === 200) {
+        if (response.isSuccess) {
           console.log('login exitoso', response);
           window.localStorage.setItem('token_seguridad', response.data.token);
-          props.history.push("/auth/pagprincipal");
+          props.history.push("/auth/profileuser");
           }else{
             dispatch({
               type : "OPEN_SNACKBAR",
@@ -87,6 +87,30 @@ const Login = (props) => {
       })
      
   };
+  */
+  loginUser(usuario, dispatch).then(response => {
+    if (response.isSuccess) {
+      console.log('login exitoso', response);
+      if (response.model && response.model.token) {
+        window.localStorage.setItem('token_seguridad', response.model.token);
+        history.push("/auth/profileuser");
+      } else {
+        alert('Error en la respuesta del servidor');
+      }
+    }
+  })
+  .catch(error => {
+    alert('Nombre de usuario o contraseña incorrectos');
+    console.error('Error de inicio de sesión', error);
+    dispatch({
+      type: "OPEN_SNACKBAR",
+      openMensaje: {
+        open: true,
+        mensaje: "Las credenciales del usuario son incorrectas"
+      }
+    });
+  });
+};
 
   const OlvidadoContraseña = (e) => {
     e.preventDefault();

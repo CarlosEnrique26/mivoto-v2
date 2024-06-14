@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import style from "../Tool/Style";
 import { Container, TextField, Typography, Grid, Button, Avatar, Card } from "@material-ui/core";
 import { LockOutlined } from "@material-ui/icons";
+import { useStateValue } from "../../context/store";
 
 
 const ProfileUser = (props) => {
+    const [{sesionUsuario}, dispatch] = useStateValue();
     const [usuario, setUsuario] = useState({
         nombres: '',
         apellidos: '',
@@ -23,7 +25,7 @@ const ProfileUser = (props) => {
             [name] : value
         }));
     }
-
+    
     useEffect (() => {
         setUsuario(sesionUsuario.usuario);
         setUsuario((...anterior) => ({
@@ -32,7 +34,7 @@ const ProfileUser = (props) => {
             imagenPerfil : null
         }));
     }, []);
-
+    
     const ProfileUserBoton = e => {
         e.preventDefault();
         console.log('login exitoso', usuario)
