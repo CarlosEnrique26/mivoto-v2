@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Grid, Button, Dialog, DialogContentText, DialogTitle, DialogContent, DialogActions, TextField, Snackbar } from "@material-ui/core";
+import { Container, Grid, Button, Dialog, DialogContentText, DialogTitle, DialogContent, DialogActions, TextField, Snackbar, MenuItem, FormControl, InputLabel, Select } from "@material-ui/core";
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { DataGrid } from '@material-ui/data-grid';
 import { makeStyles } from '@material-ui/core/styles';
@@ -267,16 +267,27 @@ const Empresas = (props) => {
                             error={!!errors.address}
                             helperText={errors.address}
                         />
-                        <TextField
-                            name="typeDocument"
-                            value={empresaData.typeDocument}
-                            onChange={handleInputChange}
-                            label="Tipo de Documento"
-                            fullWidth
-                            margin="normal"
-                            error={!!errors.typeDocument}
-                            helperText={errors.typeDocument}
-                        />
+                        
+                        <FormControl fullWidth variant="outlined">
+                            <InputLabel>Tipo de Documento</InputLabel>
+                            <Select
+                                value={empresaData.typeDocument}
+                                onChange={handleInputChange}
+                                name="typeDocument"
+                                label="Tipo de Documento"
+                                fullWidth
+                                margin="normal"
+                                error={!!errors.typeDocument}
+                                helperText={errors.typeDocument}
+                            >
+                                <MenuItem value="">
+                                <em>Seleccione</em>
+                                </MenuItem>
+                                <MenuItem value={"1"}>NIF</MenuItem>
+                                <MenuItem value={"2"}>CIF</MenuItem>
+                                <MenuItem value={"3"}>NIE</MenuItem>
+                            </Select>
+                        </FormControl>
                         <TextField
                             name="addressEmail"
                             value={empresaData.addressEmail}

@@ -42,6 +42,7 @@ import { loginUser } from "./actions/LoginAction";
 function App() {
     const [{sesionUsuario}, dispatch] = useStateValue();
     const [ iniciaApp, setIniciaApp] = useState(false);
+    
 
     useEffect(() => {
         if(!iniciaApp) {
@@ -52,7 +53,13 @@ function App() {
           })
         }
     },[iniciaApp])
-
+  /*
+    useEffect(() => {
+      if (!iniciaApp) {
+        setIniciaApp(true);
+      }
+    }, [iniciaApp]);
+    */
     return (
         <Router>
         <MuiThemeProvider theme={theme}>
@@ -74,7 +81,7 @@ function App() {
                   <PagPrincipal />
                 </>
               )} />
-              <RutaSegura exact path="/auth/listpreregister" component={() => (
+              <Route exact path="/auth/listpreregister" component={() => (
                 <>
                   <AppNavbar />
                   <ListPreRegister />

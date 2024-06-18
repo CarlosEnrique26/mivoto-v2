@@ -53,10 +53,12 @@ const Login = (props) => {
   const loginUsuarioBoton = e => {
     e.preventDefault();
     loginUser(usuario, dispatch).then(response => {
+      // sin token
       if (response.isSuccess) {
         console.log('login exitoso', response);
         history.push("/auth/profileuser");
       }
+      // con token
       /*if (response.isSuccess) {
           console.log('login exitoso', response);
           if (response.model && response.model.token) {

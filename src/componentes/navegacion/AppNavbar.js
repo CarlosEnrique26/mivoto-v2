@@ -10,8 +10,8 @@ const AppNavbar = () => {
     return sesionUsuario
         ? (sesionUsuario.autenticado == true ? <AppBar position="static"><BarSesion/></AppBar> : null)
         : null;
-
-       /*
+    
+    /*
     return(
     <AppBar position="static">
     <BarSesion />

@@ -7,7 +7,7 @@ instance.isCancel = axios.isCancel;
 
 export const getEnterprises = () => {
     return new Promise((resolve, reject) => {
-        HttpClient.get('/EnterpriseApi/GetEnterprises').then(response => {
+        instance.get('/EnterpriseApi/GetEnterprises').then(response => {
             resolve(response.data);
         }).catch(error => {
             resolve(error.response);

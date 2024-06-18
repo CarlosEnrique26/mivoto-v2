@@ -7,14 +7,13 @@ instance.isCancel = axios.isCancel;
 
 export const getEnterpriseMail = () => {
     return new Promise((resolve, reject) => {
-        HttpClient.get('/EnterpriseApi/GetEnterpriseMail?enterpriseId=1').then(response => {
+        instance.get('/EnterpriseApi/GetEnterpriseMail?enterpriseId=1').then(response => {
             resolve(response.data);
         }).catch(error => {
             resolve(error.response);
         })
     })
 }
-
 export const SaveEnterpriseMail = (model) => {
     console.log("model ", model);
     return new Promise((resolve, reject) => {

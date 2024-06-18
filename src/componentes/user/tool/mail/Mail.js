@@ -50,10 +50,12 @@ const Mail = (props) => {
             console.log("my response", response);
             if(response.isSuccess){
                 setMail(response.model);
+            }else{
+                console.error("Failed to fetch mail:", response);
             }
         });
     }
-
+    
     const handleInputChange = (e) => {
         const { name, value , type, checked } = e.target;
         console.log("resultado", name)
@@ -125,7 +127,7 @@ const Mail = (props) => {
                 setAlertMessage((isEditMode) ? "Empresa actualizada correctamente.":"Empresa agregada correctamente.");
                 setAlertSeverity("success");
                 setSnackbarOpen(true);
-
+                //consumeGetMail(); // Refresh the mail list
         }).catch(error => {
                 console.error('Error al registrar la empresa en la base de datos', error);
                 setAlertMessage("Error al registrar la empresa.");
@@ -161,6 +163,7 @@ const Mail = (props) => {
                 setAlertSeverity("success");
                 setSnackbarOpen(true);
                 setRowToDelete(null);
+               // consumeGetMail(); // Refresh the mail list
             }).catch(error => {
                 console.error('Error al eliminar la empresa en la base de datos', error);
                 setAlertMessage("Error al eliminar la empresa.");
