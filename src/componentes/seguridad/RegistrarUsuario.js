@@ -23,6 +23,7 @@ import { LockOutlined } from "@material-ui/icons";
 import style from "../Tool/Style";
 import { validateForm } from "../seguridad/validaciones/ValidacionRegistro";
 import { SaveUserCredential } from "../../actions/RegistroUsuarioAction";
+import { useStateValue } from "../../context/store";
 
 const useStyles = makeStyles((theme) => ({
   seccionDesktop: {
@@ -77,6 +78,7 @@ const RegistrarUsuario = (props) => {
   const [confirmTerm, setConfirmTerm] = useState(false);
   const [errors, setErrors] = useState({});
   const [openModal, setOpenModal] = useState(false);
+  const [{sesionUsuario}, dispatch] = useStateValue();
 
   const handleChange = (e) => {
     const { name, value } = e.target;

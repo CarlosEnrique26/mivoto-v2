@@ -13,15 +13,16 @@ export const loginUser = (user, dispatch) => {
             console.log(result);
             if (result.isSuccess && result.model) {
                 dispatch({
-                    type: "SESSION_START",
-                    session: result.model,
-                    authenticated: true
+                    type: "INICIAR_SESION",
+                    usuario: result.model,
+                    autenticado: true
                 });
                 resolve(result);
             } else {
                 reject(result); // Manejo de errores
             }
         }).catch(error => {
+           
             reject(error); // Manejo de errores
         });
     });

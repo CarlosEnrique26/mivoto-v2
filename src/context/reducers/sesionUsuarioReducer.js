@@ -1,11 +1,11 @@
 export const initialState = {
     usuario: {
-        nameUser: '',
-        lastName: '',
-        typeDocument: '',
-        dni: '',
-        email: '',
-        logoPath: '',
+        nombres: '',
+        apellidos: '',
+        username:'',
+        email:'',
+        password:'',
+        ConfirmarPassword:''
     },
     autenticado: false
 };

@@ -36,6 +36,7 @@ import NavButtonsPr from "./componentes/user/tool/preregister/NavButtonsPr";
 import PrePersonalizacion from "./componentes/user/tool/preregister/components/prePersonalizacion";
 import PreCampos from "./componentes/user/tool/preregister/components/preCampos";
 import RutaSegura from "./componentes/navegacion/RutaSegura";
+import { loginUser } from "./actions/LoginAction";
 
 
 function App() {
@@ -44,7 +45,11 @@ function App() {
 
     useEffect(() => {
         if(!iniciaApp) {
-            
+          loginUser(dispatch).then(response =>{
+            setIniciaApp(true);
+          }).catch(error => {
+            setIniciaApp(true);
+          })
         }
     },[iniciaApp])
 
@@ -58,11 +63,11 @@ function App() {
               <Route exact path="/auth/registrarusuario" component={RegistrarUsuario} />
               <Route exact path="/auth/passrecovery" component={PassRecovery} />
               <RutaSegura exact path="/auth/profileuser" component={() => (
-                <>
-                  <AppNavbar />
-                  <ProfileUser />
-                </>
-              )} />
+              <>
+                <AppNavbar />
+                <ProfileUser />
+              </>
+            )} />
               <RutaSegura exact path="/auth/pagprincipal" component={() => (
                 <>
                   <AppNavbar />

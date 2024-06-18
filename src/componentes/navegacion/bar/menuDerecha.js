@@ -5,11 +5,12 @@ import { Link } from "react-router-dom"
 export const MenuDerecha = ({
     classes,
     usuario,
-    salirSesion
+    salirSesion,
+    iniciarSesion
 }) => (
     <div className={classes.list}>
         <List>
-            <ListItem button component={Link}>
+            <ListItem button onClick={iniciarSesion}>
                 <Avatar/>
                 <ListItemText classes={{primary : classes.listItemText}} primary= "Usuario"/>
             </ListItem>

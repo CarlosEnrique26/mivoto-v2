@@ -71,6 +71,11 @@ export const BarSesion = (props) => {
     const abrirMenuDerechaAction = () => {
         setAbrirMenuDerecha(true);
     }
+
+    const iniciarSesionApp = () => {
+        props.history.push("/auth/profileuser")
+    }
+
     return (
         <React.Fragment>
             <Drawer
@@ -96,6 +101,7 @@ export const BarSesion = (props) => {
                     <MenuDerecha 
                         classes={classes} 
                         salirSesion={salirSesionApp}
+                        iniciarSesion={salirSesionApp}
                         usuario={sesionUsuario.Usuario}
                         />
                 </div>
@@ -112,9 +118,9 @@ export const BarSesion = (props) => {
                     <Button color="inherit" onClick={salirSesionApp}>
                         Salir
                     </Button>
-                    <Button color="inherit">
+                    <Button color="inherit" on Click={iniciarSesionApp}>
                         
-                        {sesionUsuario ? sesionUsuario.usuario.nameUser: ''}
+                        {/*sesionUsuario ? sesionUsuario.usuario.nombres:*/ "INICIAR SESION"}
                     </Button>
                     <Avatar>
 

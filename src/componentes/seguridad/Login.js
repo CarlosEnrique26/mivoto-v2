@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Login = (props) => {
-  const [{usuarioSesion}, dispatch] = useStateValue();
+  const [{ sesionUsuario }, dispatch] = useStateValue();
   const classes = useStyles();
   const history = useHistory();
   const [usuario, setUsuario] = useState({
@@ -50,68 +50,62 @@ const Login = (props) => {
     }));
   };
 
-  const loginUsuarioBoton = (e) => {
-    e.preventDefault();/*
-    const validationError = validateLogin(usuario);
+  const loginUsuarioBoton = e => {
+    e.preventDefault();
+    loginUser(usuario, dispatch).then(response => {
+      if (response.isSuccess) {
+        console.log('login exitoso', response);
+        history.push("/auth/profileuser");
+      }
+      /*if (response.isSuccess) {
+          console.log('login exitoso', response);
+          if (response.model && response.model.token) {
+              window.localStorage.setItem('token_seguridad', response.model.token);
+              history.push("/auth/pagprincipal");
+          } else {
+              alert('Error en la respuesta del servidor');
+          }
+      }*/
+  }).catch(error => {
+      if (error.message === "Network Error") {
+          alert('Error de red. Por favor, verifica tu conexión y el servidor.');
+      } else {
+          alert('Nombre de usuario o contraseña incorrectos');
+      }
+      console.error('Error de inicio de sesión', error);
+      dispatch({
+          type: "OPEN_SNACKBAR",
+          openMensaje: {
+              open: true,
+              mensaje: "Las credenciales del usuario son incorrectas"
+          }
+      });
+  });
+};
+   /* const validationError = validateLogin(usuario);
     if (validationError) {
       alert(validationError);
       return;
-    }
- 
     loginUser(usuario).then(response => {
         if (response.status === 200) {
             console.log('login exitoso', response)
             window.localStorage.setItem('token_seguridad', response.data.token)
-            history.push("/auth/pagprincipal");
+            // Guardar la información del usuario en el estado global
+            dispatch({
+              type: "INICIAR_SESION",
+              usuario: response.model,
+              autenticado: true,
+          });
+
+          props.history.push("/auth/profileuser");
         }
     })
         .catch(error => {
             alert('Nombre de usuario o contraseña incorrectos');
             console.error('Error de inicio de sesión', error);
-    });*/
-/*
-    loginUser(usuario, dispatch).then(response => {
-        if (response.isSuccess) {
-          console.log('login exitoso', response);
-          window.localStorage.setItem('token_seguridad', response.data.token);
-          props.history.push("/auth/profileuser");
-          }else{
-            dispatch({
-              type : "OPEN_SNACKBAR",
-              openMensaje : {
-                open : true,
-                mensaje : "Las credenciales del usuario son incorrectas"
-              }
-            })
-          }
-      })
-     
-  };
-  */
-  loginUser(usuario, dispatch).then(response => {
-    if (response.isSuccess) {
-      console.log('login exitoso', response);
-      if (response.model && response.model.token) {
-        window.localStorage.setItem('token_seguridad', response.model.token);
-        history.push("/auth/profileuser");
-      } else {
-        alert('Error en la respuesta del servidor');
-      }
-    }
-  })
-  .catch(error => {
-    alert('Nombre de usuario o contraseña incorrectos');
-    console.error('Error de inicio de sesión', error);
-    dispatch({
-      type: "OPEN_SNACKBAR",
-      openMensaje: {
-        open: true,
-        mensaje: "Las credenciales del usuario son incorrectas"
-      }
     });
-  });
 };
-
+*/
   const OlvidadoContraseña = (e) => {
     e.preventDefault();
     console.log("ha olvidado su contraseña", usuario);

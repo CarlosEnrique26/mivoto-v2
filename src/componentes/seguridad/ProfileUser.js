@@ -25,7 +25,20 @@ const ProfileUser = (props) => {
             [name] : value
         }));
     }
-    
+
+    useEffect(() => {
+        if (sesionUsuario) {
+            setUsuario({
+                nombres: sesionUsuario.nombres || '',
+                apellidos: sesionUsuario.apellidos || '',
+                username: sesionUsuario.username || '',
+                email: sesionUsuario.email || '',
+                password: '',
+                ConfirmarPassword: ''
+            });
+        }
+    }, [sesionUsuario]);
+    /*
     useEffect (() => {
         setUsuario(sesionUsuario.usuario);
         setUsuario((...anterior) => ({
@@ -34,7 +47,7 @@ const ProfileUser = (props) => {
             imagenPerfil : null
         }));
     }, []);
-    
+    */
     const ProfileUserBoton = e => {
         e.preventDefault();
         console.log('login exitoso', usuario)
