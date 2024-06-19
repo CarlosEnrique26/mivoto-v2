@@ -10,8 +10,10 @@ import {
   MenuItem,
   makeStyles
 } from '@material-ui/core';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import JoditEditor from 'jodit-react';
+import { VotationContext } from '../../../../../../../context/VotationContext';
+import { SaveVotation } from '../../../../../../../actions/VotationAction';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -124,36 +126,30 @@ const Textos = () => {
   const editor2 = useRef(null);
   const editor3 = useRef(null);
   const editor4 = useRef(null);
-  const [content1, setContent1] = useState('');
-  const [content2, setContent2] = useState('');
-  const [content3, setContent3] = useState('');
-  const [content4, setContent4] = useState('');
+  const { votationData, setVotationData } = useContext(VotationContext);
   const [selectValue, setSelectValue] = useState('');
   const classes = useStyles();
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
   const handleSelectChange = (event) => {
-    setSelectValue(event.target.value);
+    const { value } = event.target;
+    setSelectValue(value);
+    setVotationData((prevState) => ({
+      ...prevState,
+      positionInfo: value,
+    }));
   };
 
   const handleSave = () => {
-    console.log("Editor Content 1:", content1);
-    console.log("Editor Content 2:", content2);
-    console.log("Editor Content 3:", content3);
-    console.log("Editor Content 4:", content4);
-    console.log("Selected Value:", selectValue);
-
-    // Clear the form
-    setContent1('');
-    setContent2('');
-    setContent3('');
-    setContent4('');
-    setSelectValue('');
+    SaveVotation(votationData)
+      .then((response) => {
+        console.log("Votación guardada con éxito:", response);
+      })
+      .catch((error) => {
+        console.error("Error al guardar la votación:", error);
+      });
   };
 
-  const config = {
-    readonly: false, // All options from https://xdsoft.net/jodit/doc/
-  };
 
   return (
     <div>
@@ -169,10 +165,10 @@ const Textos = () => {
                   <div className={classes.editorContainer}>
                     <JoditEditor
                       ref={editor1}
-                      value={content1}
-                      config={config}
+                      value={votationData.TextClosed}  // TextClosed
+                      config={{ readonly: false }}
                       tabIndex={1}
-                      onBlur={(newContent) => setContent1(newContent)}
+                      onBlur={(newContent) => setVotationData(prevState => ({ ...prevState, TextClosed: newContent }))}
                       onChange={(newContent) => { }}
                       className={classes.editor}
                     />
@@ -188,10 +184,10 @@ const Textos = () => {
                   <div className={classes.editorContainer}>
                     <JoditEditor
                       ref={editor1}
-                      value={content1}
-                      config={config}
+                      value={votationData.TextClosed}  // TextClosed
+                      config={{ readonly: false }}
                       tabIndex={1}
-                      onBlur={(newContent) => setContent1(newContent)}
+                      onBlur={(newContent) => setVotationData(prevState => ({ ...prevState, TextClosed: newContent }))}
                       onChange={(newContent) => { }}
                       className={classes.editor}
                     />
@@ -209,10 +205,10 @@ const Textos = () => {
                   <div className={classes.editorContainer}>
                     <JoditEditor
                       ref={editor2}
-                      value={content2}
-                      config={config}
+                      value={votationData.TextFinish}
+                      config={{ readonly: false }}
                       tabIndex={1}
-                      onBlur={(newContent) => setContent2(newContent)}
+                      onBlur={(newContent) => setVotationData(prevState => ({ ...prevState, TextFinish: newContent }))}
                       onChange={(newContent) => { }}
                       className={classes.editor}
                     />
@@ -228,10 +224,10 @@ const Textos = () => {
                   <div className={classes.editorContainer}>
                     <JoditEditor
                       ref={editor2}
-                      value={content2}
-                      config={config}
+                      value={votationData.TextFinish}  // TextFinish
+                      config={{ readonly: false }}
                       tabIndex={1}
-                      onBlur={(newContent) => setContent2(newContent)}
+                      onBlur={(newContent) => setVotationData(prevState => ({ ...prevState, TextFinish: newContent }))}
                       onChange={(newContent) => { }}
                       className={classes.editor}
                     />
@@ -249,10 +245,10 @@ const Textos = () => {
                   <div className={classes.editorContainer}>
                     <JoditEditor
                       ref={editor3}
-                      value={content3}
-                      config={config}
+                      value={votationData.TextVoteSend}  // TextVoteSend
+                      config={{ readonly: false }}
                       tabIndex={1}
-                      onBlur={(newContent) => setContent3(newContent)}
+                      onBlur={(newContent) => setVotationData(prevState => ({ ...prevState, TextVoteSend: newContent }))}
                       onChange={(newContent) => { }}
                       className={classes.editor}
                     />
@@ -268,10 +264,10 @@ const Textos = () => {
                   <div className={classes.editorContainer}>
                     <JoditEditor
                       ref={editor3}
-                      value={content3}
-                      config={config}
+                      value={votationData.TextVoteSend}  // TextVoteSend
+                      config={{ readonly: false }}
                       tabIndex={1}
-                      onBlur={(newContent) => setContent3(newContent)}
+                      onBlur={(newContent) => setVotationData(prevState => ({ ...prevState, TextVoteSend: newContent }))}
                       onChange={(newContent) => { }}
                       className={classes.editor}
                     />
@@ -289,10 +285,10 @@ const Textos = () => {
                   <div className={classes.editorContainer}>
                     <JoditEditor
                       ref={editor4}
-                      value={content4}
-                      config={config}
+                      value={votationData.TextInfo}  // TextInfo
+                      config={{ readonly: false }}
                       tabIndex={1}
-                      onBlur={(newContent) => setContent4(newContent)}
+                      onBlur={(newContent) => setVotationData(prevState => ({ ...prevState, TextInfo: newContent }))}
                       onChange={(newContent) => { }}
                       className={classes.editor}
                     />
@@ -308,10 +304,10 @@ const Textos = () => {
                   <div className={classes.editorContainer}>
                     <JoditEditor
                       ref={editor4}
-                      value={content4}
-                      config={config}
+                      value={votationData.TextInfo}  // TextInfo
+                      config={{ readonly: false }}
                       tabIndex={1}
-                      onBlur={(newContent) => setContent4(newContent)}
+                      onBlur={(newContent) => setVotationData(prevState => ({ ...prevState, TextInfo: newContent }))}
                       onChange={(newContent) => { }}
                       className={classes.editor}
                     />
@@ -329,12 +325,13 @@ const Textos = () => {
                   <FormControl variant="outlined" className={classes.formControlSelect}>
                     <InputLabel id="demo-simple-select-outlined-label">Ninguno</InputLabel>
                     <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={selectValue}
+                      labelId="positionInfo-label"
+                      id="positionInfo"
+                      name="PositionInfo"  // PositionInfo
+                      value={votationData.PositionInfo}
                       onChange={handleSelectChange}
-                      style={{ width: '100%' }}
                       label="Ninguno"
+                      style={{ width: '100%' }}
                     >
                       <MenuItem value="">
                         <em>Ninguno</em>
@@ -354,18 +351,19 @@ const Textos = () => {
                   <FormControl variant="outlined" className={classes.SelectMovile}>
                     <InputLabel id="demo-simple-select-outlined-label">Ninguno</InputLabel>
                     <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={selectValue}
+                      labelId="positionInfo-label"
+                      id="positionInfo"
+                      name="PositionInfo"  // PositionInfo
+                      value={votationData.PositionInfo}
                       onChange={handleSelectChange}
-                      style={{ width: '100%' }}
                       label="Ninguno"
+                      style={{ width: '100%' }}
                     >
                       <MenuItem value="">
                         <em>Ninguno</em>
                       </MenuItem>
-                      <MenuItem value={10}>Inicio</MenuItem>
-                      <MenuItem value={20}>Final</MenuItem>
+                      <MenuItem value={"1"}>Inicio</MenuItem>
+                      <MenuItem value={"2"}>Final</MenuItem>
                     </Select>
                   </FormControl>
                 </div>
@@ -373,7 +371,7 @@ const Textos = () => {
             )}
 
             <div className={classes.alineado}>
-              <Button style={{ marginTop: 20 }} variant="contained" color="primary" onClick={handleSave}>
+            <Button style={{ marginTop: 20 }} variant="contained" color="primary" onClick={handleSave}>
                 <i className="material-icons" style={{ fontSize: 20, marginRight: 5 }}>star</i>
                 Guardar Votación
               </Button>

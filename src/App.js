@@ -37,6 +37,7 @@ import PrePersonalizacion from "./componentes/user/tool/preregister/components/p
 import PreCampos from "./componentes/user/tool/preregister/components/preCampos";
 import RutaSegura from "./componentes/navegacion/RutaSegura";
 import { loginUser } from "./actions/LoginAction";
+import { VotationProvider } from "./context/VotationContext";
 
 
 function App() {
@@ -63,6 +64,7 @@ function App() {
     return (
         <Router>
         <MuiThemeProvider theme={theme}>
+          <VotationProvider>
           <Grid container>
             <Switch>
               <Route exact path="/" component={Login} />
@@ -239,6 +241,7 @@ function App() {
               )} />
             </Switch>
           </Grid>
+          </VotationProvider>
         </MuiThemeProvider>
       </Router>
     )

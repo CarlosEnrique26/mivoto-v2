@@ -1,9 +1,10 @@
 import { Grid, TextField, Typography, Checkbox, MenuItem, Select, InputLabel, FormControl} from '@material-ui/core';
-import React from 'react'
+import React, { useContext } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
+import { VotationContext } from '../../../../../../../context/VotationContext';
 
-const Seguridad = () => {
+
     const useStyles = makeStyles((theme) => ({
         root: {
             maxWidth: 450
@@ -105,21 +106,18 @@ const Seguridad = () => {
     }));
 
     
+    const Seguridad = () => {
+        const classes = useStyles();
+        const { votationData, setVotationData } = useContext(VotationContext);
+        const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
     
-
-    const [checked, setChecked] = React.useState(true);
-
-    const handleChange = (event) => {
-        setChecked(event.target.checked);
-    };
-
-    const classes = useStyles();
-        const [Select0, setSelect0] = React.useState('');
-
-        const handleChangeSelect = (event) => {
-        setSelect0(event.target.value);
+        const handleInputChange = (event) => {
+            const { name, type, checked, value } = event.target;
+            setVotationData((prevState) => ({
+                ...prevState,
+                [name]: type === 'checkbox' ? checked : value,
+            }));
         };
-    const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
 
     return (
@@ -136,7 +134,10 @@ const Seguridad = () => {
                                             <Checkbox
                                                     color="primary"
                                                     className={classes.largerCheckbox}
-                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+                                                    name="ISAuthenticated"  // ISAuthenticated
+                                                    checked={votationData.ISAuthenticated}
+                                                    onChange={handleInputChange}
+                                                    />
                                             </div>
                                         </div>
                                         ) : (
@@ -151,7 +152,10 @@ const Seguridad = () => {
                                             <Checkbox
                                                     color="primary"
                                                     className={classes.largerCheckbox}
-                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+                                                    name="ISAuthenticated"  // ISAuthenticated
+                                                    checked={votationData.ISAuthenticated}
+                                                    onChange={handleInputChange}
+                                                    />
                                             </div>
                                             </>
                                         )}
@@ -165,7 +169,10 @@ const Seguridad = () => {
                                             <Checkbox
                                                     color="primary"
                                                     className={classes.largerCheckbox}
-                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+                                                    name="ConfigSecurity"  // ConfigSecurity
+                                                    checked={votationData.ConfigSecurity}
+                                                    onChange={handleInputChange}
+                                                    />
                                             </div>
                                         </div>
                                         ) : (
@@ -180,7 +187,10 @@ const Seguridad = () => {
                                             <Checkbox
                                                     color="primary"
                                                     className={classes.largerCheckbox}
-                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+                                                    name="ConfigSecurity"  // ConfigSecurity
+                                                    checked={votationData.ConfigSecurity}
+                                                    onChange={handleInputChange}
+                                                    />
                                             </div>
                                             </>
                                         )}
@@ -194,7 +204,9 @@ const Seguridad = () => {
                                             <Checkbox
                                                     color="primary"
                                                     className={classes.largerCheckbox}
-                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+                                                    name="TypeConfirmation"  // TypeConfirmation
+                                                    checked={votationData.TypeConfirmation}
+                                                    onChange={handleInputChange} />
                                             </div>
                                         </div>
                                         ) : (
@@ -208,7 +220,9 @@ const Seguridad = () => {
                                             <Checkbox
                                                     color="primary"
                                                     className={classes.largerCheckbox}
-                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+                                                    name="TypeConfirmation"  // TypeConfirmation
+                                                    checked={votationData.TypeConfirmation}
+                                                    onChange={handleInputChange} />
                                             </div>
                                             </>
                                         )}  
@@ -223,12 +237,13 @@ const Seguridad = () => {
                                             <FormControl variant="outlined" className={classes.formControlSelect}>
                                                 <InputLabel id="demo-simple-select-outlined-label">Seleccione</InputLabel>
                                                 <Select
-                                                labelId="demo-simple-select-outlined-label"
-                                                id="demo-simple-select-outlined"
-                                                value={Select0}
-                                                onChange={handleChangeSelect}
-                                                style={{width:'100%'}}
+                                                labelId="TypeLogin-label"
+                                                id="TypeLogin"
+                                                name="TypeLogin"  // TypeLogin
+                                                value={votationData.TypeLogin}
+                                                onChange={handleInputChange}
                                                 label="Seleccione"
+                                                style={{ width: '100%' }}
                                                 >
                                                 <MenuItem value="">
                                                     <em>Seleccione</em>
@@ -250,12 +265,13 @@ const Seguridad = () => {
                                             <FormControl variant="outlined" className={classes.SelectMovile}>
                                                 <InputLabel id="demo-simple-select-outlined-label">Seleccione</InputLabel>
                                                 <Select
-                                                labelId="demo-simple-select-outlined-label"
-                                                id="demo-simple-select-outlined"
-                                                value={Select0}
-                                                onChange={handleChangeSelect}
-                                                style={{width:'100%'}}
+                                                labelId="TypeLogin-label"
+                                                id="TypeLogin"
+                                                name="TypeLogin"  // TypeLogin
+                                                value={votationData.TypeLogin}
+                                                onChange={handleInputChange}
                                                 label="Seleccione"
+                                                style={{ width: '100%' }}
                                                 >
                                                 <MenuItem value="">
                                                     <em>Seleccione</em>
@@ -278,7 +294,9 @@ const Seguridad = () => {
                                             <Checkbox
                                                     color="primary"
                                                     className={classes.largerCheckbox}
-                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+                                                    name="IsPrintResult"  // IsPrintResult
+                                                    checked={votationData.IsPrintResult}
+                                                    onChange={handleInputChange} />
                                             </div>
                                         </div>
                                         ) : (
@@ -291,7 +309,9 @@ const Seguridad = () => {
                                             <Checkbox
                                                     color="primary"
                                                     className={classes.largerCheckbox}
-                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+                                                    name="IsPrintResult"  // IsPrintResult
+                                                    checked={votationData.IsPrintResult}
+                                                    onChange={handleInputChange}/>
                                             </div>
                                         
                                         </>
