@@ -16,6 +16,7 @@ export const getVotation = () => {
 }
 
 export const SaveVotation = (model) => {
+    console.log("model ", model);
     return new Promise((resolve, reject) => {
         instance.post('/VotationApi/SaveVotation', model)
             .then(response => resolve(response.data))

@@ -37,7 +37,7 @@ import PrePersonalizacion from "./componentes/user/tool/preregister/components/p
 import PreCampos from "./componentes/user/tool/preregister/components/preCampos";
 import RutaSegura from "./componentes/navegacion/RutaSegura";
 import { loginUser } from "./actions/LoginAction";
-import { VotationProvider } from "./context/VotationContext";
+import { VotationContext, VotationProvider } from "./context/VotationContext";
 
 
 function App() {

@@ -127,10 +127,10 @@ const Textos = () => {
   const editor3 = useRef(null);
   const editor4 = useRef(null);
   const { votationData, setVotationData } = useContext(VotationContext);
-  const [selectValue, setSelectValue] = useState('');
+  //const [selectValue, setSelectValue] = useState('');
   const classes = useStyles();
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
-
+/*
   const handleSelectChange = (event) => {
     const { value } = event.target;
     setSelectValue(value);
@@ -139,6 +139,23 @@ const Textos = () => {
       positionInfo: value,
     }));
   };
+*/
+  const handleInputChange = (e) => {
+    const { name, value, type, checked, files } = e.target;
+    if (type === 'file') {
+        const file = files[0];
+        setVotationData(prevState => ({
+            ...prevState,
+            [name]: file
+        }));
+        //setImagePreviewUrl(URL.createObjectURL(file));
+    } else {
+        setVotationData(prevState => ({
+            ...prevState,
+            [name]: type === 'checkbox' ? checked : value
+        }));
+    }
+};
 
   const handleSave = () => {
     SaveVotation(votationData)
@@ -329,7 +346,7 @@ const Textos = () => {
                       id="positionInfo"
                       name="PositionInfo"  // PositionInfo
                       value={votationData.PositionInfo}
-                      onChange={handleSelectChange}
+                      onChange={handleInputChange}
                       label="Ninguno"
                       style={{ width: '100%' }}
                     >
@@ -355,15 +372,15 @@ const Textos = () => {
                       id="positionInfo"
                       name="PositionInfo"  // PositionInfo
                       value={votationData.PositionInfo}
-                      onChange={handleSelectChange}
+                      onChange={handleInputChange}
                       label="Ninguno"
                       style={{ width: '100%' }}
                     >
                       <MenuItem value="">
                         <em>Ninguno</em>
                       </MenuItem>
-                      <MenuItem value={"1"}>Inicio</MenuItem>
-                      <MenuItem value={"2"}>Final</MenuItem>
+                      <MenuItem value={1}>Inicio</MenuItem>
+                      <MenuItem value={2}>Final</MenuItem>
                     </Select>
                   </FormControl>
                 </div>

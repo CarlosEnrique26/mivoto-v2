@@ -8,12 +8,18 @@ import { useStateValue } from "../../context/store";
 const ProfileUser = (props) => {
     const [{sesionUsuario}, dispatch] = useStateValue();
     const [usuario, setUsuario] = useState({
-        nombres: '',
-        apellidos: '',
-        username:'',
-        email:'',
-        password:'',
-        ConfirmarPassword:''
+        id: 1,
+        login: "",
+        password: "",
+        nameUser: "",
+        lastName: "",
+        typeDocument: "",
+        dni: "",
+        email: "",
+        logoName: "",
+        logoPath: "",
+        isActive: true,
+        profileId: 1
     });
 
     const [passwordConfirmar, setNewConfirmar] = useState("");
@@ -29,12 +35,12 @@ const ProfileUser = (props) => {
     useEffect(() => {
         if (sesionUsuario) {
             setUsuario({
-                nombres: sesionUsuario.nombres || '',
-                apellidos: sesionUsuario.apellidos || '',
-                username: sesionUsuario.username || '',
+                nameUser: sesionUsuario.nameUser || '',
+                lastName: sesionUsuario.lastName || '',
+                login: sesionUsuario.login || '',
                 email: sesionUsuario.email || '',
                 password: '',
-                ConfirmarPassword: ''
+                //ConfirmarPassword: ''
             });
         }
     }, [sesionUsuario]);
@@ -74,13 +80,13 @@ const ProfileUser = (props) => {
                 <form>
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={6}>
-                            <TextField name="nombres" value={usuario.nombres} onChange={SaveValors} variant="outlined" fullWidth label="Ingrese sus nombres"/>
+                            <TextField name="nameUser" value={usuario.nombres} onChange={SaveValors} variant="outlined" fullWidth label="Ingrese sus nombres"/>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <TextField name="apellidos" value={usuario.apellidos} onChange={SaveValors} variant="outlined" fullWidth label="Ingrese sus apellidos"/>
+                            <TextField name="lastName" value={usuario.lastName} onChange={SaveValors} variant="outlined" fullWidth label="Ingrese sus apellidos"/>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <TextField name="username" value={usuario.username} onChange={SaveValors} variant="outlined" fullWidth label="Ingrese su username"/>
+                            <TextField name="login" value={usuario.login} onChange={SaveValors} variant="outlined" fullWidth label="Ingrese su username"/>
                         </Grid>
                         <Grid item xs={12} md={6}>
                             <TextField name="email" value={usuario.email} onChange={SaveValors} variant="outlined" fullWidth label="Ingrese email"/>
@@ -89,7 +95,7 @@ const ProfileUser = (props) => {
                             <TextField name="password" value={usuario.password} onChange={SaveValors} type="password" variant="outlined" fullWidth label="Ingrese password"/>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <TextField name="ConfirmarPassword" value={passwordConfirmar} onChange={changeNewConfirmar} type="password" variant="outlined" fullWidth label="Confirme password"/>
+                            <TextField name="password" value={passwordConfirmar} onChange={changeNewConfirmar} type="password" variant="outlined" fullWidth label="Confirme password"/>
                         </Grid>
                     </Grid>
                     <Grid container justifyContent="center">
