@@ -8,7 +8,7 @@ import { useStateValue } from "../../context/store";
 const ProfileUser = (props) => {
     const [{sesionUsuario}, dispatch] = useStateValue();
     const [usuario, setUsuario] = useState({
-        id: 0,
+        id: "",
         login: "",
         password: "",
         nameUser: "",
@@ -19,7 +19,7 @@ const ProfileUser = (props) => {
         logoName: "",
         logoPath: "",
         isActive: true,
-        profileId: 0
+        profileId: ""
     });
 
     const [passwordConfirmar, setNewConfirmar] = useState("");

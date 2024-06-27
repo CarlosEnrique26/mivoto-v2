@@ -1,8 +1,7 @@
 import { Button, Container, Grid, TextField, Typography, useMediaQuery, Checkbox, MenuItem, InputLabel, FormControl, Select, IconButton } from '@material-ui/core';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import { VotationContext } from '../../../../../../../context/VotationContext';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -90,32 +89,39 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         margin: theme.spacing(1),
     },
-    imagePreview: {
-        width: '100%',
-        height: 'auto',
-        maxWidth: '300px', // Maximum width for desktop
-        maxHeight: '200px', // Maximum height for desktop
-        margin: theme.spacing(1),
-    }
 }));
 
 const Principal = () => {
     const classes = useStyles();
-    const { votationData, setVotationData } = useContext(VotationContext);
+
+    const [formData, setFormData] = useState({
+        cantidadUsuarios: '',
+        titulo: '',
+        peso: false,
+        modoVoto: '',
+        autentificarVotacion: false,
+        envioPreguntas: false,
+        votacionSegmentada: false,
+        tipoLogin: '',
+        opcionMultiple: false,
+        fusionarVotacion: false,
+        smsVoto: false,
+        logoVotacion: null,
+    });
+
     const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
-    const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
     const handleInputChange = (e) => {
         const { name, value, type, checked, files } = e.target;
         if (type === 'file') {
             const file = files[0];
-            setVotationData(prevState => ({
+            setFormData(prevState => ({
                 ...prevState,
                 [name]: file
             }));
             setImagePreviewUrl(URL.createObjectURL(file));
         } else {
-            setVotationData(prevState => ({
+            setFormData(prevState => ({
                 ...prevState,
                 [name]: type === 'checkbox' ? checked : value
             }));
@@ -123,6 +129,7 @@ const Principal = () => {
     };
 
 
+    const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
     return (
         <div>
@@ -136,12 +143,12 @@ const Principal = () => {
                                 </div>
                                 <div className={classes.cajones}>
                                     <TextField
-                                        name="Users"
-                                        value={votationData.Users}
+                                        name="cantidadUsuarios"
+                                        value={formData.cantidadUsuarios}
                                         onChange={handleInputChange}
                                         style={{ width: '80%' }}
                                         color='primary'
-                                        id="Users"
+                                        id="outlined-basic"
                                         variant="outlined"
                                     />
                                 </div>
@@ -153,12 +160,12 @@ const Principal = () => {
                                 </div>
                                 <div className={classes.alineadoMovile}>
                                     <TextField
-                                        name="Users"
-                                        value={votationData.Users}
+                                        name="cantidadUsuarios"
+                                        value={formData.cantidadUsuarios}
                                         onChange={handleInputChange}
                                         style={{ width: '100%' }}
                                         color='primary'
-                                        id="Users"
+                                        id="outlined-basic"
                                         variant="outlined"
                                     />
                                 </div>
@@ -172,12 +179,12 @@ const Principal = () => {
                                 </div>
                                 <div className={classes.cajones}>
                                     <TextField
-                                        name="Title"
-                                        value={votationData.Title}
+                                        name="titulo"
+                                        value={formData.titulo}
                                         onChange={handleInputChange}
                                         style={{ width: '80%' }}
                                         color='primary'
-                                        id="Title"
+                                        id="outlined-basic"
                                         variant="outlined"
                                     />
                                 </div>
@@ -189,12 +196,12 @@ const Principal = () => {
                                 </div>
                                 <div className={classes.alineadoMovile}>
                                     <TextField
-                                        name="Title"
-                                        value={votationData.Title}
+                                        name="titulo"
+                                        value={formData.titulo}
                                         onChange={handleInputChange}
                                         style={{ width: '100%' }}
                                         color='primary'
-                                        id="Title"
+                                        id="outlined-basic"
                                         variant="outlined"
                                     />
                                 </div>
@@ -208,12 +215,11 @@ const Principal = () => {
                                 </div>
                                 <div className={classes.alineado}>
                                     <Checkbox
-                                        name="IsWeight"
-                                        checked={votationData.IsWeight}
+                                        name="peso"
+                                        checked={formData.peso}
                                         onChange={handleInputChange}
                                         className={classes.largerCheckbox}
                                         color="primary"
-                                        id="IsWeight"
                                     />
                                 </div>
                             </div>
@@ -224,12 +230,11 @@ const Principal = () => {
                                 </div>
                                 <div className={classes.alineadoMovile}>
                                     <Checkbox
-                                        name="IsWeight"
-                                        checked={votationData.IsWeight}
+                                        name="peso"
+                                        checked={formData.peso}
                                         onChange={handleInputChange}
                                         className={classes.largerCheckbox}
                                         color="primary"
-                                        id="IsWeight"
                                     />
                                 </div>
                             </>
@@ -244,10 +249,10 @@ const Principal = () => {
                                     <FormControl variant="outlined" className={classes.formControlSelect}>
                                         <InputLabel id="modoVoto-label">Modo de Voto</InputLabel>
                                         <Select
-                                            name="TypeVote"
+                                            name="modoVoto"
                                             labelId="modoVoto-label"
-                                            id="TypeVote"
-                                            value={votationData.TypeVote}
+                                            id="modoVoto"
+                                            value={formData.modoVoto}
                                             onChange={handleInputChange}
                                             label="Modo de Voto"
                                             style={{ width: '100%' }}
@@ -271,10 +276,10 @@ const Principal = () => {
                                     <FormControl variant="outlined" className={classes.SelectMovile}>
                                         <InputLabel id="modoVoto-label">Modo de Voto</InputLabel>
                                         <Select
-                                            name="TypeVote"
+                                            name="modoVoto"
                                             labelId="modoVoto-label"
-                                            id="TypeVote"
-                                            value={votationData.TypeVote}
+                                            id="modoVoto"
+                                            value={formData.modoVoto}
                                             onChange={handleInputChange}
                                             label="Modo de Voto"
                                             style={{ width: '100%' }}
@@ -298,12 +303,11 @@ const Principal = () => {
                                 </div>
                                 <div className={classes.alineado}>
                                     <Checkbox
-                                        name="UserCredentialId"
-                                        checked={votationData.UserCredentialId}
+                                        name="autentificarVotacion"
+                                        checked={formData.autentificarVotacion}
                                         onChange={handleInputChange}
                                         className={classes.largerCheckbox}
                                         color="primary"
-                                        id='UserCredentialId'
                                     />
                                 </div>
                             </div>
@@ -314,12 +318,11 @@ const Principal = () => {
                                 </div>
                                 <div className={classes.alineadoMovile}>
                                     <Checkbox
-                                        name="UserCredentialId"
-                                        checked={votationData.UserCredentialId}
+                                        name="autentificarVotacion"
+                                        checked={formData.autentificarVotacion}
                                         onChange={handleInputChange}
                                         className={classes.largerCheckbox}
                                         color="primary"
-                                        id='UserCredentialId'
                                     />
                                 </div>
                             </>
@@ -332,8 +335,8 @@ const Principal = () => {
                                 </div>
                                 <div className={classes.alineado}>
                                     <Checkbox
-                                        name="IsQuestionLive"
-                                        checked={votationData.IsQuestionLive}
+                                        name="envioPreguntas"
+                                        checked={formData.envioPreguntas}
                                         onChange={handleInputChange}
                                         color="primary"
                                         className={classes.largerCheckbox}
@@ -347,8 +350,8 @@ const Principal = () => {
                                 </div>
                                 <div className={classes.alineadoMovile}>
                                     <Checkbox
-                                        name="IsQuestionLive"
-                                        checked={votationData.IsQuestionLive}
+                                        name="envioPreguntas"
+                                        checked={formData.envioPreguntas}
                                         onChange={handleInputChange}
                                         color="primary"
                                         className={classes.largerCheckbox}
@@ -364,11 +367,11 @@ const Principal = () => {
                                 </div>
                                 <div className={classes.alineado}>
                                     <Checkbox
-                                         name="IsSegment"  // IsSegment
-                                         checked={votationData.IsSegment}
-                                         onChange={handleInputChange}
-                                         className={classes.largerCheckbox}
-                                         color="primary"
+                                        name="votacionSegmentada"
+                                        checked={formData.votacionSegmentada}
+                                        onChange={handleInputChange}
+                                        color="primary"
+                                        className={classes.largerCheckbox}
                                     />
                                 </div>
                             </div>
@@ -379,11 +382,11 @@ const Principal = () => {
                                 </div>
                                 <div className={classes.alineadoMovile}>
                                     <Checkbox
-                                         name="IsSegment"  // IsSegment
-                                         checked={votationData.IsSegment}
-                                         onChange={handleInputChange}
-                                         className={classes.largerCheckbox}
-                                         color="primary"
+                                        name="votacionSegmentada"
+                                        checked={formData.votacionSegmentada}
+                                        onChange={handleInputChange}
+                                        color="primary"
+                                        className={classes.largerCheckbox}
                                     />
                                 </div>
                             </>
@@ -398,10 +401,10 @@ const Principal = () => {
                                     <FormControl variant="outlined" className={classes.formControlSelect}>
                                         <InputLabel id="tipoLogin-label">Tipo de Login</InputLabel>
                                         <Select
-                                            name="TypeLogin"  // TypeLogin
-                                            labelId="TypeLogin-label"
-                                            id="TypeLogin"
-                                            value={votationData.TypeLogin}
+                                            name="tipoLogin"
+                                            labelId="tipoLogin-label"
+                                            id="tipoLogin"
+                                            value={formData.tipoLogin}
                                             onChange={handleInputChange}
                                             label="Tipo de Login"
                                             style={{ width: '100%' }}
@@ -425,10 +428,10 @@ const Principal = () => {
                                     <FormControl variant="outlined" className={classes.SelectMovile}>
                                         <InputLabel id="tipoLogin-label">Tipo de Login</InputLabel>
                                         <Select
-                                            name="TypeLogin"  // TypeLogin
-                                            labelId="TypeLogin-label"
-                                            id="TypeLogin"
-                                            value={votationData.TypeLogin}
+                                            name="tipoLogin"
+                                            labelId="tipoLogin-label"
+                                            id="tipoLogin"
+                                            value={formData.tipoLogin}
                                             onChange={handleInputChange}
                                             label="Tipo de Login"
                                             style={{ width: '100%' }}
@@ -452,8 +455,8 @@ const Principal = () => {
                                 </div>
                                 <div className={classes.alineado}>
                                     <Checkbox
-                                        name="IsOptionMultiple"  // IsOptionMultiple
-                                        checked={votationData.IsOptionMultiple}
+                                        name="opcionMultiple"
+                                        checked={formData.opcionMultiple}
                                         onChange={handleInputChange}
                                         className={classes.largerCheckbox}
                                         color="primary"
@@ -467,8 +470,8 @@ const Principal = () => {
                                 </div>
                                 <div className={classes.alineadoMovile}>
                                     <Checkbox
-                                        name="IsOptionMultiple"  // IsOptionMultiple
-                                        checked={votationData.IsOptionMultiple}
+                                        name="opcionMultiple"
+                                        checked={formData.opcionMultiple}
                                         onChange={handleInputChange}
                                         className={classes.largerCheckbox}
                                         color="primary"
@@ -484,11 +487,11 @@ const Principal = () => {
                                 </div>
                                 <div className={classes.alineadoMovile}>
                                     <Checkbox
-                                        name="IsFusion"  // IsFusion
-                                        checked={votationData.IsFusion}
+                                        name="fusionarVotacion"
+                                        checked={formData.fusionarVotacion}
                                         onChange={handleInputChange}
-                                        className={classes.largerCheckbox}
                                         color="primary"
+                                        className={classes.largerCheckbox}
                                     />
                                 </div>
                             </div>
@@ -499,11 +502,11 @@ const Principal = () => {
                                 </div>
                                 <div className={classes.alineado}>
                                     <Checkbox
-                                        name="IsFusion"  // IsFusion
-                                        checked={votationData.IsFusion}
+                                        name="fusionarVotacion"
+                                        checked={formData.fusionarVotacion}
                                         onChange={handleInputChange}
-                                        className={classes.largerCheckbox}
                                         color="primary"
+                                        className={classes.largerCheckbox}
                                     />
                                 </div>
                             </>
@@ -516,11 +519,11 @@ const Principal = () => {
                                 </div>
                                 <div className={classes.alineado}>
                                     <Checkbox
-                                        name="IsSmsConfirm"  // IsSmsConfirm
-                                        checked={votationData.IsSmsConfirm}
+                                        name="smsVoto"
+                                        checked={formData.smsVoto}
                                         onChange={handleInputChange}
-                                        className={classes.largerCheckbox}
                                         color="primary"
+                                        className={classes.largerCheckbox}
                                     />
                                 </div>
                             </div>
@@ -531,11 +534,11 @@ const Principal = () => {
                                 </div>
                                 <div className={classes.alineadoMovile}>
                                     <Checkbox
-                                        name="IsSmsConfirm"  // IsSmsConfirm
-                                        checked={votationData.IsSmsConfirm}
+                                        name="smsVoto"
+                                        checked={formData.smsVoto}
                                         onChange={handleInputChange}
-                                        className={classes.largerCheckbox}
                                         color="primary"
+                                        className={classes.largerCheckbox}
                                     />
                                 </div>
                             </>
@@ -582,8 +585,8 @@ const Principal = () => {
                                         <input
                                             accept="image/*"
                                             className={classes.input}
-                                            id="LogoBinary"
-                                            name="LogoBinary"
+                                            id="logoVotacion"
+                                            name="logoVotacion"
                                             multiple
                                             type="file"
                                             onChange={handleInputChange}
@@ -593,7 +596,7 @@ const Principal = () => {
                                                 Cargar Imagen
                                             </Button>
                                         </label>
-                                        <input accept="image/*" className={classes.input} id="LogoBinary" name="LogoBinary" type="file" />
+                                        <input accept="image/*" className={classes.input} id="icon-button-file" type="file" />
                                         <label htmlFor="icon-button-file">
                                             <IconButton color="primary" aria-label="upload picture" component="span">
                                                 <PhotoCamera />
@@ -604,15 +607,33 @@ const Principal = () => {
                             </>
                         )}
 
-                        <div className={isDesktop ? classes.alineado : classes.elementMovile}>
-                            
-                        {/* Vista Previa de Imagen */}
-                        {imagePreviewUrl && (
-                            <div className={isDesktop ? classes.alineado : classes.elementMovile}>
-                                <img src={imagePreviewUrl} alt="Logo Preview" className={classes.imagePreview} />
+                        {isDesktop ? (
+                            <div className={classes.alineado}>
+                                <div className={classes.element}>
+                                    <Typography style={{ fontSize: 18, marginLeft: 15 }}></Typography>
+                                </div>
+                                <div className={classes.alineado}>
+                                    <div className={classes.roots}>
+                                        {imagePreviewUrl && (
+                                            <img src={imagePreviewUrl} alt="Logo Preview" className={classes.imagePreview} />
+                                        )}
+                                    </div>
+                                </div>
                             </div>
+                        ) : (
+                            <>
+                                <div className={classes.alineadoMovile}>
+                                    <div className={classes.element}>
+                                        <Typography style={{ fontSize: 18 }}></Typography>
+                                    </div>
+                                    <div className={classes.roots}>
+                                        {imagePreviewUrl && (
+                                            <img src={imagePreviewUrl} alt="Logo Preview" className={classes.imagePreview} />
+                                        )}
+                                    </div>
+                                </div>
+                            </>
                         )}
-                        </div>
                     </div>
                 </div>
             </Grid>

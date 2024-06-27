@@ -11,12 +11,12 @@ import {
   Box,
   makeStyles,
 } from "@material-ui/core";
-//import { useHistory } from "react-router-dom";
-import { useHistory, withRouter } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
+//import { useHistory, withRouter } from 'react-router-dom';
 import { validateLogin } from '../seguridad/validaciones/ValidacionLogin';
 import style from "../Tool/Style";
 import { loginUser } from "../../actions/LoginAction";
-//import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
+import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 import { useStateValue } from "../../context/store";
 
 const useStyles = makeStyles((theme) => ({
@@ -57,7 +57,7 @@ const Login = (props) => {
       // sin token
       if (response.isSuccess) {
         console.log('login exitoso', response);
-        history.push("/auth/profileuser");
+        props.history.push("/auth/profileuser");
       }
       // con token
       /*if (response.isSuccess) {
