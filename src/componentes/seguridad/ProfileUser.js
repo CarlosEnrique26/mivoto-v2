@@ -35,15 +35,16 @@ const ProfileUser = (props) => {
     useEffect(() => {
         if (sesionUsuario) {
             setUsuario({
+                ...usuario,
                 nameUser: sesionUsuario.nameUser || '',
                 lastName: sesionUsuario.lastName || '',
                 login: sesionUsuario.login || '',
                 email: sesionUsuario.email || '',
                 password: '',
-                //ConfirmarPassword: ''
             });
         }
     }, [sesionUsuario]);
+
     /*
     useEffect (() => {
         setUsuario(sesionUsuario.usuario);
@@ -56,7 +57,7 @@ const ProfileUser = (props) => {
     */
     const ProfileUserBoton = e => {
         e.preventDefault();
-        console.log('login exitoso', usuario)
+        console.log('Datos del usuario guardados', usuario);
         props.history.push("/auth/login");
     }
     

@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { IconButton, Toolbar, Typography, makeStyles, Button, Avatar, Drawer } from '@material-ui/core';
 import { MenuIzquierda } from "./menuIzquierda";
 import { MenuDerecha } from "./menuDerecha";
-import { withRouter } from "react-router-dom"
+//import { withRouter } from "react-router-dom";
+import { withRouter, useHistory } from "react-router-dom";
 import { useStateValue } from "../../../context/store";
+import { LockOutlined } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) =>({
     seccionDesktop : {
@@ -40,8 +42,8 @@ export const BarSesion = (props) => {
     const classes = useStyles();
     const [{sesionUsuario}, dispatch] = useStateValue();
     const [abrirMenuIzquierda, setAbrirMenuIzquierda] = useState(false);
-
     const [abrirMenuDerecha, setAbrirMenuDerecha] = useState(false);
+    const history = useHistory();
 
     const cerrarMenuIzquierda = () => {
         setAbrirMenuIzquierda(false);
@@ -65,7 +67,8 @@ export const BarSesion = (props) => {
             autenticado : false
         })
 
-        props.history.push("/auth/login")
+        //props.history.push("/auth/login")
+        history.push("/auth/login");
     }
 
     const abrirMenuDerechaAction = () => {
@@ -73,7 +76,8 @@ export const BarSesion = (props) => {
     }
 
     const iniciarSesionApp = () => {
-        props.history.push("/auth/profileuser")
+        //props.history.push("/auth/profileuser")
+        history.push("/auth/profileuser");
     }
 
     return (
@@ -123,7 +127,8 @@ export const BarSesion = (props) => {
                         {sesionUsuario?.usuario?.nameUser || "INICIAR SESION"}
                     </Button>
                     <Avatar>
-
+                        {/* Puedes mostrar la inicial del usuario u otra imagen */}
+                        {sesionUsuario?.usuario?.nameUser?.charAt(0) || <LockOutlined />}
                     </Avatar>
                 </div>
                 <div className={classes.seccionMobile}>
