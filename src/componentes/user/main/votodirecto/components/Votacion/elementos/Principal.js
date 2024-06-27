@@ -1,7 +1,8 @@
 import { Button, Container, Grid, TextField, Typography, useMediaQuery, Checkbox, MenuItem, InputLabel, FormControl, Select, IconButton } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import { VotationContext } from '../../../../../../../context/VotationContext';
 
 const useStyles = makeStyles((theme) => ({
     root: {

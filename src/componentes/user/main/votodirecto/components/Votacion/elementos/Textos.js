@@ -10,8 +10,10 @@ import {
   MenuItem,
   makeStyles
 } from '@material-ui/core';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import JoditEditor from 'jodit-react';
+import { VotationContext } from '../../../../../../../context/VotationContext';
+import { SaveVotation } from '../../../../../../../actions/VotationAction';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -124,16 +126,8 @@ const Textos = () => {
   const editor2 = useRef(null);
   const editor3 = useRef(null);
   const editor4 = useRef(null);
-<<<<<<< HEAD
   const { votationData, setVotationData } = useContext(VotationContext);
   //const [selectValue, setSelectValue] = useState('');
-=======
-  const [content1, setContent1] = useState('');
-  const [content2, setContent2] = useState('');
-  const [content3, setContent3] = useState('');
-  const [content4, setContent4] = useState('');
-  const [selectValue, setSelectValue] = useState('');
->>>>>>> parent of 7749a78 (121232343234)
   const classes = useStyles();
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 /*
@@ -141,37 +135,25 @@ const Textos = () => {
     setSelectValue(event.target.value);
   };
 */
-  const handleInputChange = (e) => {
-    const { name, value, type, checked, files } = e.target;
-    if (type === 'file') {
-        const file = files[0];
-        setVotationData(prevState => ({
-            ...prevState,
-            [name]: file
-        }));
-        //setImagePreviewUrl(URL.createObjectURL(file));
-    } else {
-        setVotationData(prevState => ({
-            ...prevState,
-            [name]: type === 'checkbox' ? checked : value
-        }));
-    }
-};
+const handleSelectChange = (event) => {
+    const { value } = event.target;
+    setSelectValue(value);
+    setVotationData((prevState) => ({
+      ...prevState,
+      positionInfo: value,
+    }));
+  };
 
   const handleSave = () => {
-    console.log("Editor Content 1:", content1);
-    console.log("Editor Content 2:", content2);
-    console.log("Editor Content 3:", content3);
-    console.log("Editor Content 4:", content4);
-    console.log("Selected Value:", selectValue);
+  SaveVotation(votationData)
+  .then((response) => {
+    console.log("Votación guardada con éxito:", response);
+  })
+  .catch((error) => {
+    console.error("Error al guardar la votación:", error);
+  });
+};
 
-    // Clear the form
-    setContent1('');
-    setContent2('');
-    setContent3('');
-    setContent4('');
-    setSelectValue('');
-  };
 
   const config = {
     readonly: false, // All options from https://xdsoft.net/jodit/doc/
@@ -191,10 +173,10 @@ const Textos = () => {
                   <div className={classes.editorContainer}>
                     <JoditEditor
                       ref={editor1}
-                      value={content1}
-                      config={config}
+                      value={votationData.TextClosed}  // TextClosed
+                      config={{ readonly: false }}
                       tabIndex={1}
-                      onBlur={(newContent) => setContent1(newContent)}
+                      onBlur={(newContent) => setVotationData(prevState => ({ ...prevState, TextClosed: newContent }))}
                       onChange={(newContent) => { }}
                       className={classes.editor}
                     />
@@ -210,10 +192,10 @@ const Textos = () => {
                   <div className={classes.editorContainer}>
                     <JoditEditor
                       ref={editor1}
-                      value={content1}
-                      config={config}
+                      value={votationData.TextClosed}  // TextClosed
+                      config={{ readonly: false }}
                       tabIndex={1}
-                      onBlur={(newContent) => setContent1(newContent)}
+                      onBlur={(newContent) => setVotationData(prevState => ({ ...prevState, TextClosed: newContent }))}
                       onChange={(newContent) => { }}
                       className={classes.editor}
                     />
@@ -231,10 +213,10 @@ const Textos = () => {
                   <div className={classes.editorContainer}>
                     <JoditEditor
                       ref={editor2}
-                      value={content2}
-                      config={config}
+                      value={votationData.TextFinish}
+                      config={{ readonly: false }}
                       tabIndex={1}
-                      onBlur={(newContent) => setContent2(newContent)}
+                      onBlur={(newContent) => setVotationData(prevState => ({ ...prevState, TextFinish: newContent }))}
                       onChange={(newContent) => { }}
                       className={classes.editor}
                     />
@@ -250,10 +232,10 @@ const Textos = () => {
                   <div className={classes.editorContainer}>
                     <JoditEditor
                       ref={editor2}
-                      value={content2}
-                      config={config}
+                      value={votationData.TextFinish}
+                      config={{ readonly: false }}
                       tabIndex={1}
-                      onBlur={(newContent) => setContent2(newContent)}
+                      onBlur={(newContent) => setVotationData(prevState => ({ ...prevState, TextFinish: newContent }))}
                       onChange={(newContent) => { }}
                       className={classes.editor}
                     />
@@ -271,10 +253,10 @@ const Textos = () => {
                   <div className={classes.editorContainer}>
                     <JoditEditor
                       ref={editor3}
-                      value={content3}
-                      config={config}
+                      value={votationData.TextVoteSend}  // TextVoteSend
+                      config={{ readonly: false }}
                       tabIndex={1}
-                      onBlur={(newContent) => setContent3(newContent)}
+                      onBlur={(newContent) => setVotationData(prevState => ({ ...prevState, TextVoteSend: newContent }))}
                       onChange={(newContent) => { }}
                       className={classes.editor}
                     />
@@ -290,10 +272,10 @@ const Textos = () => {
                   <div className={classes.editorContainer}>
                     <JoditEditor
                       ref={editor3}
-                      value={content3}
-                      config={config}
+                      value={votationData.TextVoteSend}  // TextVoteSend
+                      config={{ readonly: false }}
                       tabIndex={1}
-                      onBlur={(newContent) => setContent3(newContent)}
+                      onBlur={(newContent) => setVotationData(prevState => ({ ...prevState, TextVoteSend: newContent }))}
                       onChange={(newContent) => { }}
                       className={classes.editor}
                     />
@@ -311,10 +293,10 @@ const Textos = () => {
                   <div className={classes.editorContainer}>
                     <JoditEditor
                       ref={editor4}
-                      value={content4}
-                      config={config}
+                      value={votationData.TextInfo}  // TextInfo
+                      config={{ readonly: false }}
                       tabIndex={1}
-                      onBlur={(newContent) => setContent4(newContent)}
+                      onBlur={(newContent) => setVotationData(prevState => ({ ...prevState, TextInfo: newContent }))}
                       onChange={(newContent) => { }}
                       className={classes.editor}
                     />
@@ -330,10 +312,10 @@ const Textos = () => {
                   <div className={classes.editorContainer}>
                     <JoditEditor
                       ref={editor4}
-                      value={content4}
-                      config={config}
+                      value={votationData.TextInfo}  // TextInfo
+                      config={{ readonly: false }}
                       tabIndex={1}
-                      onBlur={(newContent) => setContent4(newContent)}
+                      onBlur={(newContent) => setVotationData(prevState => ({ ...prevState, TextInfo: newContent }))}
                       onChange={(newContent) => { }}
                       className={classes.editor}
                     />
@@ -351,21 +333,13 @@ const Textos = () => {
                   <FormControl variant="outlined" className={classes.formControlSelect}>
                     <InputLabel id="demo-simple-select-outlined-label">Ninguno</InputLabel>
                     <Select
-<<<<<<< HEAD
                       labelId="positionInfo-label"
                       id="positionInfo"
                       name="PositionInfo"  // PositionInfo
                       value={votationData.PositionInfo}
                       onChange={handleInputChange}
                       label="Ninguno"
-=======
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={selectValue}
-                      onChange={handleSelectChange}
->>>>>>> parent of 7749a78 (121232343234)
                       style={{ width: '100%' }}
-                      label="Ninguno"
                     >
                       <MenuItem value="">
                         <em>Ninguno</em>
@@ -385,32 +359,19 @@ const Textos = () => {
                   <FormControl variant="outlined" className={classes.SelectMovile}>
                     <InputLabel id="demo-simple-select-outlined-label">Ninguno</InputLabel>
                     <Select
-<<<<<<< HEAD
                       labelId="positionInfo-label"
                       id="positionInfo"
                       name="PositionInfo"  // PositionInfo
                       value={votationData.PositionInfo}
                       onChange={handleInputChange}
                       label="Ninguno"
-=======
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={selectValue}
-                      onChange={handleSelectChange}
->>>>>>> parent of 7749a78 (121232343234)
                       style={{ width: '100%' }}
-                      label="Ninguno"
                     >
                       <MenuItem value="">
                         <em>Ninguno</em>
                       </MenuItem>
-<<<<<<< HEAD
                       <MenuItem value={1}>Inicio</MenuItem>
                       <MenuItem value={2}>Final</MenuItem>
-=======
-                      <MenuItem value={10}>Inicio</MenuItem>
-                      <MenuItem value={20}>Final</MenuItem>
->>>>>>> parent of 7749a78 (121232343234)
                     </Select>
                   </FormControl>
                 </div>
