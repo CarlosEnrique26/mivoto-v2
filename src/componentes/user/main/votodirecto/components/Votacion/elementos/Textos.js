@@ -10,7 +10,7 @@ import {
   MenuItem,
   makeStyles
 } from '@material-ui/core';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import JoditEditor from 'jodit-react';
 
 const useStyles = makeStyles((theme) => ({
@@ -124,16 +124,8 @@ const Textos = () => {
   const editor2 = useRef(null);
   const editor3 = useRef(null);
   const editor4 = useRef(null);
-<<<<<<< HEAD
   const { votationData, setVotationData } = useContext(VotationContext);
   //const [selectValue, setSelectValue] = useState('');
-=======
-  const [content1, setContent1] = useState('');
-  const [content2, setContent2] = useState('');
-  const [content3, setContent3] = useState('');
-  const [content4, setContent4] = useState('');
-  const [selectValue, setSelectValue] = useState('');
->>>>>>> parent of 7749a78 (121232343234)
   const classes = useStyles();
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 /*
@@ -351,21 +343,13 @@ const Textos = () => {
                   <FormControl variant="outlined" className={classes.formControlSelect}>
                     <InputLabel id="demo-simple-select-outlined-label">Ninguno</InputLabel>
                     <Select
-<<<<<<< HEAD
                       labelId="positionInfo-label"
                       id="positionInfo"
                       name="PositionInfo"  // PositionInfo
                       value={votationData.PositionInfo}
                       onChange={handleInputChange}
                       label="Ninguno"
-=======
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={selectValue}
-                      onChange={handleSelectChange}
->>>>>>> parent of 7749a78 (121232343234)
                       style={{ width: '100%' }}
-                      label="Ninguno"
                     >
                       <MenuItem value="">
                         <em>Ninguno</em>
@@ -385,32 +369,19 @@ const Textos = () => {
                   <FormControl variant="outlined" className={classes.SelectMovile}>
                     <InputLabel id="demo-simple-select-outlined-label">Ninguno</InputLabel>
                     <Select
-<<<<<<< HEAD
                       labelId="positionInfo-label"
                       id="positionInfo"
                       name="PositionInfo"  // PositionInfo
                       value={votationData.PositionInfo}
                       onChange={handleInputChange}
                       label="Ninguno"
-=======
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={selectValue}
-                      onChange={handleSelectChange}
->>>>>>> parent of 7749a78 (121232343234)
                       style={{ width: '100%' }}
-                      label="Ninguno"
                     >
                       <MenuItem value="">
                         <em>Ninguno</em>
                       </MenuItem>
-<<<<<<< HEAD
                       <MenuItem value={1}>Inicio</MenuItem>
                       <MenuItem value={2}>Final</MenuItem>
-=======
-                      <MenuItem value={10}>Inicio</MenuItem>
-                      <MenuItem value={20}>Final</MenuItem>
->>>>>>> parent of 7749a78 (121232343234)
                     </Select>
                   </FormControl>
                 </div>

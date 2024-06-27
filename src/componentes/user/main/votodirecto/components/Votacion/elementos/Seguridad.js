@@ -1,9 +1,5 @@
 import { Grid, TextField, Typography, Checkbox, MenuItem, Select, InputLabel, FormControl} from '@material-ui/core';
-<<<<<<< HEAD
 import React, { useState, useContext } from 'react'
-=======
-import React from 'react'
->>>>>>> parent of 7749a78 (121232343234)
 import { makeStyles } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 
