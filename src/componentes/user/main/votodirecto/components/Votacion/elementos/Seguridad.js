@@ -135,7 +135,11 @@ import { VotationContext } from '../../../../../../../context/VotationContext';
                                             <Checkbox
                                                     color="primary"
                                                     className={classes.largerCheckbox}
-                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} 
+                                                    name="ISAuthenticated"  // ISAuthenticated
+                                                    checked={votationData.ISAuthenticated}
+                                                    onChange={handleInputChange}
+                                                    />
                                                     
                                             </div>
                                         </div>
@@ -151,7 +155,11 @@ import { VotationContext } from '../../../../../../../context/VotationContext';
                                             <Checkbox
                                                     color="primary"
                                                     className={classes.largerCheckbox}
-                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} 
+                                                    name="ISAuthenticated"  // ISAuthenticated
+                                                    checked={votationData.ISAuthenticated}
+                                                    onChange={handleInputChange}
+                                                    />
                                             </div>
                                             </>
                                         )}
@@ -165,7 +173,11 @@ import { VotationContext } from '../../../../../../../context/VotationContext';
                                             <Checkbox
                                                     color="primary"
                                                     className={classes.largerCheckbox}
-                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} 
+                                                    name="ConfigSecurity"  // ConfigSecurity
+                                                    checked={votationData.ConfigSecurity}
+                                                    onChange={handleInputChange}
+                                                    />
                                             </div>
                                         </div>
                                         ) : (
@@ -180,7 +192,11 @@ import { VotationContext } from '../../../../../../../context/VotationContext';
                                             <Checkbox
                                                     color="primary"
                                                     className={classes.largerCheckbox}
-                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} 
+                                                    name="ConfigSecurity"  // ConfigSecurity
+                                                    checked={votationData.ConfigSecurity}
+                                                    onChange={handleInputChange}
+                                                    />
                                             </div>
                                             </>
                                         )}
@@ -194,7 +210,10 @@ import { VotationContext } from '../../../../../../../context/VotationContext';
                                             <Checkbox
                                                     color="primary"
                                                     className={classes.largerCheckbox}
-                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} 
+                                                    name="TypeConfirmation"  // TypeConfirmation
+                                                    checked={votationData.TypeConfirmation}
+                                                    onChange={handleInputChange} />
                                             </div>
                                         </div>
                                         ) : (
@@ -208,7 +227,10 @@ import { VotationContext } from '../../../../../../../context/VotationContext';
                                             <Checkbox
                                                     color="primary"
                                                     className={classes.largerCheckbox}
-                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} 
+                                                    name="TypeConfirmation"  // TypeConfirmation
+                                                    checked={votationData.TypeConfirmation}
+                                                    onChange={handleInputChange} />
                                             </div>
                                             </>
                                         )}  
@@ -223,12 +245,13 @@ import { VotationContext } from '../../../../../../../context/VotationContext';
                                             <FormControl variant="outlined" className={classes.formControlSelect}>
                                                 <InputLabel id="demo-simple-select-outlined-label">Seleccione</InputLabel>
                                                 <Select
-                                                labelId="demo-simple-select-outlined-label"
-                                                id="demo-simple-select-outlined"
-                                                value={Select0}
-                                                onChange={handleChangeSelect}
-                                                style={{width:'100%'}}
+                                                labelId="TypeLogin-label"
+                                                id="TypeLogin"
+                                                name="TypeLogin"  // TypeLogin
+                                                value={votationData.TypeLogin}
+                                                onChange={handleInputChange}
                                                 label="Seleccione"
+                                                style={{ width: '100%' }}
                                                 >
                                                 <MenuItem value="">
                                                     <em>Seleccione</em>
@@ -250,12 +273,13 @@ import { VotationContext } from '../../../../../../../context/VotationContext';
                                             <FormControl variant="outlined" className={classes.SelectMovile}>
                                                 <InputLabel id="demo-simple-select-outlined-label">Seleccione</InputLabel>
                                                 <Select
-                                                labelId="demo-simple-select-outlined-label"
-                                                id="demo-simple-select-outlined"
-                                                value={Select0}
-                                                onChange={handleChangeSelect}
-                                                style={{width:'100%'}}
+                                                labelId="TypeLogin-label"
+                                                id="TypeLogin"
+                                                name="TypeLogin"  // TypeLogin
+                                                value={votationData.TypeLogin}
+                                                onChange={handleInputChange}
                                                 label="Seleccione"
+                                                style={{ width: '100%' }}
                                                 >
                                                 <MenuItem value="">
                                                     <em>Seleccione</em>
@@ -278,7 +302,10 @@ import { VotationContext } from '../../../../../../../context/VotationContext';
                                             <Checkbox
                                                     color="primary"
                                                     className={classes.largerCheckbox}
-                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }}
+                                                    name="IsPrintResult"  // IsPrintResult
+                                                    checked={votationData.IsPrintResult}
+                                                    onChange={handleInputChange} />
                                             </div>
                                         </div>
                                         ) : (
@@ -291,7 +318,10 @@ import { VotationContext } from '../../../../../../../context/VotationContext';
                                             <Checkbox
                                                     color="primary"
                                                     className={classes.largerCheckbox}
-                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+                                                    inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} 
+                                                    name="IsPrintResult"  // IsPrintResult
+                                                    checked={votationData.IsPrintResult}
+                                                    onChange={handleInputChange} />
                                             </div>
                                         
                                         </>

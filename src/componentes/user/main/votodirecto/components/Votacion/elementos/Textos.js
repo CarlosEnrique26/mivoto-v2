@@ -137,7 +137,6 @@ const Textos = () => {
 */
 const handleSelectChange = (event) => {
     const { value } = event.target;
-    setSelectValue(value);
     setVotationData((prevState) => ({
       ...prevState,
       positionInfo: value,
@@ -337,7 +336,7 @@ const handleSelectChange = (event) => {
                       id="positionInfo"
                       name="PositionInfo"  // PositionInfo
                       value={votationData.PositionInfo}
-                      onChange={handleInputChange}
+                      onChange={handleSelectChange}
                       label="Ninguno"
                       style={{ width: '100%' }}
                     >
@@ -363,7 +362,7 @@ const handleSelectChange = (event) => {
                       id="positionInfo"
                       name="PositionInfo"  // PositionInfo
                       value={votationData.PositionInfo}
-                      onChange={handleInputChange}
+                      onChange={handleSelectChange}
                       label="Ninguno"
                       style={{ width: '100%' }}
                     >
