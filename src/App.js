@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import theme from "./theme/theme"
-import { useStateValue } from "./context/store";
+import { StateProvider, useStateValue } from "./context/store";
 import RegistrarUsuario from "./componentes/seguridad/RegistrarUsuario";
 import Login from "./componentes/seguridad/Login";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';

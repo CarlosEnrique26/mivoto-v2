@@ -69,21 +69,21 @@ const Login = (props) => {
               alert('Error en la respuesta del servidor');
           }
       }*/
-  }).catch(error => {
-      if (error.message === "Network Error") {
-          alert('Error de red. Por favor, verifica tu conexión y el servidor.');
-      } else {
-          alert('Nombre de usuario o contraseña incorrectos');
-      }
-      console.error('Error de inicio de sesión', error);
-      dispatch({
-          type: "OPEN_SNACKBAR",
-          openMensaje: {
-              open: true,
-              mensaje: "Las credenciales del usuario son incorrectas"
+        }).catch(error => {
+          if (error.message === "Network Error") {
+              alert('Error de red. Por favor, verifica tu conexión y el servidor.');
+          } else {
+              alert('Nombre de usuario o contraseña incorrectos');
           }
+          console.error('Error de inicio de sesión', error);
+          dispatch({
+              type: "OPEN_SNACKBAR",
+              openMensaje: {
+                  open: true,
+                  mensaje: "Las credenciales del usuario son incorrectas"
+              }
+          });
       });
-  });
 };
    /* const validationError = validateLogin(usuario);
     if (validationError) {
