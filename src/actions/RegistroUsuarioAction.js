@@ -18,7 +18,7 @@ export const getUserCredential = () => {
 export const SaveUserCredential = (model) => {
     console.log("model ", model);
     return new Promise((resolve, reject) => {
-        instance.post('/UserCredentialApi/SaveUserCredential', model)
+        HttpClient.post('/UserCredentialApi/SaveUserCredential', model)
             .then(response => resolve(response.data))
             .catch(error => reject(error));
     });

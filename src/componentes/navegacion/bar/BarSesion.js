@@ -124,7 +124,7 @@ export const BarSesion = (props) => {
                     </Button>
                     <Button color="inherit" onClick={iniciarSesionApp}>
                         
-                        {sesionUsuario?.usuario?.nameUser || "INICIAR SESION"}
+                        {sesionUsuario ? sesionUsuario.usuario.nombre : "INICIAR SESION"}
                     </Button>
                     <Avatar>
                         {/* Puedes mostrar la inicial del usuario u otra imagen */}

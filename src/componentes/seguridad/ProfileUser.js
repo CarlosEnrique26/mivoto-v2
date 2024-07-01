@@ -3,6 +3,7 @@ import style from "../Tool/Style";
 import { Container, TextField, Typography, Grid, Button, Avatar, Card } from "@material-ui/core";
 import { LockOutlined } from "@material-ui/icons";
 import { useStateValue } from "../../context/store";
+import { ObtenerUsuarioActual } from "../../actions/UsuarioAction";
 
 
 const ProfileUser = (props) => {
@@ -32,29 +33,15 @@ const ProfileUser = (props) => {
         }));
     }
 
-    useEffect(() => {
-        if (sesionUsuario) {
-            setUsuario({
-                ...usuario,
-                nameUser: sesionUsuario.nameUser || '',
-                lastName: sesionUsuario.lastName || '',
-                login: sesionUsuario.login || '',
-                email: sesionUsuario.email || '',
-                password: '',
-            });
-        }
-    }, [sesionUsuario]);
 
-    /*
+   
     useEffect (() => {
-        setUsuario(sesionUsuario.usuario);
-        setUsuario((...anterior) => ({
-            ...anterior,
-            fotoUrl: sesionUsuario.usuario.imagenPerfil,
-            imagenPerfil : null
-        }));
-    }, []);
-    */
+        ObtenerUsuarioActual().then(response => {
+            console.log("esta es la data del objeto response del usuario actual", response);
+            setUsuario(response.data);
+        });
+    },[])
+
     const ProfileUserBoton = e => {
         e.preventDefault();
         console.log('Datos del usuario guardados', usuario);

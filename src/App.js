@@ -38,6 +38,7 @@ import PreCampos from "./componentes/user/tool/preregister/components/preCampos"
 import RutaSegura from "./componentes/navegacion/RutaSegura";
 import { loginUser } from "./actions/LoginAction";
 import { VotationContext, VotationProvider } from "./context/VotationContext";
+import { ObtenerUsuarioActual } from "./actions/UsuarioAction";
 
 
 function App() {
@@ -47,7 +48,7 @@ function App() {
 
     useEffect(() => {
         if(!iniciaApp) {
-          loginUser(dispatch).then(response =>{
+          ObtenerUsuarioActual(dispatch).then(response =>{
             setIniciaApp(true);
           }).catch(error => {
             setIniciaApp(true);

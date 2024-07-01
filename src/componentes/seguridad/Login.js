@@ -54,11 +54,12 @@ const Login = (props) => {
   const loginUsuarioBoton = e => {
     e.preventDefault();
     loginUser(usuario, dispatch).then(response => {
-      // sin token
-      if (response.isSuccess) {
-        console.log('login exitoso', response);
+      console.log('login exitoso', response);
+        window.localStorage.setItem('token_seguridad', response.model.token);
         props.history.push("/auth/profileuser");
+        })
       }
+      
       // con token
       /*if (response.isSuccess) {
           console.log('login exitoso', response);
@@ -69,22 +70,7 @@ const Login = (props) => {
               alert('Error en la respuesta del servidor');
           }
       }*/
-        }).catch(error => {
-          if (error.message === "Network Error") {
-              alert('Error de red. Por favor, verifica tu conexión y el servidor.');
-          } else {
-              alert('Nombre de usuario o contraseña incorrectos');
-          }
-          console.error('Error de inicio de sesión', error);
-          dispatch({
-              type: "OPEN_SNACKBAR",
-              openMensaje: {
-                  open: true,
-                  mensaje: "Las credenciales del usuario son incorrectas"
-              }
-          });
-      });
-};
+       
    /* const validationError = validateLogin(usuario);
     if (validationError) {
       alert(validationError);

@@ -8,7 +8,7 @@ instance.isCancel = axios.isCancel;
 export const loginUser = (user, dispatch) => {
     console.log("Login:", user);
     return new Promise((resolve, reject) => {
-        instance.post('/UserCredentialApi/Login', user).then(response => {
+        instance.get('/UserCredentialApi/Login', user).then(response => {
             let result = response.data;
             console.log(result);
             if (result.isSuccess && result.model) {
