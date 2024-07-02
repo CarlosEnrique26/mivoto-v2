@@ -5,28 +5,31 @@ const instance = axios.create();
 instance.CancelToken = axios.CancelToken;
 instance.isCancel = axios.isCancel;
 
-export const loginUser = (user, dispatch) => {
-    console.log("Login:", user);
+//const token_seguridad = window.localStorage.getItem("token_id");
+
+export const loginUser = (user, dispatch,props) => {
     return new Promise((resolve, reject) => {
-        instance.get('/UserCredentialApi/Login', user).then(response => {
-            let result = response.data;
+        HttpClient.post('/UserCredentialApi/Login', user).then(response => {
+            let result = response.data;  
             console.log(result);
-            if (result.isSuccess && result.model) {
-                dispatch({
-                    type: "INICIAR_SESION",
-                    usuario: result.model,
-                    autenticado: true
-                });
-                resolve(result);
-            } else {
-                reject(result); // Manejo de errores
-            }
+            resolve(result); 
+
+            if(result.isSuccess){
+                if(result.isContent){
+                    dispatch({
+                        type: "SESSION_START",
+                        session: result.response,
+                        authenticated: true
+                    })
+                } 
+            } 
+ 
+            
         }).catch(error => {
-           
-            reject(error); // Manejo de errores
-        });
-    });
-};
+            resolve(error.response);
+        })
+    })
+}
 /*
 import axios from 'axios';
 

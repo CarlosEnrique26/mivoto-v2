@@ -48,7 +48,7 @@ function App() {
 
     useEffect(() => {
         if(!iniciaApp) {
-          ObtenerUsuarioActual(dispatch).then(response =>{
+          loginUser(dispatch).then(response =>{
             setIniciaApp(true);
           }).catch(error => {
             setIniciaApp(true);
@@ -65,7 +65,6 @@ function App() {
     return (
         <Router>
         <MuiThemeProvider theme={theme}>
-        <VotationProvider>
           <Grid container>
             <Switch>
               <Route exact path="/" component={Login} />
@@ -242,7 +241,6 @@ function App() {
               )} />
             </Switch>
           </Grid>
-          </VotationProvider>
         </MuiThemeProvider>
       </Router>
     )

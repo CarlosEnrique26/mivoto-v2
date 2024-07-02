@@ -1,29 +1,5 @@
 import React from "react";
 import { useStateValue } from "../../context/store";
-import { Route } from "react-router-dom";
-
-function RutaSegura({ component: Component, ...rest }) {
-    const [{ sesionUsuario }] = useStateValue();
-
-    return (
-        <Route
-            {...rest}
-            render={(props) => (
-                <Component {...props} {...rest} sesionUsuario={sesionUsuario} />
-            )}
-        />
-    );
-}
-
-export default RutaSegura;
-
-
-
-
-
-
-/*import React from "react";
-import { useStateValue } from "../../context/store";
 import {Route} from "react-router-dom";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
@@ -45,4 +21,34 @@ function RutaSegura({ component: Component, ...rest}) {
     );
 }
 
-export default RutaSegura;*/
+export default RutaSegura;
+
+
+
+
+
+/*
+import React from "react";
+import { useStateValue } from "../../context/store";
+import { Route } from "react-router-dom";
+
+function RutaSegura({ component: Component, ...rest }) {
+    const [{ sesionUsuario }] = useStateValue();
+
+    return (
+        <Route
+            {...rest}
+            render={(props) => (
+                <Component {...props} {...rest} sesionUsuario={sesionUsuario} />
+            )}
+        />
+    );
+}
+
+export default RutaSegura;
+
+*/
+
+
+
+

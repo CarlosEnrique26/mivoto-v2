@@ -54,51 +54,16 @@ const Login = (props) => {
   const loginUsuarioBoton = e => {
     e.preventDefault();
     loginUser(usuario, dispatch).then(response => {
-      console.log('login exitoso', response);
-        window.localStorage.setItem('token_seguridad', response.model.token);
+      console.log('login exitoso', usuario);
+        window.localStorage.setItem('token_seguridad', response.data.token);
         props.history.push("/auth/profileuser");
         })
       }
       
-      // con token
-      /*if (response.isSuccess) {
-          console.log('login exitoso', response);
-          if (response.model && response.model.token) {
-              window.localStorage.setItem('token_seguridad', response.model.token);
-              history.push("/auth/pagprincipal");
-          } else {
-              alert('Error en la respuesta del servidor');
-          }
-      }*/
-       
-   /* const validationError = validateLogin(usuario);
-    if (validationError) {
-      alert(validationError);
-      return;
-    loginUser(usuario).then(response => {
-        if (response.status === 200) {
-            console.log('login exitoso', response)
-            window.localStorage.setItem('token_seguridad', response.data.token)
-            // Guardar la información del usuario en el estado global
-            dispatch({
-              type: "INICIAR_SESION",
-              usuario: response.model,
-              autenticado: true,
-          });
-
-          props.history.push("/auth/profileuser");
-        }
-    })
-        .catch(error => {
-            alert('Nombre de usuario o contraseña incorrectos');
-            console.error('Error de inicio de sesión', error);
-    });
-};
-*/
   const OlvidadoContraseña = (e) => {
     e.preventDefault();
     console.log("ha olvidado su contraseña", usuario);
-    history.push("/auth/passrecovery");
+    props.history.push("/auth/passrecovery");
   };
 
   return (

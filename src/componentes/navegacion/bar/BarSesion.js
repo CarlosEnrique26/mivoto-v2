@@ -67,8 +67,7 @@ export const BarSesion = (props) => {
             autenticado : false
         })
 
-        //props.history.push("/auth/login")
-        history.push("/auth/login");
+        props.history.push("/auth/login")
     }
 
     const abrirMenuDerechaAction = () => {
@@ -123,8 +122,7 @@ export const BarSesion = (props) => {
                         Salir
                     </Button>
                     <Button color="inherit" onClick={iniciarSesionApp}>
-                        
-                        {sesionUsuario ? sesionUsuario.usuario.nombre : "INICIAR SESION"}
+                        {sesionUsuario ? sesionUsuario.usuario.nombre : ""}
                     </Button>
                     <Avatar>
                         {/* Puedes mostrar la inicial del usuario u otra imagen */}
