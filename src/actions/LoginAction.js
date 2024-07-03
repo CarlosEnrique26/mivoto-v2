@@ -8,8 +8,9 @@ instance.isCancel = axios.isCancel;
 //const token_seguridad = window.localStorage.getItem("token_id");
 
 export const loginUser = (user, dispatch,props) => {
+    console.log("Login:", user);
     return new Promise((resolve, reject) => {
-        HttpClient.post('/UserCredentialApi/Login', user).then(response => {
+        instance.post('/UserCredentialApi/Login', user).then(response => {
             let result = response.data;  
             console.log(result);
             resolve(result); 
@@ -17,9 +18,9 @@ export const loginUser = (user, dispatch,props) => {
             if(result.isSuccess){
                 if(result.isContent){
                     dispatch({
-                        type: "SESSION_START",
-                        session: result.response,
-                        authenticated: true
+                        type: "INICIAR_SESION",
+                        usuario: result.response,
+                        autenticado: true
                     })
                 } 
             } 

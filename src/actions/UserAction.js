@@ -7,14 +7,6 @@ instance.isCancel = axios.isCancel;
 
 const token_seguridad = window.localStorage.getItem("token_id");
 
-/*
-const instance = axios.create({
-    baseURL: 'your_base_url', // Reemplaza con tu URL base
-    timeout: 1000,
-    headers: { 'Content-Type': 'application/json' }
-});
-*/
-
 export const SaveEnterprise = (user) => {
     return new Promise((resolve, reject) => {
         instance.post('EnterpriseApi/SaveEnterprise', user)
