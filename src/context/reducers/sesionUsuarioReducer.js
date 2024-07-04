@@ -1,6 +1,6 @@
 export const initialState = {
     usuario: {
-        id: 0,
+        id: "",
         login: "",
         password: "",
         nameUser: "",
@@ -11,7 +11,7 @@ export const initialState = {
         logoName: "",
         logoPath: "",
         isActive: true,
-        profileId: 0
+        profileId: ""
     },
     autenticado: false
 };

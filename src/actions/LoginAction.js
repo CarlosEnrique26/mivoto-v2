@@ -19,7 +19,7 @@ export const loginUser = (user, dispatch,props) => {
                 if(result.isContent){
                     dispatch({
                         type: "INICIAR_SESION",
-                        usuario: result.response,
+                        sesion: result.data,
                         autenticado: true
                     })
                 } 
