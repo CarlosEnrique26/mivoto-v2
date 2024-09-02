@@ -106,8 +106,8 @@ const Controles = () => {
    
     const history = useHistory();
     const GraphicsPie = () => history.push('/auth/graphicspie');
-    const Qr = () => history.push('/auth/qr');
-    const Ranking = () => history.push('/auth/ranking');
+    const Qr = () => history.push('/auth/codigoqr');
+    const Ranking = () => history.push('/auth/rankingcontrol');
     const GraphicsFusion = () => history.push('/auth/graphicsfusion');
     const LoginVote = () => history.push('/auth/LoginVote');
     const Questions = () => history.push('/auth/Questions');

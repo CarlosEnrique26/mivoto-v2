@@ -3,10 +3,10 @@ import { Grid, Typography, Checkbox, MenuItem, Select, InputLabel, FormControl, 
 import { makeStyles } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 import style from "../../../../../Tool/Style";
-import { Pie } from 'react-chartjs-2';
+import QRCode from 'qrcode.react'; // Importa el generador de QR
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 
-// Register Chart.js components
+// Register Chart.js components (no necesario para el QR)
 Chart.register(ArcElement, Tooltip, Legend);
 
 const useStyles = makeStyles((theme) => ({
@@ -98,17 +98,35 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         margin: theme.spacing(1),
     },
-    chartContainer: {
+    qrContainer: {
         width: '100%',
         maxWidth: 600,
         marginTop: theme.spacing(4),
         display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    qrImage: {
+        position: 'relative',
+        display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
     },
+    qrLogo: {
+        position: 'absolute',
+        width: 50,
+        height: 50,
+        borderRadius: '50%',
+        overflow: 'hidden',
+    },
+    logo: {
+        width: '100%',
+        height: '100%',
+        objectFit: 'contain',
+    }
 }));
 
-const GraphicsPie = () => {
+const CodigoQr = () => {
     const [checked, setChecked] = React.useState(true);
     const [Select0, setSelect0] = React.useState('');
     const classes = useStyles();
@@ -122,47 +140,6 @@ const GraphicsPie = () => {
         setSelect0(event.target.value);
     };
 
-    // Data and options for the Pie chart
-    const data = {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-            ],
-            borderWidth: 1,
-        }],
-    };
-
-    const options = {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top',
-            },
-            tooltip: {
-                callbacks: {
-                    label: function(tooltipItem) {
-                        return tooltipItem.label + ': ' + tooltipItem.raw;
-                    }
-                }
-            }
-        }
-    };
-
     return (
         <Container maxWidth={false} style={style.barSup}>
             <Container maxWidth={false} style={style.barContainer}>
@@ -171,21 +148,29 @@ const GraphicsPie = () => {
                         <Grid item xs={12} md={12} style={{ marginTop: 20 }}>
                             <div className={`${classes.buttonContainer} ${isDesktop ? classes.horizontal : ''}`}>
                                 <div className={classes.groupalineado}>
-                                    {isDesktop ? (
-                                        <div className={classes.chartContainer}>
-                                            <Pie data={data} options={options} />
+                                    <div className={classes.qrContainer}>
+                                        <Typography variant="h6" style={{ marginBottom: 16 }}>
+                                            Generador de QR
+                                        </Typography>
+                                        <div className={classes.qrImage}>
+                                            <QRCode
+                                                value="https://www.customvote.es/" // URL o texto para el QR
+                                                size={256} // Tamaño del QR
+                                                bgColor="#ffffff" // Color de fondo
+                                                fgColor="#000000" // Color del QR
+                                            />
+                                            {/* Aquí es donde se coloca el logo */}
+                                            <div className={classes.qrLogo}>
+                                                <img
+                                                    src="https://via.placeholder.com/50" // URL del logo
+                                                    alt="logo"
+                                                    className={classes.logo}
+                                                />
+                                            </div>
                                         </div>
-                                    ) : (
-                                        <>
-                                        <div className={classes.chartContainer}>
-                                            <Pie data={data} options={options} />
-                                        </div>
-                                        </>
-                                    )}
-
-
-                                   
-                                    {/* El resto de tu código de renderización aquí */}
+                                    </div>
+                                    
+                                    {/* Aquí puedes añadir el resto de tu código de renderización */}
                                 </div>
                             </div>
                         </Grid>
@@ -196,4 +181,4 @@ const GraphicsPie = () => {
     );
 };
 
-export default GraphicsPie;
+export default CodigoQr;

@@ -3,11 +3,11 @@ import { Grid, Typography, Checkbox, MenuItem, Select, InputLabel, FormControl, 
 import { makeStyles } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 import style from "../../../../../Tool/Style";
-import { Pie } from 'react-chartjs-2';
-import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Bar } from 'react-chartjs-2'; // Importa el gráfico de barras de react-chartjs-2
+import { Chart, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 
-// Register Chart.js components
-Chart.register(ArcElement, Tooltip, Legend);
+// Registra los componentes necesarios para el gráfico de barras
+Chart.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -108,7 +108,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const GraphicsPie = () => {
+const RankingControl = () => {
     const [checked, setChecked] = React.useState(true);
     const [Select0, setSelect0] = React.useState('');
     const classes = useStyles();
@@ -122,29 +122,18 @@ const GraphicsPie = () => {
         setSelect0(event.target.value);
     };
 
-    // Data and options for the Pie chart
+    // Data and options for the Bar chart
     const data = {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-            ],
-            borderWidth: 1,
-        }],
+        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+        datasets: [
+            {
+                label: 'Sales',
+                data: [65, 59, 80, 81, 56, 55],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+            },
+        ],
     };
 
     const options = {
@@ -160,7 +149,15 @@ const GraphicsPie = () => {
                     }
                 }
             }
-        }
+        },
+        scales: {
+            x: {
+                beginAtZero: true,
+            },
+            y: {
+                beginAtZero: true,
+            },
+        },
     };
 
     return (
@@ -171,21 +168,14 @@ const GraphicsPie = () => {
                         <Grid item xs={12} md={12} style={{ marginTop: 20 }}>
                             <div className={`${classes.buttonContainer} ${isDesktop ? classes.horizontal : ''}`}>
                                 <div className={classes.groupalineado}>
-                                    {isDesktop ? (
-                                        <div className={classes.chartContainer}>
-                                            <Pie data={data} options={options} />
-                                        </div>
-                                    ) : (
-                                        <>
-                                        <div className={classes.chartContainer}>
-                                            <Pie data={data} options={options} />
-                                        </div>
-                                        </>
-                                    )}
-
-
-                                   
-                                    {/* El resto de tu código de renderización aquí */}
+                                    <div className={classes.chartContainer}>
+                                        <Typography variant="h6" style={{ marginBottom: 16 }}>
+                                            Gráfico de Barras
+                                        </Typography>
+                                        <Bar data={data} options={options} />
+                                    </div>
+                                    
+                                    {/* Aquí puedes añadir el resto de tu código de renderización */}
                                 </div>
                             </div>
                         </Grid>
@@ -196,4 +186,4 @@ const GraphicsPie = () => {
     );
 };
 
-export default GraphicsPie;
+export default RankingControl;
